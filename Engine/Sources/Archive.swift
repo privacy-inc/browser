@@ -2,6 +2,7 @@ import Foundation
 import Archivable
 
 public struct Archive: Arch {
+    public static let version = UInt8(2)
     public var timestamp: UInt32
     public internal(set) var bookmarks: [Bookmark]
     
