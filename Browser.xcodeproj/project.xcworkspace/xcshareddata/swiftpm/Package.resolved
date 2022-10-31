@@ -1,0 +1,14 @@
+{
+  "pins" : [
+    {
+      "identity" : "package",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/archivable/package.git",
+      "state" : {
+        "branch" : "main",
+        "revision" : "86dd60b3064bd1881e60df5606fbfb6ac6e726e7"
+      }
+    }
+  ],
+  "version" : 2
+}
