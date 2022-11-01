@@ -8,18 +8,26 @@
 
 /* Begin PBXBuildFile section */
 		CEAA603629112F5D00431596 /* App.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEAA603529112F5D00431596 /* App.swift */; };
-		CEAA603829112F5D00431596 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEAA603729112F5D00431596 /* ContentView.swift */; };
+		CEAA603829112F5D00431596 /* Navigation.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEAA603729112F5D00431596 /* Navigation.swift */; };
 		CEAA603A29112F5E00431596 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = CEAA603929112F5E00431596 /* Assets.xcassets */; };
 		CEAA6043291136FE00431596 /* Engine in Frameworks */ = {isa = PBXBuildFile; productRef = CEAA6042291136FE00431596 /* Engine */; };
+		CECB8D7729113A86002600F1 /* Sidebar.swift in Sources */ = {isa = PBXBuildFile; fileRef = CECB8D7629113A86002600F1 /* Sidebar.swift */; };
+		CECB8D7929113BA3002600F1 /* Session.swift in Sources */ = {isa = PBXBuildFile; fileRef = CECB8D7829113BA3002600F1 /* Session.swift */; };
+		CECB8D7B29114390002600F1 /* Content.swift in Sources */ = {isa = PBXBuildFile; fileRef = CECB8D7A29114390002600F1 /* Content.swift */; };
+		CECB8D7D291143FF002600F1 /* Detail.swift in Sources */ = {isa = PBXBuildFile; fileRef = CECB8D7C291143FF002600F1 /* Detail.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		CEAA603229112F5D00431596 /* Privacy.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Privacy.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		CEAA603529112F5D00431596 /* App.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = App.swift; sourceTree = "<group>"; };
-		CEAA603729112F5D00431596 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
+		CEAA603729112F5D00431596 /* Navigation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Navigation.swift; sourceTree = "<group>"; };
 		CEAA603929112F5E00431596 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		CEAA60442911378A00431596 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		CEB7EDF6290FEBB800A0ADEA /* Engine */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = Engine; sourceTree = "<group>"; };
+		CECB8D7629113A86002600F1 /* Sidebar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Sidebar.swift; sourceTree = "<group>"; };
+		CECB8D7829113BA3002600F1 /* Session.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Session.swift; sourceTree = "<group>"; };
+		CECB8D7A29114390002600F1 /* Content.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Content.swift; sourceTree = "<group>"; };
+		CECB8D7C291143FF002600F1 /* Detail.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Detail.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -47,7 +55,11 @@
 			children = (
 				CEAA60442911378A00431596 /* Info.plist */,
 				CEAA603529112F5D00431596 /* App.swift */,
-				CEAA603729112F5D00431596 /* ContentView.swift */,
+				CECB8D7A29114390002600F1 /* Content.swift */,
+				CECB8D7C291143FF002600F1 /* Detail.swift */,
+				CEAA603729112F5D00431596 /* Navigation.swift */,
+				CECB8D7829113BA3002600F1 /* Session.swift */,
+				CECB8D7629113A86002600F1 /* Sidebar.swift */,
 				CEAA603929112F5E00431596 /* Assets.xcassets */,
 			);
 			path = iOS;
@@ -142,7 +154,11 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				CEAA603829112F5D00431596 /* ContentView.swift in Sources */,
+				CECB8D7929113BA3002600F1 /* Session.swift in Sources */,
+				CEAA603829112F5D00431596 /* Navigation.swift in Sources */,
+				CECB8D7D291143FF002600F1 /* Detail.swift in Sources */,
+				CECB8D7729113A86002600F1 /* Sidebar.swift in Sources */,
+				CECB8D7B29114390002600F1 /* Content.swift in Sources */,
 				CEAA603629112F5D00431596 /* App.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
