@@ -4,7 +4,7 @@ struct Navigation: View {
     @StateObject private var session = Session()
     
     var body: some View {
-        NavigationSplitView(columnVisibility: $session.colums) {
+        NavigationSplitView(columnVisibility: $session.columns) {
             Sidebar(session: session)
         } content: {
             Content(session: session)

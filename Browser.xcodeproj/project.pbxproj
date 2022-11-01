@@ -15,6 +15,8 @@
 		CECB8D7929113BA3002600F1 /* Session.swift in Sources */ = {isa = PBXBuildFile; fileRef = CECB8D7829113BA3002600F1 /* Session.swift */; };
 		CECB8D7B29114390002600F1 /* Content.swift in Sources */ = {isa = PBXBuildFile; fileRef = CECB8D7A29114390002600F1 /* Content.swift */; };
 		CECB8D7D291143FF002600F1 /* Detail.swift in Sources */ = {isa = PBXBuildFile; fileRef = CECB8D7C291143FF002600F1 /* Detail.swift */; };
+		CECB8D7F29114BD7002600F1 /* Sidebar.Item.swift in Sources */ = {isa = PBXBuildFile; fileRef = CECB8D7E29114BD7002600F1 /* Sidebar.Item.swift */; };
+		CECB8D8129114C40002600F1 /* Tab.swift in Sources */ = {isa = PBXBuildFile; fileRef = CECB8D8029114C40002600F1 /* Tab.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -28,6 +30,8 @@
 		CECB8D7829113BA3002600F1 /* Session.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Session.swift; sourceTree = "<group>"; };
 		CECB8D7A29114390002600F1 /* Content.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Content.swift; sourceTree = "<group>"; };
 		CECB8D7C291143FF002600F1 /* Detail.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Detail.swift; sourceTree = "<group>"; };
+		CECB8D7E29114BD7002600F1 /* Sidebar.Item.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Sidebar.Item.swift; sourceTree = "<group>"; };
+		CECB8D8029114C40002600F1 /* Tab.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Tab.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -59,7 +63,9 @@
 				CECB8D7C291143FF002600F1 /* Detail.swift */,
 				CEAA603729112F5D00431596 /* Navigation.swift */,
 				CECB8D7829113BA3002600F1 /* Session.swift */,
+				CECB8D7E29114BD7002600F1 /* Sidebar.Item.swift */,
 				CECB8D7629113A86002600F1 /* Sidebar.swift */,
+				CECB8D8029114C40002600F1 /* Tab.swift */,
 				CEAA603929112F5E00431596 /* Assets.xcassets */,
 			);
 			path = iOS;
@@ -157,8 +163,10 @@
 				CECB8D7929113BA3002600F1 /* Session.swift in Sources */,
 				CEAA603829112F5D00431596 /* Navigation.swift in Sources */,
 				CECB8D7D291143FF002600F1 /* Detail.swift in Sources */,
+				CECB8D8129114C40002600F1 /* Tab.swift in Sources */,
 				CECB8D7729113A86002600F1 /* Sidebar.swift in Sources */,
 				CECB8D7B29114390002600F1 /* Content.swift in Sources */,
+				CECB8D7F29114BD7002600F1 /* Sidebar.Item.swift in Sources */,
 				CEAA603629112F5D00431596 /* App.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

@@ -5,7 +5,8 @@ struct Content: View {
     
     var body: some View {
         VStack {
-            
+            Text(session.sidebar?.index.formatted() ?? "")
         }
+        .toolbar(.hidden, for: .navigationBar)
     }
 }

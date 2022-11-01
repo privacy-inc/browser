@@ -1,8 +1,6 @@
 import SwiftUI
 
 final class Session: ObservableObject {
-    @Published var sidebar: Int?
-    
-    var colums = NavigationSplitViewVisibility.automatic
-    
+    @Published var sidebar: Tab?
+    var columns = NavigationSplitViewVisibility.automatic
 }
