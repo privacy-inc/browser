@@ -2,10 +2,10 @@ import SwiftUI
 
 extension Sidebar {
     struct Item: View {
-        let tab: Tab
+        let id: UUID
         
         var body: some View {
-            NavigationLink(value: tab) {
+            NavigationLink(value: id) {
                 Text("Hello world")
             }
         }

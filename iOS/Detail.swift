@@ -5,7 +5,7 @@ struct Detail: View {
     
     var body: some View {
         VStack {
-            Text(session.sidebar?.index.formatted() ?? "")
+//            Text(session.sidebar?.index.formatted() ?? "")
         }
     }
 }
