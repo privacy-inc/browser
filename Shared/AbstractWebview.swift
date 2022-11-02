@@ -3,12 +3,13 @@ import Combine
 //import UserNotifications
 //import Specs
 
-class Webview: WKWebView, WKNavigationDelegate, WKUIDelegate, WKDownloadDelegate {
+class AbstractWebview: WKWebView, WKNavigationDelegate, WKUIDelegate, WKDownloadDelegate {
     final var subs = Set<AnyCancellable>()
     final let progress = PassthroughSubject<Double, Never>()
 //    let settings: Specs.Settings.Configuration
     
     required init?(coder: NSCoder) { nil }
+    
     @MainActor init(configuration: WKWebViewConfiguration) {
         
 //    @MainActor init(configuration: WKWebViewConfiguration,
@@ -106,10 +107,10 @@ class Webview: WKWebView, WKNavigationDelegate, WKUIDelegate, WKDownloadDelegate
     }
     
     deinit {
-        stopLoading()
-        uiDelegate = nil
-        navigationDelegate = nil
-        
+//        stopLoading()
+//        uiDelegate = nil
+//        navigationDelegate = nil
+//        
 //        configuration.userContentController.removeScriptMessageHandler(forName: Script.location.method)
     }
     

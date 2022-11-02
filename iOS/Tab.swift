@@ -1,5 +1,6 @@
 import Foundation
 
-struct Tab: Hashable {
+@MainActor struct Tab: Hashable {
     let index: Int
+    let webview = Webview()
 }
