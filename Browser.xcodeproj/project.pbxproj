@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		CE1324412912B00200418B13 /* Browser.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE1324402912B00200418B13 /* Browser.swift */; };
+		CE1324432912D0FE00418B13 /* Bar.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE1324422912D0FE00418B13 /* Bar.swift */; };
 		CEAA603629112F5D00431596 /* App.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEAA603529112F5D00431596 /* App.swift */; };
 		CEAA603829112F5D00431596 /* Navigation.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEAA603729112F5D00431596 /* Navigation.swift */; };
 		CEAA603A29112F5E00431596 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = CEAA603929112F5E00431596 /* Assets.xcassets */; };
@@ -24,6 +25,7 @@
 
 /* Begin PBXFileReference section */
 		CE1324402912B00200418B13 /* Browser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Browser.swift; sourceTree = "<group>"; };
+		CE1324422912D0FE00418B13 /* Bar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Bar.swift; sourceTree = "<group>"; };
 		CEAA603229112F5D00431596 /* Privacy.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Privacy.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		CEAA603529112F5D00431596 /* App.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = App.swift; sourceTree = "<group>"; };
 		CEAA603729112F5D00431596 /* Navigation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Navigation.swift; sourceTree = "<group>"; };
@@ -74,6 +76,7 @@
 				CECB8D7629113A86002600F1 /* Sidebar.swift */,
 				CECB8D8029114C40002600F1 /* Tab.swift */,
 				CECB8D852911620F002600F1 /* Webview.swift */,
+				CE1324422912D0FE00418B13 /* Bar.swift */,
 				CEAA603929112F5E00431596 /* Assets.xcassets */,
 			);
 			path = iOS;
@@ -178,6 +181,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				CECB8D862911620F002600F1 /* Webview.swift in Sources */,
+				CE1324432912D0FE00418B13 /* Bar.swift in Sources */,
 				CECB8D7929113BA3002600F1 /* Session.swift in Sources */,
 				CEAA603829112F5D00431596 /* Navigation.swift in Sources */,
 				CECB8D7D291143FF002600F1 /* Detail.swift in Sources */,

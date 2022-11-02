@@ -20,9 +20,14 @@ struct Sidebar: View {
             }
         }
         .listStyle(.sidebar)
-        .background(Color.init(white: 0.975, opacity: 1))
+        .background(Color.clear)
         .scrollContentBackground(.hidden)
         .toolbar(.hidden, for: .navigationBar)
+        .toolbar {
+            ToolbarItemGroup(placement: .bottomBar) {
+                Bar(session: session)
+            }
+        }
     }
     
     private func section(_ title: LocalizedStringKey, items: () -> some View) -> some View {
