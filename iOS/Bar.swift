@@ -17,8 +17,9 @@ struct Bar: View {
         Spacer()
         
         Button {
-            
+            session.field.becomeFirstResponder()
         } label: {
+            Search(session: session)
             RoundedRectangle(cornerRadius: 12, style: .continuous)
                 .fill(Color.secondary)
                 .frame(width: 120, height: 36)
