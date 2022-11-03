@@ -126,9 +126,7 @@ final class Field: UIView, UIKeyInput, UITextFieldDelegate {
     }
     
     private func done() {
-        Task {
-//            await session.search(string: field.text!, index: index)
-        }
+        session.search(string: field.text!)
         field.resignFirstResponder()
     }
 }

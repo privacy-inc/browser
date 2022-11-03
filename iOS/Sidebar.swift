@@ -7,7 +7,7 @@ struct Sidebar: View {
         List(selection: $session.sidebar) {
             section("Tabs") {
                 ForEach(session.tabs) {
-                    Item(id: $0.id)
+                    Item(session: session, id: $0.id)
                 }
             }
             

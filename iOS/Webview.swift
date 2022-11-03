@@ -21,7 +21,7 @@ final class Webview: AbstractWebview {
 //         settings: Specs.Settings.Configuration,
 //         dark: Bool) {
     
-    @MainActor init() {
+    init(url: URL) {
         
 //        self.session = session
         let configuration = WKWebViewConfiguration()
@@ -31,7 +31,7 @@ final class Webview: AbstractWebview {
         configuration.ignoresViewportScaleLimits = true
         
 //        super.init(configuration: configuration, settings: settings, dark: dark)
-        super.init(configuration: configuration)
+        super.init(url: url, configuration: configuration)
         isOpaque = false
         scrollView.keyboardDismissMode = .none
         scrollView.contentInsetAdjustmentBehavior = .never

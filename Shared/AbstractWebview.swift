@@ -9,8 +9,7 @@ class AbstractWebview: WKWebView, WKNavigationDelegate, WKUIDelegate, WKDownload
 //    let settings: Specs.Settings.Configuration
     
     required init?(coder: NSCoder) { nil }
-    
-    @MainActor init(configuration: WKWebViewConfiguration) {
+    init(url: URL, configuration: WKWebViewConfiguration) {
         
 //    @MainActor init(configuration: WKWebViewConfiguration,
 //                    settings: Specs.Settings.Configuration,
@@ -104,6 +103,7 @@ class AbstractWebview: WKWebView, WKNavigationDelegate, WKUIDelegate, WKDownload
 //            else { return }
 //            configuration.userContentController.add(rules)
 //        }
+        load(.init(url: url))
     }
     
     deinit {

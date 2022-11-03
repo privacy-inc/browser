@@ -1,14 +1,14 @@
 import SwiftUI
 
 struct Browser: UIViewRepresentable {
-    private let tab: Tab
+    private weak var webview: Webview!
     
-    init(tab: Tab) {
-        self.tab = tab
+    init(webview: Webview) {
+        self.webview = webview
     }
     
     func makeUIView(context: Context) -> Webview {
-        tab.webview
+        webview
     }
     
     func updateUIView(_: Webview, context: Context) {
