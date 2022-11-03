@@ -1,6 +1,24 @@
 import UIKit
 
 final class Field: UIView, UIKeyInput, UITextFieldDelegate {
+    var hasText: Bool {
+        get {
+            field.text?.isEmpty == false
+        }
+        set {
+            
+        }
+    }
+    
+    override var inputAccessoryView: UIView? {
+        input
+    }
+    
+    override var canBecomeFirstResponder: Bool {
+        editable
+    }
+    
+    weak var session: Session!
     private weak var field: UITextField!
     private var editable = true
     private let input = UIInputView(frame: .init(x: 0, y: 0, width: 0, height: 52), inputViewStyle: .keyboard)
@@ -27,65 +45,65 @@ final class Field: UIView, UIKeyInput, UITextFieldDelegate {
         field.autocapitalizationType = .none
         field.spellCheckingType = .no
         field.tintColor = .label
-        field.font = .systemFont(ofSize: UIFont.preferredFont(forTextStyle: .body).pointSize + 2, weight: .regular)
+        field.font = .systemFont(ofSize: UIFont.preferredFont(forTextStyle: .body).pointSize + 4, weight: .regular)
         field.allowsEditingTextAttributes = false
         field.delegate = self
         input.addSubview(field)
         self.field = field
         
-        background.leftAnchor.constraint(equalTo: input.safeAreaLayoutGuide.leftAnchor, constant: 20).isActive = true
-        background.rightAnchor.constraint(equalTo: input.safeAreaLayoutGuide.rightAnchor, constant: -20).isActive = true
+        let cancel = UIButton(primaryAction: .init { [weak self] _ in
+            self?.field.resignFirstResponder()
+        })
+        cancel.translatesAutoresizingMaskIntoConstraints = false
+        cancel.setImage(.init(systemName: "xmark")?
+            .applyingSymbolConfiguration(.init(pointSize: 14, weight: .bold))?
+            .applyingSymbolConfiguration(.init(hierarchicalColor: .secondaryLabel)), for: .normal)
+        input.addSubview(cancel)
+        
+        let done = UIButton(primaryAction: .init { [weak self] _ in
+            self?.done()
+        })
+        done.translatesAutoresizingMaskIntoConstraints = false
+        done.setImage(.init(systemName: "arrow.forward")?
+            .applyingSymbolConfiguration(.init(pointSize: 14, weight: .bold))?
+            .applyingSymbolConfiguration(.init(hierarchicalColor: .secondaryLabel)), for: .normal)
+        input.addSubview(done)
+        
+        background.leftAnchor.constraint(equalTo: input.safeAreaLayoutGuide.leftAnchor, constant: 55).isActive = true
+        background.rightAnchor.constraint(equalTo: input.safeAreaLayoutGuide.rightAnchor, constant: -55).isActive = true
         background.centerYAnchor.constraint(equalTo: field.centerYAnchor).isActive = true
         background.heightAnchor.constraint(equalToConstant: 36).isActive = true
         
         field.centerYAnchor.constraint(equalTo: input.centerYAnchor, constant: 3).isActive = true
         field.leftAnchor.constraint(equalTo: background.leftAnchor, constant: 12).isActive = true
         field.rightAnchor.constraint(equalTo: background.rightAnchor, constant: -6).isActive = true
+        
+        cancel.centerYAnchor.constraint(equalTo: input.centerYAnchor, constant: 3).isActive = true
+        cancel.rightAnchor.constraint(equalTo: background.leftAnchor).isActive = true
+        cancel.widthAnchor.constraint(equalToConstant: 50).isActive = true
+        cancel.heightAnchor.constraint(equalTo: cancel.widthAnchor).isActive = true
+        
+        done.centerYAnchor.constraint(equalTo: input.centerYAnchor, constant: 3).isActive = true
+        done.leftAnchor.constraint(equalTo: background.rightAnchor).isActive = true
+        done.widthAnchor.constraint(equalToConstant: 50).isActive = true
+        done.heightAnchor.constraint(equalTo: done.widthAnchor).isActive = true
     }
     
-    func cancel(clear: Bool) {
-        field.resignFirstResponder()
-        
-//        guard clear else { return }
-//
-//        if session.items[index].web == nil {
-//            field.text = ""
-//            filter.send("")
-//        } else {
-//            withAnimation(.easeInOut(duration: 0.4)) {
-//                session.items[index].flow = session.items[index].info == nil ? .web : .message
-//                session.objectWillChange.send()
-//            }
-//        }
+    @discardableResult override func becomeFirstResponder() -> Bool {
+        DispatchQueue.main.async { [weak self] in
+            self?.session.typing = true
+            self?.field.becomeFirstResponder()
+        }
+        return super.becomeFirstResponder()
     }
     
     func textFieldShouldReturn(_: UITextField) -> Bool {
-        Task {
-//            await session.search(string: field.text!, index: index)
-        }
-        field.resignFirstResponder()
+        done()
         return true
     }
     
     func textFieldDidChangeSelection(_: UITextField) {
 //        filter.send(field.text!)
-    }
-    
-    var hasText: Bool {
-        get {
-            field.text?.isEmpty == false
-        }
-        set {
-            
-        }
-    }
-    
-    override var inputAccessoryView: UIView? {
-        input
-    }
-    
-    override var canBecomeFirstResponder: Bool {
-        editable
     }
     
     func textFieldShouldEndEditing(_: UITextField) -> Bool {
@@ -95,9 +113,8 @@ final class Field: UIView, UIKeyInput, UITextFieldDelegate {
     
     func textFieldDidEndEditing(_: UITextField) {
         editable = true
-//        if session.items[index].web == nil {
-//            typing = false
-//        }
+        session.typing = false
+        field.text = ""
     }
     
     func insertText(_: String) {
@@ -108,11 +125,10 @@ final class Field: UIView, UIKeyInput, UITextFieldDelegate {
         
     }
     
-    @discardableResult override func becomeFirstResponder() -> Bool {
-        DispatchQueue.main.async { [weak self] in
-//            self?.typing = true
-            self?.field.becomeFirstResponder()
+    private func done() {
+        Task {
+//            await session.search(string: field.text!, index: index)
         }
-        return super.becomeFirstResponder()
+        field.resignFirstResponder()
     }
 }
