@@ -6,10 +6,8 @@ struct Navigation: View {
     var body: some View {
         NavigationSplitView(columnVisibility: $session.columns) {
             Sidebar(session: session)
-        } content: {
-            Content(session: session)
         } detail: {
-            Detail(session: session)
+            Detail(id: session.sidebar, session: session)
         }
     }
 }

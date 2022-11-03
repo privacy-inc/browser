@@ -20,12 +20,11 @@ struct Sidebar: View {
             }
         }
         .listStyle(.sidebar)
-        .background(Color.clear)
-        .scrollContentBackground(.hidden)
         .toolbar(.hidden, for: .navigationBar)
         .toolbar {
             ToolbarItemGroup(placement: .bottomBar) {
                 Bar(session: session)
+                Search(session: session)
             }
         }
     }
@@ -34,8 +33,7 @@ struct Sidebar: View {
         Section(title) {
             items()
         }
-        .listRowInsets(.init(top: 0, leading: 0, bottom: 0, trailing: 0))
-        .listRowBackground(Color.clear)
-        .headerProminence(.increased)
+        .listRowInsets(.init(top: 0, leading: 8, bottom: 0, trailing: 16))
+        .textCase(.none)
     }
 }

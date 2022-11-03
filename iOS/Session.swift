@@ -6,7 +6,7 @@ import Engine
     @Published var tabs = [Tab]()
     @Published var typing = false
     @Published var settings = Settings()
-    var columns = NavigationSplitViewVisibility.automatic
+    var columns = NavigationSplitViewVisibility.all
     let field = Field()
     
     init() {

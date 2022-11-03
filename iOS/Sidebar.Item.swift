@@ -9,7 +9,7 @@ extension Sidebar {
             NavigationLink(value: id) {
                 HStack {
                     Image(systemName: "network")
-                        .frame(width: 32, height: 32)
+                        .frame(width: 36, height: 36)
                     VStack(alignment: .leading) {
                         Text(session[tab: id]?.title ?? "")
                             .font(.body.weight(.medium))
@@ -20,7 +20,7 @@ extension Sidebar {
                     .lineLimit(1)
                     .frame(maxWidth: .greatestFiniteMagnitude, alignment: .leading)
                 }
-                .padding(.vertical, 8)
+                .padding(.vertical, 10)
             }
         }
     }

@@ -16,16 +16,13 @@ struct Bar: View {
         
         Spacer()
         
-        if session.sidebar == nil {
-            Button {
-                session.field.becomeFirstResponder()
-            } label: {
-                Search(session: session)
-                RoundedRectangle(cornerRadius: 12, style: .continuous)
-                    .fill(Color.secondary)
-                    .frame(width: 120, height: 36)
-                    .opacity(session.typing ? 0 : 1)
-            }
+        Button {
+            session.field.becomeFirstResponder()
+        } label: {
+            RoundedRectangle(cornerRadius: 12, style: .continuous)
+                .fill(Color.secondary)
+                .frame(width: 120, height: 36)
+                .opacity(session.typing ? 0 : 1)
         }
         
         Spacer()
