@@ -101,11 +101,7 @@ final class Field: UIView, UIKeyInput, UITextFieldDelegate {
         done()
         return true
     }
-    
-    func textFieldDidChangeSelection(_: UITextField) {
-//        filter.send(field.text!)
-    }
-    
+
     func textFieldShouldEndEditing(_: UITextField) -> Bool {
         editable = false
         return true

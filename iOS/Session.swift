@@ -18,10 +18,17 @@ import Engine
     }
     
     func search(string: String) {
-        guard let url = settings.search(string) else { return }
-        let tab = Tab(webview: .init(url: url))
-        tabs.append(tab)
-//        sidebar = tab.id
+        guard
+            let id = content as? UUID,
+            let index = tabs.firstIndex(where: { $0.id == id }),
+            let url = settings.search(string)
+        else { return }
+        
+        if tabs[index].webview == nil {
+            tabs[index].webview = .init()
+        }
+        
+        tabs[index].webview?.load(.init(url: url))
     }
     
     subscript(tab id: UUID) -> Webview? {
