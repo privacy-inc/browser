@@ -1,6 +1,6 @@
 import SwiftUI
 
-extension Sidebar {
+extension Tabs {
     struct Item: View {
         @ObservedObject var session: Session
         let id: UUID

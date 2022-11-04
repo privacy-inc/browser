@@ -5,34 +5,43 @@ struct Sidebar: View {
     
     var body: some View {
         List(selection: $session.sidebar) {
-            section("Tabs") {
-                ForEach(session.tabs) {
-                    Item(session: session, id: $0.id)
+            Section("Browser") {
+                NavigationLink(value: Category.tabs) {
+                    Label("Tabs", systemImage: "square.on.square.dashed")
+                }
+                NavigationLink(value: Category.bookmarks) {
+                    Label("Bookmarks", systemImage: "bookmark")
+                }
+                NavigationLink(value: Category.history) {
+                    Label("History", systemImage: "clock")
                 }
             }
+            .headerProminence(.increased)
             
-            section("Bookmarks") {
-                EmptyView()
+            Section("Protection") {
+                NavigationLink(value: Category.report) {
+                    Label("Privacy report", systemImage: "checkerboard.shield")
+                }
             }
+            .headerProminence(.increased)
             
-            section("History") {
-                EmptyView()
+            Section("App") {
+                NavigationLink(value: Category.settings) {
+                    Label("Settings", systemImage: "gear")
+                }
+                NavigationLink(value: Category.sponsor) {
+                    Label("Sponsor", systemImage: "heart")
+                }
+                NavigationLink(value: Category.policy) {
+                    Label("Privacy policy", systemImage: "hand.raised")
+                }
+                NavigationLink(value: Category.about) {
+                    Label("About", systemImage: "star")
+                }
             }
+            .headerProminence(.increased)
         }
         .listStyle(.sidebar)
-        .toolbar(.hidden, for: .navigationBar)
-        .toolbar {
-            ToolbarItemGroup(placement: .bottomBar) {
-                Bar(session: session)
-                Search(session: session)
-            }
-        }
-    }
-    
-    private func section(_ title: LocalizedStringKey, items: () -> some View) -> some View {
-        Section(title) {
-            items()
-        }
-        .textCase(.none)
+        .navigationTitle("Menu")
     }
 }
