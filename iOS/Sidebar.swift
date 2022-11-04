@@ -19,6 +19,9 @@ struct Sidebar: View {
             .headerProminence(.increased)
             
             Section("Protection") {
+                NavigationLink(value: Category.forget) {
+                    Label("Forget", systemImage: "flame")
+                }
                 NavigationLink(value: Category.report) {
                     Label("Privacy report", systemImage: "checkerboard.shield")
                 }

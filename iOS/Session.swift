@@ -2,14 +2,18 @@ import SwiftUI
 import Engine
 
 @MainActor final class Session: ObservableObject {
-    @Published var sidebar: Category?
-    @Published var tabs = [Tab]()
+    @Published var sidebar: Category? = .tabs
+    @Published var content: AnyHashable?
+    @Published var tabs: [Tab]
     @Published var typing = false
     @Published var settings = Settings()
-    var columns = NavigationSplitViewVisibility.all
+    @Published var columns = NavigationSplitViewVisibility.doubleColumn
     let field = Field()
     
     init() {
+        let tab = Tab()
+        tabs = [tab]
+        content = tab.id
         field.session = self
     }
     

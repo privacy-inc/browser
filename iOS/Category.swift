@@ -3,6 +3,7 @@ enum Category {
     tabs,
     bookmarks,
     history,
+    forget,
     report,
     settings,
     sponsor,

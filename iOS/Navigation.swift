@@ -9,14 +9,19 @@ struct Navigation: View {
         } content: {
             switch session.sidebar {
             case .tabs:
-                Detail(id: .init(), session: session)
+                Tabs(session: session)
             default:
                 EmptyView()
             }
-            
-            
         } detail: {
-            
+            switch session.sidebar {
+            case .tabs:
+                if let id = session.content as? UUID {
+                    Detail(id: id, session: session)
+                }
+            default:
+                EmptyView()
+            }
         }
     }
 }

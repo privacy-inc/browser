@@ -4,13 +4,13 @@ struct Bar: View {
     @ObservedObject var session: Session
     
     var body: some View {
-        if session.sidebar == nil {
-            button(icon: "gear") {
-                
-            }
-        } else {
-            button(icon: "sidebar.leading") {
-                session.sidebar = nil
+        button(icon: "sidebar.leading") {
+            if UIDevice.current.userInterfaceIdiom == .pad {
+                session.columns = session.columns == .all || session.columns == .doubleColumn
+                ? .detailOnly
+                : .doubleColumn
+            } else {
+                session.content = nil
             }
         }
         
@@ -19,6 +19,7 @@ struct Bar: View {
         Button {
             session.field.becomeFirstResponder()
         } label: {
+            Search(session: session)
             RoundedRectangle(cornerRadius: 12, style: .continuous)
                 .fill(Color.secondary)
                 .frame(width: 120, height: 36)
