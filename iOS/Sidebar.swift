@@ -33,7 +33,6 @@ struct Sidebar: View {
         Section(title) {
             items()
         }
-        .listRowInsets(.init(top: 0, leading: 8, bottom: 0, trailing: 16))
         .textCase(.none)
     }
 }
