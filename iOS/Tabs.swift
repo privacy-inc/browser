@@ -16,6 +16,7 @@ struct Tabs: View {
                     let tab = Tab()
                     session.tabs.append(tab)
                     session.content = tab.id
+                    session.field.becomeFirstResponder()
                 } label: {
                     Image(systemName: "plus.circle.fill")
                         .symbolRenderingMode(.hierarchical)
