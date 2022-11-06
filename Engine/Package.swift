@@ -16,11 +16,14 @@ let package = Package(
     ],
     dependencies: [
         .package(url: "https://github.com/archivable/package.git", branch: "main"),
+        .package(url: "https://github.com/privacy-inc/domains.git", branch: "main")
     ],
     targets: [
         .target(
             name: "Engine",
-            dependencies: [.product(name: "Archivable", package: "package")],
+            dependencies: [
+                .product(name: "Archivable", package: "package"),
+                .product(name: "Domains", package: "domains")],
             path: "Sources"),
         .testTarget(
             name: "Tests",

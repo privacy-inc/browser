@@ -1,6 +1,15 @@
 {
   "pins" : [
     {
+      "identity" : "domains",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/privacy-inc/domains.git",
+      "state" : {
+        "branch" : "main",
+        "revision" : "dfa2d368ba9a05b377ed73a9ac9bffaa705ac841"
+      }
+    },
+    {
       "identity" : "package",
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/archivable/package.git",

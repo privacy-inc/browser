@@ -50,26 +50,26 @@ class AbstractWebview: WKWebView, WKNavigationDelegate, WKUIDelegate, WKDownload
         uiDelegate = self
         allowsBackForwardNavigationGestures = true
         
-//        if settings.history {
-//            publisher(for: \.url)
-//                .compactMap {
-//                    $0
-//                }
-//                .removeDuplicates()
-//                .combineLatest(publisher(for: \.title)
-//                    .compactMap {
-//                        $0
+        publisher(for: \.url)
+            .compactMap {
+                $0
+            }
+            .removeDuplicates()
+            .combineLatest(publisher(for: \.title)
+                .compactMap {
+                    $0
+                }
+                .removeDuplicates())
+            .debounce(for: .seconds(1), scheduler: DispatchQueue.global(qos: .utility))
+            .sink { url, title in
+//                Task
+//                    .detached(priority: .utility) {
+//                        await cloud.history(url: url, title: title)
 //                    }
-//                    .removeDuplicates())
-//                .debounce(for: .seconds(2), scheduler: DispatchQueue.global(qos: .utility))
-//                .sink { url, title in
-//                    Task
-//                        .detached(priority: .utility) {
-//                            await cloud.history(url: url, title: title)
-//                        }
-//                }
-//                .store(in: &subs)
-//        }
+            }
+            .store(in: &subs)
+        
+        
 //
 //        if settings.favicons {
 //            publisher(for: \.url)
