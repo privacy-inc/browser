@@ -1,4 +1,5 @@
 import SwiftUI
+import Archivable
 import Engine
 
 @MainActor final class Session: ObservableObject {
@@ -9,6 +10,7 @@ import Engine
     @Published var settings = Settings()
     @Published var columns = NavigationSplitViewVisibility.doubleColumn
     let field = Field()
+    let cloud = Cloud<Archive>.new(identifier: "iCloud.privacy")
     
     init() {
         let tab = Tab()
@@ -25,7 +27,7 @@ import Engine
         else { return }
         
         if tabs[index].webview == nil {
-            tabs[index].webview = .init()
+            tabs[index].webview = .init(cloud: cloud)
         }
         
         tabs[index].webview?.load(.init(url: url))

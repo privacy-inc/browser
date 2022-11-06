@@ -1,7 +1,8 @@
 import WebKit
 import Combine
 //import UserNotifications
-//import Specs
+import Archivable
+import Engine
 
 class AbstractWebview: WKWebView, WKNavigationDelegate, WKUIDelegate, WKDownloadDelegate {
     final var subs = Set<AnyCancellable>()
@@ -9,7 +10,7 @@ class AbstractWebview: WKWebView, WKNavigationDelegate, WKUIDelegate, WKDownload
 //    let settings: Specs.Settings.Configuration
     
     required init?(coder: NSCoder) { nil }
-    init(configuration: WKWebViewConfiguration) {
+    init(cloud: Cloud<Archive>, configuration: WKWebViewConfiguration) {
         
 //    @MainActor init(configuration: WKWebViewConfiguration,
 //                    settings: Specs.Settings.Configuration,
@@ -62,10 +63,10 @@ class AbstractWebview: WKWebView, WKNavigationDelegate, WKUIDelegate, WKDownload
                 .removeDuplicates())
             .debounce(for: .seconds(1), scheduler: DispatchQueue.global(qos: .utility))
             .sink { url, title in
-//                Task
-//                    .detached(priority: .utility) {
-//                        await cloud.history(url: url, title: title)
-//                    }
+                Task
+                    .detached(priority: .utility) {
+                        await cloud.history(url: url, title: title)
+                    }
             }
             .store(in: &subs)
         

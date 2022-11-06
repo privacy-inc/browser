@@ -1,4 +1,6 @@
 import WebKit
+import Archivable
+import Engine
 //import Specs
 
 final class Webview: AbstractWebview {
@@ -21,7 +23,7 @@ final class Webview: AbstractWebview {
 //         settings: Specs.Settings.Configuration,
 //         dark: Bool) {
     
-    init() {
+    init(cloud: Cloud<Archive>) {
         
 //        self.session = session
         let configuration = WKWebViewConfiguration()
@@ -31,7 +33,7 @@ final class Webview: AbstractWebview {
         configuration.ignoresViewportScaleLimits = true
         
 //        super.init(configuration: configuration, settings: settings, dark: dark)
-        super.init(configuration: configuration)
+        super.init(cloud: cloud, configuration: configuration)
         isOpaque = false
         scrollView.keyboardDismissMode = .none
         scrollView.contentInsetAdjustmentBehavior = .never
