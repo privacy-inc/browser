@@ -3,7 +3,7 @@ import XCTest
 @testable import Engine
 
 final class CloudTests: XCTestCase {
-    private var cloud: Cloud<Archive, MockContainer>!
+    private var cloud: Cloud<Archive>!
     
     override func setUp() {
         cloud = .init()

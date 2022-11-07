@@ -11,6 +11,7 @@ import Engine
     @Published var columns = NavigationSplitViewVisibility.doubleColumn
     let field = Field()
     let cloud = Cloud<Archive>.new(identifier: "iCloud.privacy")
+//    let favicon = Favicon()
     
     init() {
         let tab = Tab()
