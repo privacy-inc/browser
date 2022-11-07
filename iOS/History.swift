@@ -12,7 +12,7 @@ struct History: View {
                     Button {
                         session.open(url: item.url)
                     } label: {
-                        WebsiteItem(url: item.url, title: item.title)
+                        WebsiteItem(session: session, url: item.url, title: item.title)
                     }
                 }
             }

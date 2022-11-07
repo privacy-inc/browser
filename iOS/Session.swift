@@ -11,7 +11,7 @@ import Engine
     @Published var columns = NavigationSplitViewVisibility.doubleColumn
     let field = Field()
     let cloud = Cloud<Archive>.new(identifier: "iCloud.privacy")
-//    let favicon = Favicon()
+    let favicon = Favicon()
     
     init() {
         let tab = Tab()
@@ -43,7 +43,7 @@ import Engine
         else { return }
         
         if tabs[index].webview == nil {
-            tabs[index].webview = .init(cloud: cloud)
+            tabs[index].webview = .init(cloud: cloud, favicon: favicon)
         }
         
         tabs[index].webview!.load(.init(url: url))
@@ -53,7 +53,7 @@ import Engine
         sidebar = .tabs
         
         var tab = Tab()
-        tab.webview = .init(cloud: cloud)
+        tab.webview = .init(cloud: cloud, favicon: favicon)
         tab.webview!.load(.init(url: .init(string: url)!))
         tabs.append(tab)
         content = tab.id

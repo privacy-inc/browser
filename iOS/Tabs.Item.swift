@@ -10,7 +10,7 @@ extension Tabs {
         var body: some View {
             NavigationLink(value: id) {
                 if let web = session[tab: id] {
-                    WebsiteItem(url: url ?? "", title: title ?? "")
+                    WebsiteItem(session: session, url: url ?? "", title: title ?? "")
                         .onReceive(web.publisher(for: \.title)) {
                             title = $0
                         }

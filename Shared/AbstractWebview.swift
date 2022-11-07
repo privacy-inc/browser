@@ -10,7 +10,7 @@ class AbstractWebview: WKWebView, WKNavigationDelegate, WKUIDelegate, WKDownload
 //    let settings: Specs.Settings.Configuration
     
     required init?(coder: NSCoder) { nil }
-    init(cloud: Cloud<Archive>, configuration: WKWebViewConfiguration) {
+    init(cloud: Cloud<Archive>, favicon: Favicon, configuration: WKWebViewConfiguration) {
         
 //    @MainActor init(configuration: WKWebViewConfiguration,
 //                    settings: Specs.Settings.Configuration,
@@ -24,7 +24,7 @@ class AbstractWebview: WKWebView, WKNavigationDelegate, WKUIDelegate, WKDownload
 //        configuration.preferences.isFraudulentWebsiteWarningEnabled = !settings.http
 //        configuration.defaultWebpagePreferences.allowsContentJavaScript = settings.javascript
 //        configuration.websiteDataStore = settings.cookies ? .default() : .nonPersistent()
-//        configuration.userContentController.addUserScript(.init(source: Script.favicon.script, injectionTime: .atDocumentStart, forMainFrameOnly: true))
+        configuration.userContentController.addUserScript(.init(source: Script.favicon.script, injectionTime: .atDocumentStart, forMainFrameOnly: true))
 //        configuration.userContentController.addUserScript(.init(source: settings.scripts, injectionTime: .atDocumentEnd, forMainFrameOnly: true))
         
 //        if dark && settings.dark {
@@ -70,27 +70,23 @@ class AbstractWebview: WKWebView, WKNavigationDelegate, WKUIDelegate, WKDownload
             }
             .store(in: &subs)
         
+        publisher(for: \.url)
+            .compactMap {
+                $0
+            }
+            .removeDuplicates()
+            .debounce(for: .seconds(1), scheduler: DispatchQueue.main)
+            .sink { [weak self] website in
+                Task { [weak self] in
+                    guard
+                        await favicon.request(for: website),
+                        let url = try? await (self?.evaluateJavaScript(Script.favicon.method)) as? String
+                    else { return }
+                    await favicon.received(url: url, for: website)
+                }
+            }
+            .store(in: &subs)
         
-//
-//        if settings.favicons {
-//            publisher(for: \.url)
-//                .compactMap {
-//                    $0
-//                }
-//                .removeDuplicates()
-//                .debounce(for: .seconds(2), scheduler: DispatchQueue.main)
-//                .sink { [weak self] website in
-//                    Task { [weak self] in
-//                        guard
-//                            await favicon.request(for: website),
-//                            let url = try? await (self?.evaluateJavaScript(Script.favicon.method)) as? String,
-//                            settings.http || (!settings.http && url.hasPrefix("https://"))
-//                        else { return }
-//                        await favicon.received(url: url, for: website)
-//                    }
-//                }
-//                .store(in: &subs)
-//        }
 //
 //        publisher(for: \.estimatedProgress)
 //            .subscribe(progress)

@@ -39,7 +39,7 @@ public final class Favicon {
     public func request(for website: URL) async -> Bool {
         guard
             let icon = website.icon,
-            await !actor.request(icon: icon)
+            await actor.request(icon: icon)
         else { return false }
         return true
     }
