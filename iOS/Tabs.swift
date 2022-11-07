@@ -13,10 +13,7 @@ struct Tabs: View {
         .toolbar {
             ToolbarItem(placement: .bottomBar) {
                 Button {
-                    let tab = Tab()
-                    session.tabs.append(tab)
-                    session.content = tab.id
-                    session.field.becomeFirstResponder()
+                    session.newTab()
                 } label: {
                     Image(systemName: "plus.circle.fill")
                         .symbolRenderingMode(.hierarchical)

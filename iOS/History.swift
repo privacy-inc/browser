@@ -8,8 +8,12 @@ struct History: View {
     var body: some View {
         List(days, id: \.date) { day in
             Section(day.date.relative) {
-                ForEach(day.items, id: \.url) {
-                    Item(url: $0.url, title: $0.title)
+                ForEach(day.items, id: \.url) { item in
+                    Button {
+                        session.open(url: item.url)
+                    } label: {
+                        WebsiteItem(url: item.url, title: item.title)
+                    }
                 }
             }
             .headerProminence(.increased)

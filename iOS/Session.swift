@@ -19,6 +19,21 @@ import Engine
         field.session = self
     }
     
+    subscript(tab id: UUID) -> Webview? {
+        tabs
+            .first {
+                $0.id == id
+            }?
+            .webview
+    }
+    
+    func newTab() {
+        let tab = Tab()
+        tabs.append(tab)
+        content = tab.id
+        field.becomeFirstResponder()
+    }
+    
     func search(string: String) {
         guard
             let id = content as? UUID,
@@ -30,14 +45,16 @@ import Engine
             tabs[index].webview = .init(cloud: cloud)
         }
         
-        tabs[index].webview?.load(.init(url: url))
+        tabs[index].webview!.load(.init(url: url))
     }
     
-    subscript(tab id: UUID) -> Webview? {
-        tabs
-            .first {
-                $0.id == id
-            }?
-            .webview
+    func open(url: String) {
+        sidebar = .tabs
+        
+        var tab = Tab()
+        tab.webview = .init(cloud: cloud)
+        tab.webview!.load(.init(url: .init(string: url)!))
+        tabs.append(tab)
+        content = tab.id
     }
 }
