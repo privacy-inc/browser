@@ -39,18 +39,16 @@ extension URL {
     }
     
     var icon: String? {
-        get {
-            guard var components = URLComponents(url: self, resolvingAgainstBaseURL: false) else { return nil }
-            components.scheme = nil
-            components.query = nil
-            components.path = components.path.components(separatedBy: "/").prefix(2).joined(separator: "/")
-            components.fragment = nil
-            guard
-                let string = components.string?.replacingOccurrences(of: "//", with: ""),
-                let encoded = string.addingPercentEncoding(withAllowedCharacters: .urlHostAllowed)
-            else { return nil }
-            return encoded
-        }
+        guard var components = URLComponents(url: self, resolvingAgainstBaseURL: false) else { return nil }
+        components.scheme = nil
+        components.query = nil
+        components.path = components.path.components(separatedBy: "/").prefix(2).joined(separator: "/")
+        components.fragment = nil
+        guard
+            let string = components.string?.replacingOccurrences(of: "//", with: ""),
+            let encoded = string.addingPercentEncoding(withAllowedCharacters: .urlHostAllowed)
+        else { return nil }
+        return encoded
     }
     
 #if os(macOS)
