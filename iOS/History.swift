@@ -7,11 +7,12 @@ struct History: View {
     
     var body: some View {
         List(days, id: \.date) { day in
-            Section(day.date.formatted(.dateTime.year(.defaultDigits).month(.defaultDigits).day(.defaultDigits).weekday(.abbreviated))) {
+            Section(day.date.relative) {
                 ForEach(day.items, id: \.url) {
                     Item(url: $0.url, title: $0.title)
                 }
             }
+            .headerProminence(.increased)
         }
         .listStyle(.insetGrouped)
         .navigationTitle("History")
@@ -59,6 +60,22 @@ struct History: View {
                         result.append(.init(item: item))
                     }
                 }
+        }
+    }
+}
+
+private extension Date {
+    var relative: String {
+        if Calendar.current.isDate(self, inSameDayAs: .now) {
+            return "Today"
+        } else {
+            let yesterday = Calendar.current.date(byAdding: .day, value: -1, to: .now)!
+            
+            if Calendar.current.isDate(self, inSameDayAs: yesterday) {
+                return "Yesterday"
+            } else {
+                return formatted(.relative(presentation: .named, unitsStyle: .wide))
+            }
         }
     }
 }
