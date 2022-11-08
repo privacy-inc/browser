@@ -34,13 +34,8 @@ struct History: View {
                         .contentShape(Rectangle())
                 }
                 .disabled(session.tabs.isEmpty)
-                .confirmationDialog("Close tabs", isPresented: $alert) {
-                    Button("Close new tabs") {
-                        session.tabs.removeAll {
-                            $0.webview == nil
-                        }
-                    }
-                    Button("Close all", role: .destructive) {
+                .confirmationDialog("Clear history", isPresented: $alert) {
+                    Button("Clear", role: .destructive) {
                         session.content = nil
                         session.tabs = []
                     }

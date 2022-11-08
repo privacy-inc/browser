@@ -5,6 +5,9 @@ struct Bar: View {
     
     var body: some View {
         button(icon: "sidebar.leading") {
+            session.field.resignFirstResponder()
+            session.typing = false
+            
             if UIDevice.current.userInterfaceIdiom == .pad {
                 session.columns = session.columns == .all || session.columns == .doubleColumn
                 ? .detailOnly
