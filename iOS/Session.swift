@@ -58,4 +58,11 @@ import Engine
         tabs.append(tab)
         content = tab.id
     }
+    
+    func close(tab id: UUID) {
+        tabs
+            .remove {
+                $0.id == id
+            }
+    }
 }

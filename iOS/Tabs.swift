@@ -5,8 +5,19 @@ struct Tabs: View {
     @State private var alert = false
     
     var body: some View {
-        List(session.tabs, selection: $session.content) {
-            Item(session: session, id: $0.id)
+        List(session.tabs, selection: $session.content) { tab in
+            Item(session: session, id: tab.id)
+                .swipeActions {
+                    Button {
+                        withAnimation {
+                            session.close(tab: tab.id)
+                        }
+                    } label: {
+                        Label("Close", systemImage: "xmark.circle.fill")
+                            .symbolRenderingMode(.hierarchical)
+                    }
+                    .tint(.pink)
+                }
         }
         .listStyle(.insetGrouped)
         .navigationTitle("Tabs")
