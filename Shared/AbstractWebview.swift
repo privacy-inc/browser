@@ -6,7 +6,6 @@ import Engine
 
 class AbstractWebview: WKWebView, WKNavigationDelegate, WKUIDelegate, WKDownloadDelegate {
     final var subs = Set<AnyCancellable>()
-//    let settings: Specs.Settings.Configuration
     
     required init?(coder: NSCoder) { nil }
     init(cloud: Cloud<Archive>, favicon: Favicon, configuration: WKWebViewConfiguration) {
@@ -17,14 +16,8 @@ class AbstractWebview: WKWebView, WKNavigationDelegate, WKUIDelegate, WKDownload
         configuration.defaultWebpagePreferences.allowsContentJavaScript = true
         configuration.websiteDataStore = .nonPersistent()
         configuration.mediaTypesRequiringUserActionForPlayback = .all
-        configuration.userContentController.addUserScript(.init(source: Script.favicon.script, injectionTime: .atDocumentStart, forMainFrameOnly: true))
+        configuration.userContentController.addUserScript(.init(source: Script.js, injectionTime: .atDocumentEnd, forMainFrameOnly: false))
         configuration.preferences.setValue(true, forKey: "developerExtrasEnabled")
-//        configuration.userContentController.addUserScript(.init(source: settings.scripts, injectionTime: .atDocumentEnd, forMainFrameOnly: true))
-        
-//        if dark && settings.dark {
-//            configuration.userContentController.addUserScript(.init(source: Script.dark.script, injectionTime: .atDocumentStart, forMainFrameOnly: false))
-//        }
-        
 
         super.init(frame: .zero, configuration: configuration)
         navigationDelegate = self
@@ -60,7 +53,7 @@ class AbstractWebview: WKWebView, WKNavigationDelegate, WKUIDelegate, WKDownload
                 Task { [weak self] in
                     guard
                         await favicon.request(for: website),
-                        let url = try? await (self?.evaluateJavaScript(Script.favicon.method)) as? String
+                        let url = try? await self?.evaluateJavaScript("\(Script.favicon.rawValue)()") as? String
                     else { return }
                     await favicon.received(url: url, for: website)
                 }
