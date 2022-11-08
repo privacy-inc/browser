@@ -32,14 +32,7 @@ struct WebsiteItem: View {
     }
     
     var body: some View {
-        ZStack(alignment: .topLeading) {
-            Text("\(Image(uiImage: icon.image == nil ? empty : blank)) \(title)\(Text(domain).foregroundColor(.secondary).font(.callout))")
-                .font(.body.weight(.medium))
-                .foregroundColor(.primary)
-                .multilineTextAlignment(.leading)
-                .fixedSize(horizontal: false, vertical: true)
-                .frame(maxWidth: .greatestFiniteMagnitude, alignment: .leading)
-            
+        HStack(spacing: 0) {
             if let image = icon.image {
                 Image(uiImage: image)
                     .resizable()
@@ -47,9 +40,17 @@ struct WebsiteItem: View {
                     .clipShape(RoundedRectangle(cornerRadius: 6, style: .continuous))
                     .frame(width: size, height: size)
                     .allowsHitTesting(false)
+                    .offset(x: -8)
             }
+            Text("\(title)\(Text(domain).foregroundColor(.secondary).font(.callout))")
+                .font(.body.weight(.regular))
+                .foregroundColor(.primary)
+                .multilineTextAlignment(.leading)
+                .fixedSize(horizontal: false, vertical: true)
+                .frame(maxWidth: .greatestFiniteMagnitude, alignment: .leading)
+                .padding(.vertical, 9)
         }
-        .frame(minHeight: 38)
+        .frame(minHeight: 40)
         .onChange(of: url) { url in
             Task {
                 await update(url: url)

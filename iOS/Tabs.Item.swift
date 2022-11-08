@@ -19,7 +19,8 @@ extension Tabs {
                         }
                 } else {
                     Text("New tab")
-                        .font(.body.weight(.medium))
+                        .foregroundColor(.accentColor)
+                        .font(.body.weight(.bold))
                         .padding(.vertical, 8)
                 }
             }

@@ -20,6 +20,10 @@ struct Detail: View {
                         .frame(width: 120, height: 120)
                 }
                 .ignoresSafeArea(.keyboard)
+                .task {
+                    guard session.tabs.count > 1 else { return }
+                    session.field.becomeFirstResponder()
+                }
             }
             Search(session: session)
                 .frame(height: 0)

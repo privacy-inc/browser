@@ -7,7 +7,7 @@ final class Icon: ObservableObject {
     private var publisher: CurrentValueSubject<UIImage?, Never>?
     private var sub: AnyCancellable?
     
-    func load(favicon: Favicon, website: URL?) async {
+    @MainActor func load(favicon: Favicon, website: URL?) async {
         guard let website = website else { return }
         publisher = await favicon.publisher(for: website)
         sub = publisher?
