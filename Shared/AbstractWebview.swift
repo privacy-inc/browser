@@ -6,45 +6,25 @@ import Engine
 
 class AbstractWebview: WKWebView, WKNavigationDelegate, WKUIDelegate, WKDownloadDelegate {
     final var subs = Set<AnyCancellable>()
-    final let progress = PassthroughSubject<Double, Never>()
 //    let settings: Specs.Settings.Configuration
     
     required init?(coder: NSCoder) { nil }
     init(cloud: Cloud<Archive>, favicon: Favicon, configuration: WKWebViewConfiguration) {
-        
-//    @MainActor init(configuration: WKWebViewConfiguration,
-//                    settings: Specs.Settings.Configuration,
-//                    dark: Bool) {
-        
-//        self.settings = settings
-
         configuration.suppressesIncrementalRendering = false
         configuration.allowsAirPlayForMediaPlayback = true
-//        configuration.preferences.javaScriptCanOpenWindowsAutomatically = settings.popups && settings.javascript
-//        configuration.preferences.isFraudulentWebsiteWarningEnabled = !settings.http
-//        configuration.defaultWebpagePreferences.allowsContentJavaScript = settings.javascript
-//        configuration.websiteDataStore = settings.cookies ? .default() : .nonPersistent()
+        configuration.preferences.javaScriptCanOpenWindowsAutomatically = false
+        configuration.preferences.isFraudulentWebsiteWarningEnabled = false
+        configuration.defaultWebpagePreferences.allowsContentJavaScript = true
+        configuration.websiteDataStore = .nonPersistent()
+        configuration.mediaTypesRequiringUserActionForPlayback = .all
         configuration.userContentController.addUserScript(.init(source: Script.favicon.script, injectionTime: .atDocumentStart, forMainFrameOnly: true))
+        configuration.preferences.setValue(true, forKey: "developerExtrasEnabled")
 //        configuration.userContentController.addUserScript(.init(source: settings.scripts, injectionTime: .atDocumentEnd, forMainFrameOnly: true))
         
 //        if dark && settings.dark {
 //            configuration.userContentController.addUserScript(.init(source: Script.dark.script, injectionTime: .atDocumentStart, forMainFrameOnly: false))
 //        }
         
-//        switch settings.autoplay {
-//        case .none:
-//            configuration.mediaTypesRequiringUserActionForPlayback = .all
-//        case .audio:
-//            configuration.mediaTypesRequiringUserActionForPlayback = .video
-//        case .video:
-//            configuration.mediaTypesRequiringUserActionForPlayback = .audio
-//        case .all:
-//            configuration.mediaTypesRequiringUserActionForPlayback = []
-//        }
-        
-//    #if DEBUG
-//        configuration.preferences.setValue(true, forKey: "developerExtrasEnabled")
-//    #endif
 
         super.init(frame: .zero, configuration: configuration)
         navigationDelegate = self
@@ -86,11 +66,6 @@ class AbstractWebview: WKWebView, WKNavigationDelegate, WKUIDelegate, WKDownload
                 }
             }
             .store(in: &subs)
-        
-//
-//        publisher(for: \.estimatedProgress)
-//            .subscribe(progress)
-//            .store(in: &subs)
 //
 //        Task {
 //            guard

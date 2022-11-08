@@ -18,7 +18,7 @@ struct History: View {
             }
             .headerProminence(.increased)
         }
-        .listStyle(.insetGrouped)
+        .listStyle(.plain)
         .navigationTitle("History")
         .toolbar {
             ToolbarItem(placement: .primaryAction) {

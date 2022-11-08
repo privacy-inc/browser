@@ -3,11 +3,47 @@ import SwiftUI
 struct Detail: View {
     let id: UUID
     @ObservedObject var session: Session
+    @State private var colour = Color(.systemBackground)
+    @State private var progress = AnimatablePair(Double(), Double())
     
     var body: some View {
         ZStack {
             if let webview = session[tab: id] {
                 Browser(webview: webview)
+                    .onReceive(webview.publisher(for: \.estimatedProgress)) { value in
+                        guard value != 1 || progress.second != 0 else { return }
+                        
+                        progress.first = 0
+                        withAnimation(.easeInOut(duration: 0.5)) {
+                            progress.second = value
+                        }
+                        
+                        if value == 1 {
+                            DispatchQueue
+                                .main
+                                .asyncAfter(deadline: .now() + 0.7) {
+                                    withAnimation(.easeInOut(duration: 0.5)) {
+                                        progress = .init(1, 1)
+                                    }
+                                }
+                        }
+                    }
+                    .onReceive(webview.publisher(for: \.underPageBackgroundColor)) {
+                        guard let theme = $0 else {
+                            colour = .init(.systemBackground)
+                            return
+                        }
+                        colour = .init(theme)
+                    }
+                    .safeAreaInset(edge: .top, spacing: 0) {
+                        VStack(spacing: 0) {
+                            Progress(progress: progress)
+                                .stroke(Color.accentColor, style: .init(lineWidth: 4, lineCap: .round))
+                                .frame(height: 3)
+                            Divider()
+                        }
+                        .background(colour)
+                    }
             } else {
                 Button {
                     session.field.becomeFirstResponder()

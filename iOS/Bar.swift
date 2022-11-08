@@ -2,6 +2,7 @@ import SwiftUI
 
 struct Bar: View {
     @ObservedObject var session: Session
+    @State private var progress = AnimatablePair(Double(), Double())
     
     var body: some View {
         button(icon: "sidebar.leading") {

@@ -24,7 +24,7 @@ struct Tabs: View {
                 session.tabs.move(fromOffsets: index, toOffset: destination)
             }
         }
-        .listStyle(.insetGrouped)
+        .listStyle(.plain)
         .navigationTitle("Tabs")
         .toolbar {
             ToolbarItem(placement: .bottomBar) {
