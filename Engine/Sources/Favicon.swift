@@ -32,7 +32,7 @@ public final class Favicon {
         path = Self.regenerate()
     }
     
-    public func publisher(for website: URL) async -> CurrentValueSubject<Output?, Never>? {
+    @MainActor public func publisher(for website: URL) async -> CurrentValueSubject<Output?, Never>? {
         await actor.publisher(for: website, with: path)
     }
     

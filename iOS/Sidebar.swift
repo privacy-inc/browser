@@ -15,6 +15,9 @@ struct Sidebar: View {
                 NavigationLink(value: Category.history) {
                     Label("History", systemImage: "clock")
                 }
+                NavigationLink(value: Category.readingList) {
+                    Label("Reading list", systemImage: "eyeglasses")
+                }
             }
             .headerProminence(.increased)
             

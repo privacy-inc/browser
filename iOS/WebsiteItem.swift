@@ -16,16 +16,16 @@ struct WebsiteItem: View {
     }
     
     var body: some View {
-        HStack(alignment: .top, spacing: 8) {
+        HStack(alignment: .top, spacing: 10) {
             if let image = icon.image {
                 Image(uiImage: image)
                     .resizable()
                     .scaledToFit()
                     .clipShape(RoundedRectangle(cornerRadius: 6, style: .continuous))
-                    .frame(width: 24, height: 24)
+                    .frame(width: 28, height: 28)
                     .allowsHitTesting(false)
-                    .offset(x: -6)
-                    .padding(.top, 6)
+                    .offset(x: -4)
+                    .padding(.vertical, 3)
             }
             Text("\(title)\(Text(domain).foregroundColor(.secondary).font(.footnote.weight(.light)))")
                 .font(.callout.weight(.regular))
@@ -43,9 +43,14 @@ struct WebsiteItem: View {
         .task {
             await update(url: url)
         }
+        .onAppear {
+            Task {
+                await update(url: url)
+            }
+        }
     }
     
-    private func update(url: String) async {
+    @MainActor private func update(url: String) async {
         await icon.load(favicon: session.favicon, website: .init(string: url))
     }
 }
