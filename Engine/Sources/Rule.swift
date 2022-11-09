@@ -1,7 +1,5 @@
 public struct Rule {
-    public static let list = content
-    
-    private static var content: String {
+    public static var list: String {
         "[" + compress
             .map {
                 """

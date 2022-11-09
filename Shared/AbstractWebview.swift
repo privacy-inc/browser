@@ -5,10 +5,26 @@ import Archivable
 import Engine
 
 class AbstractWebview: WKWebView, WKNavigationDelegate, WKUIDelegate, WKDownloadDelegate {
+    private static var rules: WKContentRuleList?
     final var subs = Set<AnyCancellable>()
     
     required init?(coder: NSCoder) { nil }
     init(cloud: Cloud<Archive>, favicon: Favicon, configuration: WKWebViewConfiguration) {
+        if let rules = Self.rules {
+            configuration.userContentController.add(rules)
+        } else {
+            Task {
+                if let rules = try? await WKContentRuleListStore
+                    .default()
+                    .compileContentRuleList(
+                        forIdentifier: "rules",
+                        encodedContentRuleList: Rule.list) {
+                    Self.rules = rules
+                    configuration.userContentController.add(rules)
+                }
+            }
+        }
+        
         configuration.suppressesIncrementalRendering = false
         configuration.allowsAirPlayForMediaPlayback = true
         configuration.preferences.javaScriptCanOpenWindowsAutomatically = false
@@ -59,15 +75,6 @@ class AbstractWebview: WKWebView, WKNavigationDelegate, WKUIDelegate, WKDownload
                 }
             }
             .store(in: &subs)
-//
-//        Task {
-//            guard
-//                let rules = try? await WKContentRuleListStore.default().compileContentRuleList(
-//                    forIdentifier: "rules",
-//                    encodedContentRuleList: settings.blockers(dark: dark))
-//            else { return }
-//            configuration.userContentController.add(rules)
-//        }
     }
     
     deinit {
