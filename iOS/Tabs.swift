@@ -39,11 +39,10 @@ struct Tabs: View {
                 }
             }
             
-            
-            
             ToolbarItemGroup(placement: .primaryAction) {
                 EditButton()
-                
+                    .disabled(session.tabs.count < 2)
+
                 Button {
                     alert = true
                 } label: {

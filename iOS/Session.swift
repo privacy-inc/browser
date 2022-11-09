@@ -3,7 +3,7 @@ import Archivable
 import Engine
 
 @MainActor final class Session: ObservableObject {
-    @Published var sidebar: Category? = .history
+    @Published var sidebar: Category? = .tabs
     @Published var content: AnyHashable?
     @Published var tabs: [Tab]
     @Published var typing = false
@@ -16,7 +16,7 @@ import Engine
     init() {
         let tab = Tab()
         tabs = [tab]
-//        content = tab.id
+        content = tab.id
         field.session = self
     }
     
