@@ -37,7 +37,7 @@ final class Webview: AbstractWebview {
         isOpaque = false
         scrollView.keyboardDismissMode = .none
         scrollView.contentInsetAdjustmentBehavior = .never
-        scrollView.clipsToBounds = false
+        scrollView.clipsToBounds = true
 //        scrollView.indicatorStyle = dark && settings.dark ? .white : .default
         
 //        let background = UIColor

@@ -34,7 +34,7 @@ struct WebsiteItem: View {
                 .fixedSize(horizontal: false, vertical: true)
                 .frame(maxWidth: .greatestFiniteMagnitude, alignment: .leading)
         }
-        .frame(minHeight: 38)
+        .frame(minHeight: 40)
         .onChange(of: url) { url in
             Task {
                 await update(url: url)

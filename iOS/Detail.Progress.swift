@@ -6,7 +6,7 @@ extension Detail {
 
         func path(in rect: CGRect) -> Path {
             .init {
-                if progress.first != 1 {
+                if progress.first != 1 && progress.second != 0 {
                     $0.move(to: .init(x: progress.first * rect.width, y: 1))
                     $0.addLine(to: .init(x: progress.second * rect.width, y: 1))
                 }

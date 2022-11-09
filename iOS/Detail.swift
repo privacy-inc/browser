@@ -9,6 +9,7 @@ struct Detail: View {
     var body: some View {
         ZStack {
             if let webview = session[tab: id] {
+                Color.white
                 Browser(webview: webview)
                     .onReceive(webview.publisher(for: \.estimatedProgress)) { value in
                         guard value != 1 || progress.second != 0 else { return }

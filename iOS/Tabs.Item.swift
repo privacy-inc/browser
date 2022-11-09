@@ -21,7 +21,7 @@ extension Tabs {
                     Text("New tab")
                         .foregroundColor(.accentColor)
                         .font(.body.weight(.bold))
-                        .padding(.vertical, 8)
+                        .frame(minHeight: 40)
                 }
             }
         }
