@@ -2,6 +2,8 @@ import SwiftUI
 
 struct Bar: View {
     @ObservedObject var session: Session
+    @State private var back = false
+    @State private var forward = false
     @State private var progress = AnimatablePair(Double(), Double())
     
     var body: some View {
@@ -17,8 +19,17 @@ struct Bar: View {
                 session.content = nil
             }
         }
-        
-        Spacer()
+       
+        if let webview {
+            button(icon: "chevron.backward", disabled: !back) {
+                webview.goBack()
+            }
+            .onReceive(webview.publisher(for: \.canGoBack)) {
+                back = $0
+            }
+        } else {
+            Spacer()
+        }
         
         Button {
             session.field.becomeFirstResponder()
@@ -31,20 +42,36 @@ struct Bar: View {
             }
         }
         
-        Spacer()
+        if let webview {
+            button(icon: "chevron.forward", disabled: !forward) {
+                webview.goForward()
+            }
+            .onReceive(webview.publisher(for: \.canGoForward)) {
+                forward = $0
+            }
+        } else {
+            Spacer()
+        }
         
         button(icon: "ellipsis") {
             
         }
     }
     
-    private func button(icon: String, action: @escaping () -> Void) -> some View {
+    private var webview: Webview? {
+        guard let id = session.content as? UUID else { return nil }
+        return session[tab: id]
+    }
+    
+    private func button(icon: String, disabled: Bool = false, action: @escaping () -> Void) -> some View {
         Button(action: action) {
             Image(systemName: icon)
+                .foregroundStyle(disabled ? .tertiary : .primary)
                 .foregroundColor(.primary)
-                .font(.system(size: 16, weight: .semibold))
-                .frame(width: 50, height: 40)
+                .font(.system(size: 14, weight: .semibold))
+                .frame(width: 45, height: 40)
                 .contentShape(Rectangle())
         }
+        .disabled(disabled)
     }
 }
