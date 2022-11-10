@@ -18,4 +18,17 @@ extension Cloud where Output == Archive {
         
         await update(model: model)
     }
+    
+    public func policy(request: URL, from url: URL) async -> Policy {
+        let response = request.policy
+        if case let .block(tracker) = response {
+            var model = await model
+            model.tracking = model
+                .tracking
+                .with(tracker: tracker, on: url.absoluteString.domain)
+            
+            await update(model: model)
+        }
+        return response
+    }
 }

@@ -29,4 +29,16 @@ final class CloudTests: XCTestCase {
         history = await cloud.actor.model.history
         XCTAssertEqual(history.count, 2)
     }
+    
+    func testPolicy() async {
+        let response = await cloud.policy(request: .init(string: "https://google.com")!, from: .init(string: "https://google.com")!)
+        XCTAssertEqual(.allow, response)
+
+        if case .block = await cloud.policy(request: .init(string: "https://something.googleapis.com")!, from: .init(string: "https://google.com")!) {
+            let tracking = await cloud.model.tracking.items(for: "google.com")
+            XCTAssertEqual([.init(tracker: "googleapis", count: 1)], tracking)
+        } else {
+            XCTFail()
+        }
+    }
 }
