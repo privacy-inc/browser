@@ -12,8 +12,9 @@ extension URL {
                 Embeded(rawValue: $0)
                     .map(\.policy)
                 ?? Scheme(rawValue: $0)
+                    .map(\.policy)
                     .map {
-                        guard $0.policy != .allow else { return .allow }
+                        guard $0 == .allow else { return $0 }
                         return host
                             .map(Tld.domain(host:))
                             .map { domain in

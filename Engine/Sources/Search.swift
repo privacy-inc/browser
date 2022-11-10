@@ -1,5 +1,5 @@
 import Foundation
-//import Domains
+import Domains
 
 public enum Search: UInt8, Equatable, Sendable {
     case
@@ -7,27 +7,25 @@ public enum Search: UInt8, Equatable, Sendable {
     ecosia
     
     var components: URLComponents {
-//        {
-//            var components = URLComponents(string: "//www." + $0.rawValue + "." + $0.tld.rawValue)!
-        var components = URLComponents(string: "//www.google.com")!
+        {
+            var components = URLComponents(string: "//www." + $0.rawValue + "." + $0.tld.rawValue)!
             components.scheme = "https"
             components.path = "/search"
             return components
-//        } (url)
+        } (url)
     }
     
-//    private var url: URL.Allow {
-//        switch self {
-//        case .google: return .google
-//        case .ecosia: return .ecosia
-//        }
-//    }
+    private var url: Allowed {
+        switch self {
+        case .google: return .google
+        case .ecosia: return .ecosia
+        }
+    }
     
     public func callAsFunction(_ search: String) -> URL? {
         search
             .trimmed {
-//                $0.hasPrefix(URL.Embed.data.rawValue + ":") || $0.hasPrefix(URL.Embed.file.rawValue + ":")
-                false
+                $0.hasPrefix(Embeded.data.rawValue + ":") || $0.hasPrefix(Embeded.file.rawValue + ":")
                 ? $0
                 : $0.url
                     ?? $0.file
@@ -76,11 +74,11 @@ private extension String {
     var partial: Self? {
         {
             $0.count > 1
-//                && $0
-//                    .last
-//                    .flatMap {
-//                        Tld.suffix[$0.lowercased()]
-//                    } != nil
+            && $0
+                .last
+                .flatMap {
+                    Tld.suffix[$0.lowercased()]
+                } != nil
             && true
                 && !$0.first!.isEmpty
                 && !contains(" ")

@@ -93,12 +93,6 @@ class AbstractWebview: WKWebView, WKNavigationDelegate, WKUIDelegate, WKDownload
 //
 //    }
     
-//    func webView(_ webView: WKWebView, didFinish: WKNavigation!) {
-//        if !settings.timers {
-//            evaluateJavaScript(Script.unpromise.script)
-//        }
-//    }
-    
     func webView(_: WKWebView, navigationAction: WKNavigationAction, didBecome: WKDownload) {
         didBecome.delegate = self
     }
@@ -138,11 +132,9 @@ class AbstractWebview: WKWebView, WKNavigationDelegate, WKUIDelegate, WKDownload
 //        message(info: .init(url: url, title: "Privacy deeplink", icon: "eyeglasses"))
 //    }
     
-//    final func webView(_: WKWebView, respondTo: URLAuthenticationChallenge) async -> (URLSession.AuthChallengeDisposition, URLCredential?) {
-//        settings.http
-//        ? (.useCredential, respondTo.protectionSpace.serverTrust.map(URLCredential.init(trust:)))
-//        : (.performDefaultHandling, nil)
-//    }
+    final func webView(_: WKWebView, respondTo: URLAuthenticationChallenge) async -> (URLSession.AuthChallengeDisposition, URLCredential?) {
+        (.useCredential, respondTo.protectionSpace.serverTrust.map(URLCredential.init(trust:)))
+    }
     
 //    final func webView(_: WKWebView, didFailProvisionalNavigation: WKNavigation!, withError: Error) {
 //        guard
@@ -159,9 +151,9 @@ class AbstractWebview: WKWebView, WKNavigationDelegate, WKUIDelegate, WKDownload
 //    }
     
 //    final func webView(_: WKWebView, decidePolicyFor: WKNavigationAction, preferences: WKWebpagePreferences) async -> (WKNavigationActionPolicy, WKWebpagePreferences) {
-//
 //        guard !(decidePolicyFor.navigationType == .linkActivated && decidePolicyFor.sourceFrame.webView == nil) else { return (.cancel, preferences) }
 //
+//        
 //        switch await cloud.policy(request: decidePolicyFor.request.url!, from: url!) {
 //        case .allow:
 //            if decidePolicyFor.shouldPerformDownload {
