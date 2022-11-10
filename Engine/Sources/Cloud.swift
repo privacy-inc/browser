@@ -20,15 +20,20 @@ extension Cloud where Output == Archive {
     }
     
     public func policy(request: URL, from url: URL) async -> Policy {
+        var model = await model
         let response = request.policy
-        if case let .block(tracker) = response {
-            var model = await model
+        let domain = url.absoluteString.domain
+        switch response {
+        case .allow:
+            model.log.append(.init(domain: domain, url: .init(request.absoluteString.prefix(90))))
+        case let .block(tracker):
             model.tracking = model
                 .tracking
-                .with(tracker: tracker, on: url.absoluteString.domain)
-            
-            await update(model: model)
+                .with(tracker: tracker, on: domain)
+        default:
+            break
         }
+        await update(model: model)
         return response
     }
 }

@@ -31,8 +31,11 @@ final class CloudTests: XCTestCase {
     }
     
     func testPolicy() async {
-        let response = await cloud.policy(request: .init(string: "https://google.com")!, from: .init(string: "https://google.com")!)
+        let response = await cloud.policy(request: .init(string: "https://google.com/hello")!, from: .init(string: "https://google.com")!)
         XCTAssertEqual(.allow, response)
+        let logged = await cloud.model.log.first
+        XCTAssertEqual(logged?.domain, "google.com")
+        XCTAssertEqual(logged?.url, "https://google.com/hello")
 
         if case .block = await cloud.policy(request: .init(string: "https://something.googleapis.com")!, from: .init(string: "https://google.com")!) {
             let tracking = await cloud.model.tracking.items(for: "google.com")
