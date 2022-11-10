@@ -1,7 +1,7 @@
 import SwiftUI
 import Domains
 
-struct WebsiteItem: View {
+struct Website: View {
     let session: Session
     private let url: String
     private let title: String
@@ -34,7 +34,7 @@ struct WebsiteItem: View {
                 .fixedSize(horizontal: false, vertical: true)
                 .frame(maxWidth: .greatestFiniteMagnitude, alignment: .leading)
         }
-        .frame(minHeight: 40)
+        .frame(minHeight: 42)
         .onChange(of: url) { url in
             Task {
                 await update(url: url)

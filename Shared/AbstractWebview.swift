@@ -1,15 +1,17 @@
 import WebKit
 import Combine
-//import UserNotifications
 import Archivable
 import Engine
 
 class AbstractWebview: WKWebView, WKNavigationDelegate, WKUIDelegate, WKDownloadDelegate {
     private static var rules: WKContentRuleList?
+    private weak var cloud: Cloud<Archive>!
     final var subs = Set<AnyCancellable>()
     
     required init?(coder: NSCoder) { nil }
     init(cloud: Cloud<Archive>, favicon: Favicon, configuration: WKWebViewConfiguration) {
+        self.cloud = cloud
+        
         if let rules = Self.rules {
             configuration.userContentController.add(rules)
         } else {
@@ -150,45 +152,47 @@ class AbstractWebview: WKWebView, WKNavigationDelegate, WKUIDelegate, WKDownload
 //                } (withError._userInfo as? [String : Any]), description: withError.localizedDescription)
 //    }
     
-//    final func webView(_: WKWebView, decidePolicyFor: WKNavigationAction, preferences: WKWebpagePreferences) async -> (WKNavigationActionPolicy, WKWebpagePreferences) {
-//        guard !(decidePolicyFor.navigationType == .linkActivated && decidePolicyFor.sourceFrame.webView == nil) else { return (.cancel, preferences) }
-//
-//        
-//        switch await cloud.policy(request: decidePolicyFor.request.url!, from: url!) {
-//        case .allow:
-//            if decidePolicyFor.shouldPerformDownload {
-//                return (.download, preferences)
-//            } else {
-//#if DEBUG
-//                print("allow \(decidePolicyFor.request.url!)")
-//#endif
-//                preferences.allowsContentJavaScript = settings.javascript
-//                return (.allow, preferences)
-//            }
-//        case .ignore:
-//            decidePolicyFor
-//                .targetFrame
-//                .map(\.isMainFrame)
-//                .map {
-//                    guard $0 else { return }
+    final func webView(_: WKWebView, decidePolicyFor: WKNavigationAction, preferences: WKWebpagePreferences) async -> (WKNavigationActionPolicy, WKWebpagePreferences) {
+        
+        guard
+            !(decidePolicyFor.navigationType == .linkActivated && decidePolicyFor.sourceFrame.webView == nil)
+        else { return (.cancel, preferences) }
+
+        switch await cloud.policy(request: decidePolicyFor.request.url!, from: url!) {
+        case .allow:
+            if decidePolicyFor.shouldPerformDownload {
+                return (.download, preferences)
+            } else {
+                print("allow \(decidePolicyFor.request.url!)")
+                preferences.allowsContentJavaScript = true
+                return (.allow, preferences)
+            }
+        case .ignore:
+            decidePolicyFor
+                .targetFrame
+                .map(\.isMainFrame)
+                .map {
+                    guard $0 else { return }
 //                    error(url: decidePolicyFor.request.url, description: "There was an error")
-//                }
-//        case .block:
-//            decidePolicyFor
-//                .targetFrame
-//                .map(\.isMainFrame)
-//                .map {
-//                    guard $0 else { return }
+                }
+        case .block:
+            decidePolicyFor
+                .targetFrame
+                .map(\.isMainFrame)
+                .map {
+                    guard $0 else { return }
 //                    error(url: decidePolicyFor.request.url, description: "Blocked")
-//                }
-//        case .deeplink:
+                }
+        case .deeplink:
 //            message(info: .init(url: decidePolicyFor.request.url!, title: "Deeplink opened", icon: "paperplane.circle.fill"))
 //            deeplink(url: decidePolicyFor.request.url!)
-//        case .privacy:
+            break
+        case .app:
 //            privacy(url: decidePolicyFor.request.url!)
-//        }
-//        return (.cancel, preferences)
-//    }
+            break
+        }
+        return (.cancel, preferences)
+    }
     
 //    final func webView(_: WKWebView, decidePolicyFor: WKNavigationAction) async -> WKNavigationActionPolicy {
 //        decidePolicyFor.shouldPerformDownload ? .download : .allow
