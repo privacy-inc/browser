@@ -6,17 +6,32 @@ struct History: View {
     @State private var alert = false
     
     var body: some View {
-        List(days, id: \.date) { day in
-            Section(day.date.relative) {
-                ForEach(day.items, id: \.url) { item in
-                    Button {
-                        session.open(url: item.url)
-                    } label: {
-                        Website(session: session, url: item.url, title: item.title)
+        List {
+            if days.isEmpty {
+                VStack(spacing: 10) {
+                    Image(systemName: "clock")
+                        .font(.system(size: 60, weight: .medium))
+                        .padding(.top, 60)
+                    Text("No record")
+                }
+                .foregroundStyle(.secondary)
+                .frame(maxWidth: .greatestFiniteMagnitude)
+                .listRowSeparator(.hidden)
+                .listSectionSeparator(.hidden)
+            } else {
+                ForEach(days, id: \.date) { day in
+                    Section(day.date.relative) {
+                        ForEach(day.items, id: \.url) { item in
+                            Button {
+                                session.open(url: item.url)
+                            } label: {
+                                Website(session: session, url: item.url, title: item.title)
+                            }
+                        }
                     }
+                    .headerProminence(.increased)
                 }
             }
-            .headerProminence(.increased)
         }
         .listStyle(.plain)
         .navigationTitle("History")
@@ -26,18 +41,19 @@ struct History: View {
                     alert = true
                 } label: {
                     Image(systemName: "trash.circle.fill")
-                        .foregroundStyle(session.tabs.isEmpty ? .tertiary : .secondary)
-                        .foregroundColor(session.tabs.isEmpty ? .secondary : .pink)
+                        .foregroundStyle(days.isEmpty ? .tertiary : .secondary)
+                        .foregroundColor(days.isEmpty ? .secondary : .pink)
                         .symbolRenderingMode(.hierarchical)
                         .font(.system(size: 24, weight: .regular))
                         .frame(width: 40, height: 36)
                         .contentShape(Rectangle())
                 }
-                .disabled(session.tabs.isEmpty)
+                .disabled(days.isEmpty)
                 .confirmationDialog("Clear history", isPresented: $alert) {
                     Button("Clear", role: .destructive) {
-                        session.content = nil
-                        session.tabs = []
+                        Task {
+                            await session.cloud.clearHistory()
+                        }
                     }
                     Button("Cancel", role: .cancel) { }
                 }

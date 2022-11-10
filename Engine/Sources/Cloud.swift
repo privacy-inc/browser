@@ -3,6 +3,13 @@ import Archivable
 import Domains
 
 extension Cloud where Output == Archive {
+    public func clearHistory() async {
+        var model = await model
+        guard !model.history.isEmpty else { return }
+        model.history = []
+        await update(model: model)
+    }
+    
     public func history(url: URL, title: String) async {
         guard let remote = url.remoteString else { return }
         let comparable = remote.comparable

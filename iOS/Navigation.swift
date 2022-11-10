@@ -10,6 +10,8 @@ struct Navigation: View {
             switch session.sidebar {
             case .tabs:
                 Tabs(session: session)
+            case .bookmarks:
+                Bookmarks(session: session)
             case .history:
                 History(session: session)
             default:
