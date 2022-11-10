@@ -37,13 +37,14 @@ struct Detail: View {
                         colour = .init(theme)
                     }
                     .safeAreaInset(edge: .top, spacing: 0) {
-                        VStack(spacing: 0) {
+                        ZStack {
+                            Rectangle()
+                                .fill(Color(.secondarySystemBackground))
+                                .frame(height: 3)
                             Progress(progress: progress)
                                 .stroke(Color.accentColor, style: .init(lineWidth: 4, lineCap: .round))
-                                .frame(height: 3)
-                            Divider()
                         }
-                        .background(colour)
+                        .frame(height: 3)
                     }
             } else {
                 Button {
