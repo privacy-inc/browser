@@ -70,7 +70,7 @@ struct Detail: View {
         .id(id)
         .toolbar(.hidden, for: .navigationBar)
         .toolbar {
-            ToolbarItemGroup(placement: .bottomBar) {
+            ToolbarItem(placement: .bottomBar) {
                 Bar(session: session)
             }
         }

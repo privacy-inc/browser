@@ -27,18 +27,6 @@ struct Tabs: View {
         .listStyle(.plain)
         .navigationTitle("Tabs")
         .toolbar {
-            ToolbarItem(placement: .bottomBar) {
-                Button {
-                    session.newTab()
-                } label: {
-                    Image(systemName: "plus.circle.fill")
-                        .symbolRenderingMode(.hierarchical)
-                        .font(.system(size: 32, weight: .regular))
-                        .frame(width: 50, height: 40)
-                        .contentShape(Rectangle())
-                }
-            }
-            
             ToolbarItemGroup(placement: .primaryAction) {
                 EditButton()
                     .disabled(session.tabs.count < 2)

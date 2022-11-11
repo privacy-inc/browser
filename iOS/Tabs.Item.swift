@@ -18,10 +18,17 @@ extension Tabs {
                             url = $0?.absoluteString
                         }
                 } else {
-                    Text("New tab")
-                        .foregroundColor(.accentColor)
-                        .font(.body.weight(.bold))
-                        .frame(minHeight: 42)
+                    HStack(spacing: 10) {
+                        Image(systemName: "plus.viewfinder")
+                            .font(.system(size: 24, weight: .medium))
+                            .symbolRenderingMode(.hierarchical)
+                            .frame(width: 28, height: 28)
+                            .offset(x: -4)
+                        Text("New tab")
+                            .font(.callout.weight(.medium))
+                            .frame(maxWidth: .greatestFiniteMagnitude, alignment: .leading)
+                    }
+                    .frame(minHeight: 42)
                 }
             }
         }

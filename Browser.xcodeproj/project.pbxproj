@@ -23,6 +23,7 @@
 		CEACBD202917F14600A7104A /* History.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEACBD1F2917F14600A7104A /* History.swift */; };
 		CEACBD242917F49B00A7104A /* History.Day.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEACBD232917F49B00A7104A /* History.Day.swift */; };
 		CEB3172E291A75AC0099992E /* Detail.Progress.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEB3172D291A75AC0099992E /* Detail.Progress.swift */; };
+		CEB94307291E51A900DF793C /* Tabber.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEB94306291E51A900DF793C /* Tabber.swift */; };
 		CEBCB1F82919232200A35A0C /* Website.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEBCB1F72919232200A35A0C /* Website.swift */; };
 		CECB8D7729113A86002600F1 /* Sidebar.swift in Sources */ = {isa = PBXBuildFile; fileRef = CECB8D7629113A86002600F1 /* Sidebar.swift */; };
 		CECB8D7929113BA3002600F1 /* Session.swift in Sources */ = {isa = PBXBuildFile; fileRef = CECB8D7829113BA3002600F1 /* Session.swift */; };
@@ -52,6 +53,7 @@
 		CEACBD232917F49B00A7104A /* History.Day.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = History.Day.swift; sourceTree = "<group>"; };
 		CEB3172D291A75AC0099992E /* Detail.Progress.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Detail.Progress.swift; sourceTree = "<group>"; };
 		CEB7EDF6290FEBB800A0ADEA /* Engine */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = Engine; sourceTree = "<group>"; };
+		CEB94306291E51A900DF793C /* Tabber.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Tabber.swift; sourceTree = "<group>"; };
 		CEBCB1F72919232200A35A0C /* Website.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Website.swift; sourceTree = "<group>"; };
 		CECB8D7629113A86002600F1 /* Sidebar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Sidebar.swift; sourceTree = "<group>"; };
 		CECB8D7829113BA3002600F1 /* Session.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Session.swift; sourceTree = "<group>"; };
@@ -102,6 +104,7 @@
 				CECB8D7829113BA3002600F1 /* Session.swift */,
 				CECB8D7629113A86002600F1 /* Sidebar.swift */,
 				CECB8D8029114C40002600F1 /* Tab.swift */,
+				CEB94306291E51A900DF793C /* Tabber.swift */,
 				CE36C0932915349B0038B79F /* Tabs.Item.swift */,
 				CE36C091291534690038B79F /* Tabs.swift */,
 				CEBCB1F72919232200A35A0C /* Website.swift */,
@@ -214,6 +217,7 @@
 				CE1324432912D0FE00418B13 /* Bar.swift in Sources */,
 				CECB8D7929113BA3002600F1 /* Session.swift in Sources */,
 				CEAA603829112F5D00431596 /* Navigation.swift in Sources */,
+				CEB94307291E51A900DF793C /* Tabber.swift in Sources */,
 				CECB8D8429116030002600F1 /* AbstractWebview.swift in Sources */,
 				CECB8D8129114C40002600F1 /* Tab.swift in Sources */,
 				CE1324452912D1E200418B13 /* Field.swift in Sources */,
