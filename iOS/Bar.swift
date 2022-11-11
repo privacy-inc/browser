@@ -13,9 +13,12 @@ struct Bar: View {
                 session.typing = false
                 
                 if UIDevice.current.userInterfaceIdiom == .pad {
-                    session.columns = session.columns == .all || session.columns == .doubleColumn
-                    ? .detailOnly
-                    : .doubleColumn
+                    switch session.columns {
+                    case .all, .doubleColumn:
+                        session.columns = .detailOnly
+                    default:
+                        session.columns = .doubleColumn
+                    }
                 } else {
                     session.content = nil
                 }
@@ -63,7 +66,7 @@ struct Bar: View {
     }
     
     private var webview: Webview? {
-        guard let id = session.content as? UUID else { return nil }
+        guard case let .tab(id) = session.content else { return nil }
         return session[tab: id]
     }
     

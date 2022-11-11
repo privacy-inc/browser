@@ -8,7 +8,7 @@ extension Tabs {
         @State private var url: String?
         
         var body: some View {
-            NavigationLink(value: id) {
+            NavigationLink(value: Content.tab(id)) {
                 if let web = session[tab: id] {
                     Website(session: session, url: url ?? "", title: title ?? "")
                         .onReceive(web.publisher(for: \.title)) {

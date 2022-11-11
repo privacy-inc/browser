@@ -41,11 +41,11 @@ struct Navigation: View {
     }
     
     @ViewBuilder private var detail: some View {
-        switch session.sidebar {
-        case .tabs:
-            if let id = session.content as? UUID {
-                Detail(id: id, session: session)
-            }
+        switch session.content {
+        case let .tab(id):
+            Detail(session: session, id: id)
+        case .bookmark:
+            Bookmarks.Edit(session: session, bookmark: nil)
         default:
             EmptyView()
         }

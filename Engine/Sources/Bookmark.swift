@@ -1,7 +1,7 @@
 import Foundation
 import Archivable
 
-public struct Bookmark: Storable, Website {
+public struct Bookmark: Storable, Hashable, Website {
     public let url: String
     public let title: String
     

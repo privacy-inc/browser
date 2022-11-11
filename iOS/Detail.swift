@@ -1,8 +1,8 @@
 import SwiftUI
 
 struct Detail: View {
-    let id: UUID
     @ObservedObject var session: Session
+    let id: UUID
     @State private var colour = Color(.systemBackground)
     @State private var progress = AnimatablePair(Double(), Double())
     

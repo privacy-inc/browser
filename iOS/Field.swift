@@ -20,6 +20,7 @@ final class Field: UIView, UIKeyInput, UITextFieldDelegate {
     
     weak var session: Session!
     private weak var field: UITextField!
+    private weak var doneButton: UIButton!
     private var editable = true
     private let input = UIInputView(frame: .init(x: 0, y: 0, width: 0, height: 52), inputViewStyle: .keyboard)
     
@@ -56,18 +57,17 @@ final class Field: UIView, UIKeyInput, UITextFieldDelegate {
         })
         cancel.translatesAutoresizingMaskIntoConstraints = false
         cancel.setImage(.init(systemName: "xmark")?
-            .applyingSymbolConfiguration(.init(pointSize: 14, weight: .bold))?
+            .applyingSymbolConfiguration(.init(pointSize: 12, weight: .bold))?
             .applyingSymbolConfiguration(.init(hierarchicalColor: .secondaryLabel)), for: .normal)
         input.addSubview(cancel)
         
-        let done = UIButton(primaryAction: .init { [weak self] _ in
+        let doneButton = UIButton(primaryAction: .init { [weak self] _ in
             self?.done()
         })
-        done.translatesAutoresizingMaskIntoConstraints = false
-        done.setImage(.init(systemName: "arrow.forward")?
-            .applyingSymbolConfiguration(.init(pointSize: 14, weight: .bold))?
-            .applyingSymbolConfiguration(.init(hierarchicalColor: .secondaryLabel)), for: .normal)
-        input.addSubview(done)
+        doneButton.translatesAutoresizingMaskIntoConstraints = false
+        doneButton.isEnabled = false
+        input.addSubview(doneButton)
+        self.doneButton = doneButton
         
         background.leftAnchor.constraint(equalTo: input.safeAreaLayoutGuide.leftAnchor, constant: 55).isActive = true
         background.rightAnchor.constraint(equalTo: input.safeAreaLayoutGuide.rightAnchor, constant: -55).isActive = true
@@ -83,10 +83,12 @@ final class Field: UIView, UIKeyInput, UITextFieldDelegate {
         cancel.widthAnchor.constraint(equalToConstant: 50).isActive = true
         cancel.heightAnchor.constraint(equalTo: cancel.widthAnchor).isActive = true
         
-        done.centerYAnchor.constraint(equalTo: input.centerYAnchor, constant: 3).isActive = true
-        done.leftAnchor.constraint(equalTo: background.rightAnchor).isActive = true
-        done.widthAnchor.constraint(equalToConstant: 50).isActive = true
-        done.heightAnchor.constraint(equalTo: done.widthAnchor).isActive = true
+        doneButton.centerYAnchor.constraint(equalTo: input.centerYAnchor, constant: 3).isActive = true
+        doneButton.leftAnchor.constraint(equalTo: background.rightAnchor).isActive = true
+        doneButton.widthAnchor.constraint(equalToConstant: 50).isActive = true
+        doneButton.heightAnchor.constraint(equalTo: doneButton.widthAnchor).isActive = true
+        
+        update()
     }
     
     @discardableResult override func becomeFirstResponder() -> Bool {
@@ -95,6 +97,10 @@ final class Field: UIView, UIKeyInput, UITextFieldDelegate {
             self?.field.becomeFirstResponder()
         }
         return super.becomeFirstResponder()
+    }
+    
+    func textFieldDidChangeSelection(_: UITextField) {
+        update()
     }
     
     func textFieldShouldReturn(_: UITextField) -> Bool {
@@ -119,6 +125,25 @@ final class Field: UIView, UIKeyInput, UITextFieldDelegate {
     
     func deleteBackward() {
         
+    }
+    
+    private func update() {
+        if field.text!.isEmpty {
+            doneButton.isEnabled = false
+            doneButton.setImage(.init(systemName: "chevron.right.circle.fill",
+                                      withConfiguration: UIImage.SymbolConfiguration(
+                                        pointSize: 20,
+                                        weight: .bold)
+                                        .applying(UIImage.SymbolConfiguration(hierarchicalColor: .tertiaryLabel))),
+                                for: .normal)
+        } else {
+            doneButton.isEnabled = true
+            doneButton.setImage(.init(systemName: "chevron.right.circle.fill",
+                                      withConfiguration: UIImage.SymbolConfiguration(
+                                        pointSize: 20,
+                                        weight: .bold)
+                                        .applying(UIImage.SymbolConfiguration(hierarchicalColor: .init(named: "AccentColor")!))), for: .normal)
+        }
     }
     
     private func done() {

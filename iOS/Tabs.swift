@@ -26,6 +26,11 @@ struct Tabs: View {
         }
         .listStyle(.plain)
         .navigationTitle("Tabs")
+        .onChange(of: session.content) { _ in
+            if session.columns == .all {
+                session.columns = .doubleColumn
+            }
+        }
         .toolbar {
             ToolbarItemGroup(placement: .primaryAction) {
                 EditButton()

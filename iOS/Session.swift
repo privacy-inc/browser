@@ -3,8 +3,8 @@ import Archivable
 import Engine
 
 @MainActor final class Session: ObservableObject {
-    @Published var sidebar: Category? = .tabs
-    @Published var content: AnyHashable?
+    @Published var sidebar: Category? = .bookmarks
+    @Published var content: Content?
     @Published var tabs: [Tab]
     @Published var typing = false
     @Published var settings = Settings()
@@ -16,7 +16,7 @@ import Engine
     init() {
         let tab = Tab()
         tabs = [tab]
-        content = tab.id
+//        content = .tab(tab.id)
         field.session = self
     }
     
@@ -32,14 +32,14 @@ import Engine
         let tab = Tab()
         tabs.append(tab)
         sidebar = .tabs
-        content = tab.id
+        content = .tab(tab.id)
         columns = .detailOnly
         field.becomeFirstResponder()
     }
     
     func search(string: String) {
         guard
-            let id = content as? UUID,
+            case let .tab(id) = content,
             let index = tabs.firstIndex(where: { $0.id == id }),
             let url = settings.search(string)
         else { return }
@@ -58,7 +58,7 @@ import Engine
         tab.webview = .init(cloud: cloud, favicon: favicon)
         tab.webview!.load(.init(url: .init(string: url)!))
         tabs.append(tab)
-        content = tab.id
+        content = .tab(tab.id)
     }
     
     func close(tab id: UUID) {

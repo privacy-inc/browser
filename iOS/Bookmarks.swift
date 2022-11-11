@@ -6,7 +6,7 @@ struct Bookmarks: View {
     @State private var items = [Bookmark]()
     
     var body: some View {
-        List {
+        List(selection: $session.content) {
             if items.isEmpty {
                 VStack(spacing: 10) {
                     Image(systemName: "bookmark")
@@ -30,22 +30,19 @@ struct Bookmarks: View {
         }
         .listStyle(.plain)
         .navigationTitle("Bookmarks")
-//        .toolbar {
-//            ToolbarItem(placement: .primaryAction) {
-//                Button {
-//                    alert = true
-//                } label: {
-//                    Image(systemName: "trash.circle.fill")
-//                        .foregroundStyle(session.tabs.isEmpty ? .tertiary : .secondary)
-//                        .foregroundColor(session.tabs.isEmpty ? .secondary : .pink)
-//                        .symbolRenderingMode(.hierarchical)
-//                        .font(.system(size: 24, weight: .regular))
-//                        .frame(width: 40, height: 36)
-//                        .contentShape(Rectangle())
-//                }
-//                .disabled(session.tabs.isEmpty)
-//            }
-//        }
+        .toolbar {
+            ToolbarItem(placement: .primaryAction) {
+                Button {
+                    session.content = .bookmark(nil)
+                } label: {
+                    Image(systemName: "plus.square")
+                        .symbolRenderingMode(.hierarchical)
+                        .font(.system(size: 24, weight: .regular))
+                        .frame(width: 40, height: 36)
+                        .contentShape(Rectangle())
+                }
+            }
+        }
         .onReceive(session.cloud) {
             items = $0.bookmarks
         }
