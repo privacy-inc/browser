@@ -33,6 +33,8 @@ struct Navigation: View {
             Bookmarks(session: session)
         case .history:
             History(session: session)
+        case .readingList:
+            Reads(session: session)
         default:
             EmptyView()
         }
