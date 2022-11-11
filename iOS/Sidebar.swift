@@ -6,48 +6,40 @@ struct Sidebar: View {
     var body: some View {
         List(selection: $session.sidebar) {
             Section("Browser") {
-                NavigationLink(value: Category.tabs) {
-                    Label("Tabs", systemImage: "square.on.square.dashed")
-                }
-                NavigationLink(value: Category.bookmarks) {
-                    Label("Bookmarks", systemImage: "bookmark")
-                }
-                NavigationLink(value: Category.history) {
-                    Label("History", systemImage: "clock")
-                }
-                NavigationLink(value: Category.readingList) {
-                    Label("Reading list", systemImage: "eyeglasses")
-                }
+                ForEach([Category.tabs,
+                         .bookmarks,
+                         .history,
+                         .readingList], id: \.self) {
+                             link(for: $0)
+                         }
             }
             .headerProminence(.increased)
             
             Section("Protection") {
-                NavigationLink(value: Category.forget) {
-                    Label("Forget", systemImage: "flame")
-                }
-                NavigationLink(value: Category.report) {
-                    Label("Privacy report", systemImage: "checkerboard.shield")
-                }
+                ForEach([Category.forget,
+                         .report], id: \.self) {
+                             link(for: $0)
+                         }
             }
             .headerProminence(.increased)
             
             Section("App") {
-                NavigationLink(value: Category.settings) {
-                    Label("Settings", systemImage: "gear")
-                }
-                NavigationLink(value: Category.sponsor) {
-                    Label("Sponsor", systemImage: "heart")
-                }
-                NavigationLink(value: Category.policy) {
-                    Label("Privacy policy", systemImage: "hand.raised")
-                }
-                NavigationLink(value: Category.about) {
-                    Label("About", systemImage: "star")
-                }
+                ForEach([Category.settings,
+                         .sponsor,
+                         .policy,
+                         .about], id: \.self) {
+                             link(for: $0)
+                         }
             }
             .headerProminence(.increased)
         }
         .listStyle(.sidebar)
         .navigationTitle("Menu")
+    }
+    
+    private func link(for category: Category) -> some View {
+        NavigationLink(value: category) {
+            Label(category.title, systemImage: category.image)
+        }
     }
 }
