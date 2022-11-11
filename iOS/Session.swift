@@ -31,7 +31,9 @@ import Engine
     func newTab() {
         let tab = Tab()
         tabs.append(tab)
+        sidebar = .tabs
         content = tab.id
+        columns = .detailOnly
         field.becomeFirstResponder()
     }
     

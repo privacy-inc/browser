@@ -28,7 +28,7 @@ final class Webview: AbstractWebview {
 //        self.session = session
         let configuration = WKWebViewConfiguration()
         configuration.dataDetectorTypes = [.link]
-        configuration.defaultWebpagePreferences.preferredContentMode = .mobile
+        configuration.defaultWebpagePreferences.preferredContentMode = .recommended
         configuration.allowsInlineMediaPlayback = true
         configuration.ignoresViewportScaleLimits = true
         
