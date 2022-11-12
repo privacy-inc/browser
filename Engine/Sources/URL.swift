@@ -23,7 +23,7 @@ extension URL {
                                 for filter in [Subdomain.self,
                                                Allowed.self,
                                                Blocked.self,
-                                               Toplevel.self] as [some Filter.Type] {
+                                               Toplevel.self] as [any Filter.Type] {
                                     guard let response = filter.response(for: domain, on: self) else { continue }
                                     return response
                                 }
