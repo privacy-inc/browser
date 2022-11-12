@@ -33,6 +33,8 @@ extension Bookmarks {
                 }
                 Section {
                     Button {
+                        titleFocus = false
+                        urlFocus = false
                         
                     } label: {
                         Text("Save")
@@ -43,6 +45,8 @@ extension Bookmarks {
                     .buttonStyle(.borderedProminent)
                     
                     Button("Cancel") {
+                        titleFocus = false
+                        urlFocus = false
                         session.content = nil
                     }
                     .buttonStyle(.plain)
