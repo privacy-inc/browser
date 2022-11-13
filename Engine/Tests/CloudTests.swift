@@ -30,6 +30,16 @@ final class CloudTests: XCTestCase {
         XCTAssertEqual(history.count, 2)
     }
     
+    func testBookmarks() async {
+        var items = await cloud.actor.model.bookmarks
+        XCTAssertTrue(items.isEmpty)
+        
+        await cloud.add(bookmark: .init("www.hello.com", "hello"))
+        items = await cloud.actor.model.bookmarks
+        XCTAssertEqual("www.hello.com", items.first?.url)
+        XCTAssertEqual("hello", items.first?.title)
+    }
+    
     func testPolicy() async {
         let response = await cloud.policy(request: .init(string: "https://google.com/hello")!, from: .init(string: "https://google.com")!)
         XCTAssertEqual(.allow, response)

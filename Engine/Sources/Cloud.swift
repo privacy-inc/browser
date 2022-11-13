@@ -26,6 +26,12 @@ extension Cloud where Output == Archive {
         await update(model: model)
     }
     
+    public func add(bookmark: Bookmark) async {
+        var model = await model
+        model.bookmarks.append(bookmark)
+        await update(model: model)
+    }
+    
     public func policy(request: URL, from url: URL) async -> Policy {
         var model = await model
         let response = request.policy

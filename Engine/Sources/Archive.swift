@@ -43,7 +43,7 @@ public struct Archive: Arch {
             bookmarks = await Archive_v1(version: version, timestamp: timestamp, data: data)
                 .bookmarks
                 .map {
-                    .init(url: $0.id, title: $0.title)
+                    .init($0.id, $0.title)
                 }
             log = []
             history = []
