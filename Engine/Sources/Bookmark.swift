@@ -18,8 +18,17 @@ public struct Bookmark: Storable, Hashable, Website, Sendable {
     }
     
     public init?(url: String, title: String) {
-        guard let url = URL(string: url)?.absoluteString else { return nil }
-        self.init(url, title)
+        guard var value = URL(string: url) else { return nil }
+        
+        if value.scheme == nil {
+            if let complete = URL(string: "http://\(url)") {
+                value = complete
+            } else {
+                return nil
+            }
+        }
+        
+        self.init(value.absoluteString, title)
     }
     
     init(_ url: String, _ title: String) {
