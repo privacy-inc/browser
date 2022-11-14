@@ -9,7 +9,7 @@ struct History: View {
         List {
             if days.isEmpty {
                 VStack(spacing: 10) {
-                    Image(systemName: "clock")
+                    Image(systemName: Category.history.image)
                         .font(.system(size: 60, weight: .medium))
                         .padding(.top, 60)
                     Text("No record")

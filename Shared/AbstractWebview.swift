@@ -194,20 +194,20 @@ class AbstractWebview: WKWebView, WKNavigationDelegate, WKUIDelegate, WKDownload
         return (.cancel, preferences)
     }
     
-//    final func webView(_: WKWebView, decidePolicyFor: WKNavigationAction) async -> WKNavigationActionPolicy {
-//        decidePolicyFor.shouldPerformDownload ? .download : .allow
-//    }
+    final func webView(_: WKWebView, decidePolicyFor: WKNavigationAction) async -> WKNavigationActionPolicy {
+        decidePolicyFor.shouldPerformDownload ? .download : .allow
+    }
     
-//    final func webView(_: WKWebView, decidePolicyFor: WKNavigationResponse) async -> WKNavigationResponsePolicy {
-//        guard
-//            let response = decidePolicyFor.response as? HTTPURLResponse,
-//            let contentType = response.value(forHTTPHeaderField: "Content-Type"),
-//            contentType.range(of: "attachment", options: .caseInsensitive) != nil
-//        else {
-//            return decidePolicyFor.canShowMIMEType ? .allow : .download
-//        }
-//        return .download
-//    }
+    final func webView(_: WKWebView, decidePolicyFor: WKNavigationResponse) async -> WKNavigationResponsePolicy {
+        guard
+            let response = decidePolicyFor.response as? HTTPURLResponse,
+            let contentType = response.value(forHTTPHeaderField: "Content-Type"),
+            contentType.range(of: "attachment", options: .caseInsensitive) != nil
+        else {
+            return decidePolicyFor.canShowMIMEType ? .allow : .download
+        }
+        return .download
+    }
     
 //    final func download(_: WKDownload, decidedPolicyForHTTPRedirection: HTTPURLResponse, newRequest: URLRequest) async -> WKDownload.RedirectPolicy {
 //        switch await cloud.policy(request: newRequest.url!, from: decidedPolicyForHTTPRedirection.url ?? url!) {

@@ -9,7 +9,7 @@ struct Detail: View {
     var body: some View {
         ZStack {
             if let webview = session[tab: id] {
-                Color.white
+//                Color.white
                 VStack(spacing: 0) {
                     ZStack {
                         Rectangle()

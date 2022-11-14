@@ -6,9 +6,9 @@ extension UIApplication {
 //        open(URL(string: Self.openSettingsURLString)!)
 //    }
 //
-//    func hide() {
-//        sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, for: nil)
-//    }
+    func hide() {
+        sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, for: nil)
+    }
 //
 //    @MainActor func review() {
 //        scene

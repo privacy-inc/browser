@@ -9,7 +9,7 @@ struct Reads: View {
         List {
             if items.isEmpty {
                 VStack(spacing: 10) {
-                    Image(systemName: "eyeglasses")
+                    Image(systemName: Category.readingList.image)
                         .font(.system(size: 60, weight: .medium))
                         .padding(.top, 60)
                     Text("Nothing to read")

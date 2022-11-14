@@ -7,22 +7,35 @@ struct Tabs: View {
     
     var body: some View {
         List(selection: $session.content) {
-            ForEach(session.tabs) { tab in
-                Item(session: session, id: tab.id)
-                    .swipeActions {
-                        Button {
-                            withAnimation {
-                                session.close(tab: tab.id)
+            if session.tabs.isEmpty {
+                VStack(spacing: 10) {
+                    Image(systemName: Category.tabs.image)
+                        .font(.system(size: 60, weight: .medium))
+                        .padding(.top, 60)
+                    Text("No tabs open")
+                }
+                .foregroundStyle(.secondary)
+                .frame(maxWidth: .greatestFiniteMagnitude)
+                .listRowSeparator(.hidden)
+                .listSectionSeparator(.hidden)
+            } else {
+                ForEach(session.tabs) { tab in
+                    Item(session: session, id: tab.id)
+                        .swipeActions {
+                            Button {
+                                withAnimation {
+                                    session.close(tab: tab.id)
+                                }
+                            } label: {
+                                Label("Close", systemImage: "xmark.circle.fill")
+                                    .symbolRenderingMode(.hierarchical)
                             }
-                        } label: {
-                            Label("Close", systemImage: "xmark.circle.fill")
-                                .symbolRenderingMode(.hierarchical)
+                            .tint(.pink)
                         }
-                        .tint(.pink)
-                    }
-            }
-            .onMove { index, destination in
-                session.tabs.move(fromOffsets: index, toOffset: destination)
+                }
+                .onMove { index, destination in
+                    session.tabs.move(fromOffsets: index, toOffset: destination)
+                }
             }
         }
         .listStyle(.plain)

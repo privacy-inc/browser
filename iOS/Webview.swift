@@ -19,85 +19,32 @@ final class Webview: AbstractWebview {
 //    }
 //
     required init?(coder: NSCoder) { nil }
-//    init(session: Session,
-//         settings: Specs.Settings.Configuration,
-//         dark: Bool) {
-    
     init(cloud: Cloud<Archive>, favicon: Favicon) {
-        
-//        self.session = session
         let configuration = WKWebViewConfiguration()
         configuration.dataDetectorTypes = [.link]
         configuration.defaultWebpagePreferences.preferredContentMode = .recommended
         configuration.allowsInlineMediaPlayback = true
         configuration.ignoresViewportScaleLimits = true
         
-//        super.init(configuration: configuration, settings: settings, dark: dark)
         super.init(cloud: cloud, favicon: favicon, configuration: configuration)
-        isOpaque = false
+        isOpaque = true
         scrollView.keyboardDismissMode = .none
         scrollView.contentInsetAdjustmentBehavior = .never
         scrollView.clipsToBounds = true
-//        scrollView.indicatorStyle = dark && settings.dark ? .white : .default
-        
-//        let background = UIColor
-//            .secondarySystemBackground
-//            .resolvedColor(with: .init(userInterfaceStyle: dark ? .dark : .light))
-        
-//        underPageBackgroundColor = background
-//
-//        if !dark {
-//            publisher(for: \.themeColor)
-//                .sink { [weak self] theme in
-//                    guard
-//                        dark,
-//                        settings.dark,
-//                        let color = theme
-//                    else {
-//                        self?.underPageBackgroundColor = background
-//                        return
-//                    }
-//                    var alpha = CGFloat()
-//                    color.getRed(nil, green: nil, blue: nil, alpha: &alpha)
-//                    self?.underPageBackgroundColor = alpha == 0 ? background : color
-//                }
-//                .store(in: &subs)
-//        }
     }
     
     deinit {
-//        scrollView.delegate = nil
+        Task {
+            await MainActor
+                .run {
+                    scrollView.delegate = nil
+                }
+        }
     }
-    
-//    func thumbnail() async {
-//        let configuration = WKSnapshotConfiguration()
-//        configuration.afterScreenUpdates = false
-//        session.items[session.index(self)].thumbnail = (try? await takeSnapshot(configuration: configuration)) ?? .init()
-//    }
     
 //    @MainActor func resizeFont(size: CGFloat) async {
 //        resignFirstResponder()
 //        _ = try? await evaluateJavaScript(Script.text(size: size))
-//    }
-    
-//    @MainActor func find(_ string: String, backwards: Bool) async {
-//        scrollView.zoomScale = 1
-//        becomeFirstResponder()
-//        select(nil)
-//        let config = WKFindConfiguration()
-//        config.backwards = backwards
-//
-//        guard
-//            let result = try? await find(string, configuration: config),
-//            result.matchFound,
-//            let evaluated = try? await evaluateJavaScript(Script.find.script),
-//            let string = evaluated as? String
-//        else { return }
-//        var rect = NSCoder.cgRect(for: string)
-//        rect.origin.x += scrollView.contentOffset.x
-//        rect.origin.y += scrollView.contentOffset.y - 30
-//        rect.size.height += 60
-//        scrollView.scrollRectToVisible(rect, animated: true)
 //    }
     
 //    override func webView(_ webView: WKWebView, navigationAction: WKNavigationAction, didBecome: WKDownload) {
@@ -147,15 +94,9 @@ final class Webview: AbstractWebview {
 //        session.objectWillChange.send()
 //    }
     
-//    override func webView(_ webView: WKWebView, didFinish: WKNavigation!) {
-//        super.webView(webView, didFinish: didFinish)
-//        isOpaque = true
-//    }
-    
-//    func webView(_: WKWebView, didStartProvisionalNavigation: WKNavigation!) {
-//        isOpaque = false
-//        UIApplication.shared.hide()
-//    }
+    func webView(_: WKWebView, didStartProvisionalNavigation: WKNavigation!) {
+        UIApplication.shared.hide()
+    }
     
 //    func webView(_: WKWebView, createWebViewWith: WKWebViewConfiguration, for action: WKNavigationAction, windowFeatures: WKWindowFeatures) -> WKWebView? {
 //        if action.sourceFrame.isMainFrame,
@@ -214,5 +155,4 @@ final class Webview: AbstractWebview {
 //            load(url: data.temporal("image.png"))
 //        }
 //    }
-    
 }

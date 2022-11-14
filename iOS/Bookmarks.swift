@@ -9,7 +9,7 @@ struct Bookmarks: View {
         List(selection: $session.content) {
             if items.isEmpty {
                 VStack(spacing: 10) {
-                    Image(systemName: "bookmark")
+                    Image(systemName: Category.bookmarks.image)
                         .font(.system(size: 60, weight: .medium))
                         .padding(.top, 60)
                     Text("No bookmarks")
@@ -41,7 +41,7 @@ struct Bookmarks: View {
                 } label: {
                     Image(systemName: "plus.square")
                         .symbolRenderingMode(.hierarchical)
-                        .font(.system(size: 24, weight: .regular))
+                        .font(.system(size: 20, weight: .regular))
                         .frame(width: 40, height: 36)
                         .contentShape(Rectangle())
                 }
