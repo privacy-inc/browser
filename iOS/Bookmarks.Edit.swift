@@ -7,8 +7,11 @@ extension Bookmarks {
         let bookmark: Bookmark?
         @State private var title = ""
         @State private var url = ""
+        @State private var fail = false
+        @State private var saving = false
         @FocusState private var titleFocus: Bool
         @FocusState private var urlFocus: Bool
+        @Environment(\.dismiss) private var dismiss
         
         var body: some View {
             Form {
@@ -31,11 +34,37 @@ extension Bookmarks {
                             titleFocus = true
                         }
                 }
+                
+                if fail {
+                    Section {
+                        Label("Invalid URL", systemImage: "exclamationmark.triangle.fill")
+                            .font(.callout.bold())
+                            .foregroundColor(.white)
+                    }
+                    .listRowBackground(Color.pink)
+                }
+                
                 Section {
                     Button {
+                        saving = true
                         titleFocus = false
                         urlFocus = false
+                        guard
+                            let bookmark = Bookmark(url: url, title: title)
+                        else {
+                            fail = true
+                            saving = false
+                            return
+                        }
+                        Task {
+                            await session.cloud.add(bookmark: bookmark)
+                        }
+                        dismiss()
+                        session.content = nil
                         
+                        if UIDevice.current.userInterfaceIdiom == .pad {
+                            session.columns = .all
+                        }
                     } label: {
                         Text("Save")
                             .bold()
@@ -43,6 +72,7 @@ extension Bookmarks {
                             .frame(maxWidth: .greatestFiniteMagnitude)
                     }
                     .buttonStyle(.borderedProminent)
+                    .disabled(saving)
                     
                     Button("Cancel") {
                         titleFocus = false

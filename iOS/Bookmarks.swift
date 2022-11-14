@@ -34,6 +34,10 @@ struct Bookmarks: View {
             ToolbarItem(placement: .primaryAction) {
                 Button {
                     session.content = .bookmark(nil)
+                    
+                    if UIDevice.current.userInterfaceIdiom == .pad {
+                        session.columns = .detailOnly
+                    }
                 } label: {
                     Image(systemName: "plus.square")
                         .symbolRenderingMode(.hierarchical)

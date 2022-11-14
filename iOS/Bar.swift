@@ -5,6 +5,7 @@ struct Bar: View {
     @State private var back = false
     @State private var forward = false
     @State private var progress = AnimatablePair(Double(), Double())
+    @Environment(\.dismiss) private var dismiss
     
     var body: some View {
         HStack(spacing: 0) {
@@ -20,7 +21,7 @@ struct Bar: View {
                         session.columns = .doubleColumn
                     }
                 } else {
-                    session.content = nil
+                    dismiss()
                 }
             }
             .padding(.leading, 20)
@@ -42,9 +43,9 @@ struct Bar: View {
                 ZStack {
                     RoundedRectangle(cornerRadius: 12, style: .continuous)
                         .fill(Color.secondary)
-                        .frame(width: 120, height: 36)
                         .opacity(session.typing ? 0 : 1)
                 }
+                .frame(width: 100, height: 36)
             }
             
             Spacer()
@@ -76,8 +77,8 @@ struct Bar: View {
                 .foregroundStyle(disabled ? .tertiary : .primary)
                 .foregroundColor(.primary)
                 .font(.system(size: 14, weight: .semibold))
-                .frame(width: 40, height: 40)
                 .contentShape(Rectangle())
+                .frame(width: 40, height: 40)
         }
         .disabled(disabled)
     }

@@ -3,6 +3,7 @@ import SwiftUI
 struct Tabs: View {
     @ObservedObject var session: Session
     @State private var alert = false
+    @Environment(\.verticalSizeClass) var horizontal
     
     var body: some View {
         List(selection: $session.content) {
@@ -27,8 +28,13 @@ struct Tabs: View {
         .listStyle(.plain)
         .navigationTitle("Tabs")
         .onChange(of: session.content) { _ in
-            if session.columns == .all {
-                session.columns = .doubleColumn
+            if UIDevice.current.userInterfaceIdiom == .pad {
+                switch UIApplication.shared.scene?.interfaceOrientation {
+                case .landscapeLeft, .landscapeRight:
+                    session.columns = .doubleColumn
+                default:
+                    session.columns = .detailOnly
+                }
             }
         }
         .toolbar {

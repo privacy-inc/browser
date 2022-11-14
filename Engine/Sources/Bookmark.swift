@@ -2,7 +2,7 @@ import Foundation
 import Archivable
 import Domains
 
-public struct Bookmark: Storable, Hashable, Website {
+public struct Bookmark: Storable, Hashable, Website, Sendable {
     public let url: String
     public let title: String
     
@@ -19,7 +19,7 @@ public struct Bookmark: Storable, Hashable, Website {
     
     public init?(url: String, title: String) {
         guard let url = URL(string: url)?.absoluteString else { return nil }
-        self.init(url: url, title: title)
+        self.init(url, title)
     }
     
     init(_ url: String, _ title: String) {

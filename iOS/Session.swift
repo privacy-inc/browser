@@ -3,7 +3,7 @@ import Archivable
 import Engine
 
 @MainActor final class Session: ObservableObject {
-    @Published var sidebar: Category? = .tabs
+    @Published var sidebar: Category? = .bookmarks
     @Published var content: Content?
     @Published var tabs: [Tab]
     @Published var typing = false
@@ -16,7 +16,7 @@ import Engine
     init() {
         let tab = Tab()
         tabs = [tab]
-        content = .tab(tab.id)
+//        content = .tab(tab.id)
         field.session = self
     }
     
@@ -59,6 +59,10 @@ import Engine
         tab.webview!.load(.init(url: .init(string: url)!))
         tabs.append(tab)
         content = .tab(tab.id)
+        
+        if UIDevice.current.userInterfaceIdiom == .pad {
+            columns = .detailOnly
+        }
     }
     
     func close(tab id: UUID) {

@@ -34,6 +34,7 @@
 		CECB8D8129114C40002600F1 /* Tab.swift in Sources */ = {isa = PBXBuildFile; fileRef = CECB8D8029114C40002600F1 /* Tab.swift */; };
 		CECB8D8429116030002600F1 /* AbstractWebview.swift in Sources */ = {isa = PBXBuildFile; fileRef = CECB8D8329116030002600F1 /* AbstractWebview.swift */; };
 		CECB8D862911620F002600F1 /* Webview.swift in Sources */ = {isa = PBXBuildFile; fileRef = CECB8D852911620F002600F1 /* Webview.swift */; };
+		CEEB873129225255004968FC /* UIApplication.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEEB873029225255004968FC /* UIApplication.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -67,6 +68,7 @@
 		CECB8D8029114C40002600F1 /* Tab.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Tab.swift; sourceTree = "<group>"; };
 		CECB8D8329116030002600F1 /* AbstractWebview.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AbstractWebview.swift; sourceTree = "<group>"; };
 		CECB8D852911620F002600F1 /* Webview.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Webview.swift; sourceTree = "<group>"; };
+		CEEB873029225255004968FC /* UIApplication.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIApplication.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -116,6 +118,7 @@
 				CEB94306291E51A900DF793C /* Tabber.swift */,
 				CE36C0932915349B0038B79F /* Tabs.Item.swift */,
 				CE36C091291534690038B79F /* Tabs.swift */,
+				CEEB873029225255004968FC /* UIApplication.swift */,
 				CEBCB1F72919232200A35A0C /* Website.swift */,
 				CECB8D852911620F002600F1 /* Webview.swift */,
 				CEAA603929112F5E00431596 /* Assets.xcassets */,
@@ -221,6 +224,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				CEEB873129225255004968FC /* UIApplication.swift in Sources */,
 				CEACBD242917F49B00A7104A /* History.Day.swift in Sources */,
 				CECB8D862911620F002600F1 /* Webview.swift in Sources */,
 				CE1324432912D0FE00418B13 /* Bar.swift in Sources */,
