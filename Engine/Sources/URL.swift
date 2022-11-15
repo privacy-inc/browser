@@ -15,7 +15,7 @@ extension URL {
                     .map(\.policy)
                     .map {
                         guard $0 == .allow else { return $0 }
-                        return host(percentEncoded: false)
+                        return host
                             .map(Tld.domain(host:))
                             .map { domain in
                                 guard !domain.suffix.isEmpty else { return .ignore }
@@ -71,7 +71,7 @@ extension URL {
     }
     
     var icon: String? {
-        guard let host = host(percentEncoded: false) else { return nil }
+        guard let host = self.host else { return nil }
         
         var string = Tld.domain(host: host).minimal
         if let component = pathComponents.dropFirst().first {
