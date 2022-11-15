@@ -26,6 +26,16 @@ extension Cloud where Output == Archive {
         await update(model: model)
     }
     
+    public func delete(history url: String) async {
+        var model = await model
+        model
+            .history
+            .remove {
+                $0.url == url
+            }
+        await update(model: model)
+    }
+    
     public func add(bookmark: Bookmark) async {
         var model = await model
         guard !model.bookmarks.contains(where: { $0.url == bookmark.url }) else { return }

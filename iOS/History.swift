@@ -29,9 +29,9 @@ struct History: View {
                             }
                             .swipeActions {
                                 Button {
-//                                    withAnimation {
-//                                        session.close(tab: tab.id)
-//                                    }
+                                    Task {
+                                        await session.cloud.delete(history: item.url)
+                                    }
                                 } label: {
                                     Label("Delete", systemImage: "trash.circle.fill")
                                         .symbolRenderingMode(.hierarchical)

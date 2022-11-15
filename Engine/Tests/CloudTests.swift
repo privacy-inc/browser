@@ -28,6 +28,11 @@ final class CloudTests: XCTestCase {
         
         history = await cloud.actor.model.history
         XCTAssertEqual(history.count, 2)
+        
+        await cloud.delete(history: "https://www.wikipedia.org")
+        
+        history = await cloud.actor.model.history
+        XCTAssertEqual(history.count, 1)
     }
     
     func testBookmarks() async {
