@@ -15,7 +15,7 @@ extension URL {
                     .map(\.policy)
                     .map {
                         guard $0 == .allow else { return $0 }
-                        return host
+                        return host(percentEncoded: false)
                             .map(Tld.domain(host:))
                             .map { domain in
                                 guard !domain.suffix.isEmpty else { return .ignore }
@@ -71,15 +71,18 @@ extension URL {
     }
     
     var icon: String? {
-        guard var components = URLComponents(url: self, resolvingAgainstBaseURL: false) else { return nil }
-        components.scheme = nil
-        components.query = nil
-        components.path = components.path.components(separatedBy: "/").prefix(2).joined(separator: "/")
-        components.fragment = nil
+        guard let host = host(percentEncoded: false) else { return nil }
+        
+        var string = Tld.domain(host: host).minimal
+        if let component = pathComponents.dropFirst().first {
+            string = "\(string)/\(component)"
+        }
+        
         guard
-            let string = components.string?.replacingOccurrences(of: "//", with: ""),
-            let encoded = string.addingPercentEncoding(withAllowedCharacters: .urlHostAllowed)
+            let encoded = string
+                .addingPercentEncoding(withAllowedCharacters: .urlHostAllowed)
         else { return nil }
+        
         return encoded
     }
     

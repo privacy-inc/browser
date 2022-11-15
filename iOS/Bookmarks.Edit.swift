@@ -5,13 +5,20 @@ extension Bookmarks {
     struct Edit: View {
         @ObservedObject var session: Session
         let bookmark: Bookmark?
-        @State private var title = ""
-        @State private var url = ""
+        @State private var title: String
+        @State private var url: String
         @State private var fail = false
         @State private var saving = false
         @FocusState private var titleFocus: Bool
         @FocusState private var urlFocus: Bool
         @Environment(\.dismiss) private var dismiss
+        
+        init(session: Session, bookmark: Bookmark?) {
+            self.session = session
+            self.bookmark = bookmark
+            _title = .init(initialValue: bookmark?.title ?? "")
+            _url = .init(initialValue: bookmark?.url ?? "")
+        }
         
         var body: some View {
             Form {

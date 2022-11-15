@@ -44,8 +44,8 @@ struct Navigation: View {
         switch session.content {
         case let .tab(id):
             Detail(session: session, id: id)
-        case .bookmark:
-            Bookmarks.Edit(session: session, bookmark: nil)
+        case let .bookmark(bookmark):
+            Bookmarks.Edit(session: session, bookmark: bookmark)
         default:
             EmptyView()
         }

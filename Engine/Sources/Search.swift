@@ -56,7 +56,7 @@ private extension String {
             ?? addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed.union(.urlFragmentAllowed))
             .flatMap(URL.init(string:)))
                 .flatMap {
-                    $0.scheme != nil && ($0.host != nil || $0.query != nil)
+                    $0.scheme != nil && ($0.host(percentEncoded: false) != nil || $0.query != nil)
                         ? ($0.scheme?.contains("http") == true ? $0.absoluteString.urlCased : $0.absoluteString)
                         : nil
                 }

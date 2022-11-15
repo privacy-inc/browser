@@ -25,13 +25,44 @@ struct Bookmarks: View {
                     } label: {
                         Website(session: session, url: item.url, title: item.title)
                     }
+                    .swipeActions {
+                        Button {
+                            session.content = .bookmark(item)
+                            
+                            if UIDevice.current.userInterfaceIdiom == .pad {
+                                session.columns = .detailOnly
+                            }
+                        } label: {
+                            Label("Edit", systemImage: "pencil.circle.fill")
+                                .symbolRenderingMode(.hierarchical)
+                        }
+                        .tint(.blue)
+                        
+                        Button {
+                            Task {
+                                await session.cloud.delete(bookmark: item.url)
+                            }
+                        } label: {
+                            Label("Delete", systemImage: "trash.circle.fill")
+                                .symbolRenderingMode(.hierarchical)
+                        }
+                        .tint(.pink)
+                    }
+                }
+                .onMove { index, destination in
+                    Task {
+                        await session.cloud.move(bookmark: index, destination: destination)
+                    }
                 }
             }
         }
         .listStyle(.plain)
         .navigationTitle("Bookmarks")
         .toolbar {
-            ToolbarItem(placement: .primaryAction) {
+            ToolbarItemGroup(placement: .primaryAction) {
+                EditButton()
+                    .disabled(items.count < 2)
+                
                 Button {
                     session.content = .bookmark(nil)
                     

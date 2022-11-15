@@ -38,6 +38,20 @@ final class CloudTests: XCTestCase {
         items = await cloud.actor.model.bookmarks
         XCTAssertEqual("www.hello.com", items.first?.url)
         XCTAssertEqual("hello", items.first?.title)
+        
+        await cloud.add(bookmark: .init("www.hello.com", "hello duplicated"))
+        items = await cloud.actor.model.bookmarks
+        XCTAssertEqual(items.count, 1)
+        
+        await cloud.delete(bookmark: "www.hello.com")
+        items = await cloud.actor.model.bookmarks
+        XCTAssertTrue(items.isEmpty)
+        
+        await cloud.add(bookmark: .init("www.hello.com", "hello again"))
+        await cloud.update(bookmark: .init("www.hello2.com", "hello again 2"), for: "www.hello.com")
+        items = await cloud.actor.model.bookmarks
+        XCTAssertEqual("www.hello2.com", items.first?.url)
+        XCTAssertEqual(items.count, 1)
     }
     
     func testPolicy() async {
