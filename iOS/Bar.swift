@@ -24,7 +24,7 @@ struct Bar: View {
                     dismiss()
                 }
             }
-            .padding(.leading, 20)
+            .padding(.leading, 10)
            
             if let webview {
                 button(icon: "chevron.backward", disabled: !back) {
@@ -45,7 +45,8 @@ struct Bar: View {
                         .fill(Color.secondary)
                         .opacity(session.typing ? 0 : 1)
                 }
-                .frame(width: 100, height: 36)
+                .frame(height: 36)
+                .frame(maxWidth: 160)
             }
             
             Spacer()
@@ -62,8 +63,10 @@ struct Bar: View {
             button(icon: "ellipsis") {
                 
             }
-            .padding(.trailing, 20)
+            .padding(.trailing, 10)
         }
+        .padding(.top, 12)
+        .padding(.bottom, 4)
     }
     
     private var webview: Webview? {
@@ -76,9 +79,9 @@ struct Bar: View {
             Image(systemName: icon)
                 .foregroundStyle(disabled ? .tertiary : .primary)
                 .foregroundColor(.primary)
-                .font(.system(size: 14, weight: .semibold))
+                .font(.system(size: 21, weight: .medium))
                 .contentShape(Rectangle())
-                .frame(width: 40, height: 40)
+                .frame(width: 55, height: 40)
         }
         .disabled(disabled)
     }

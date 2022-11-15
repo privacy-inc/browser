@@ -4,16 +4,21 @@ struct Tabber: View {
     @ObservedObject var session: Session
     
     var body: some View {
-        ZStack {
+        VStack(spacing: 0) {
+            Divider()
+            
             Button {
                 session.newTab()
             } label: {
                 Image(systemName: "plus.circle.fill")
                     .symbolRenderingMode(.hierarchical)
-                    .font(.system(size: 32, weight: .regular))
-                    .frame(width: 50, height: 40)
+                    .font(.system(size: 40, weight: .regular))
                     .contentShape(Rectangle())
+                    .frame(width: 50, height: 44)
             }
+            .padding(.top, 12)
+            .padding(.bottom, 4)
         }
+        .background(Color(.systemBackground))
     }
 }

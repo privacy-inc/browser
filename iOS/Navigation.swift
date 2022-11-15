@@ -6,18 +6,14 @@ struct Navigation: View {
     var body: some View {
         NavigationSplitView(columnVisibility: $session.columns) {
             Sidebar(session: session)
-                .toolbar {
-                    ToolbarItem(placement: .bottomBar) {
-                        Tabber(session: session)
-                    }
+                .safeAreaInset(edge: .bottom, spacing: 0) {
+                    Tabber(session: session)
                 }
         } content: {
             content
-                .toolbar {
+                .safeAreaInset(edge: .bottom, spacing: 0) {
                     if !(UIDevice.current.userInterfaceIdiom == .pad && session.columns == .all) {
-                        ToolbarItem(placement: .bottomBar) {
-                            Tabber(session: session)
-                        }
+                        Tabber(session: session)
                     }
                 }
         } detail: {

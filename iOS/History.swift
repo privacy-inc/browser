@@ -27,6 +27,17 @@ struct History: View {
                             } label: {
                                 Website(session: session, url: item.url, title: item.title)
                             }
+                            .swipeActions {
+                                Button {
+//                                    withAnimation {
+//                                        session.close(tab: tab.id)
+//                                    }
+                                } label: {
+                                    Label("Delete", systemImage: "trash.circle.fill")
+                                        .symbolRenderingMode(.hierarchical)
+                                }
+                                .tint(.pink)
+                            }
                         }
                     }
                     .headerProminence(.increased)
