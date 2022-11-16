@@ -45,18 +45,22 @@ import Engine
         else { return }
         
         if tabs[index].webview == nil {
-            tabs[index].webview = .init(cloud: cloud, favicon: favicon)
+            tabs[index].webview = .init(session: self)
         }
         
         tabs[index].webview!.load(.init(url: url))
     }
     
     func open(url: String) {
+        open(url: .init(string: url)!)
+    }
+    
+    func open(url: URL) {
         sidebar = .tabs
         
         var tab = Tab()
-        tab.webview = .init(cloud: cloud, favicon: favicon)
-        tab.webview!.load(.init(url: .init(string: url)!))
+        tab.webview = .init(session: self)
+        tab.webview!.load(.init(url: url))
         tabs.append(tab)
         content = .tab(tab.id)
         

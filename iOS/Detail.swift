@@ -67,7 +67,9 @@ struct Detail: View {
         .id(id)
         .toolbar(.hidden, for: .navigationBar)
         .safeAreaInset(edge: .bottom, spacing: 0) {
-            Bar(session: session)
+            if !session.typing {
+                Bar(session: session)
+            }
         }
     }
 }

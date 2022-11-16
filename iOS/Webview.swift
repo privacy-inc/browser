@@ -1,9 +1,9 @@
 import WebKit
-import Archivable
 import Engine
 //import Specs
 
 final class Webview: AbstractWebview {
+    private weak var session: Session!
 //    private let session: Session
     
 //    @MainActor var fontSize: CGFloat {
@@ -19,14 +19,16 @@ final class Webview: AbstractWebview {
 //    }
 //
     required init?(coder: NSCoder) { nil }
-    init(cloud: Cloud<Archive>, favicon: Favicon) {
+    init(session: Session) {
+        self.session = session
+        
         let configuration = WKWebViewConfiguration()
         configuration.dataDetectorTypes = [.link]
         configuration.defaultWebpagePreferences.preferredContentMode = .recommended
         configuration.allowsInlineMediaPlayback = true
         configuration.ignoresViewportScaleLimits = true
         
-        super.init(cloud: cloud, favicon: favicon, configuration: configuration)
+        super.init(cloud: session.cloud, favicon: session.favicon, configuration: configuration)
         isOpaque = true
         scrollView.keyboardDismissMode = .none
         scrollView.contentInsetAdjustmentBehavior = .never
@@ -35,10 +37,7 @@ final class Webview: AbstractWebview {
     
     deinit {
         Task {
-            await MainActor
-                .run {
-                    scrollView.delegate = nil
-                }
+            await clean()
         }
     }
     
@@ -98,61 +97,51 @@ final class Webview: AbstractWebview {
         UIApplication.shared.hide()
     }
     
-//    func webView(_: WKWebView, createWebViewWith: WKWebViewConfiguration, for action: WKNavigationAction, windowFeatures: WKWindowFeatures) -> WKWebView? {
-//        if action.sourceFrame.isMainFrame,
-//           (action.targetFrame == nil && action.navigationType == .other) || action.navigationType == .linkActivated {
-//            _ = action
-//                .request
-//                .url
-//                .map(load)
-//        }
-//        return nil
-//    }
+    func webView(_: WKWebView, createWebViewWith: WKWebViewConfiguration, for action: WKNavigationAction, windowFeatures: WKWindowFeatures) -> WKWebView? {
+        if action.sourceFrame.isMainFrame,
+           (action.targetFrame == nil && action.navigationType == .other)
+            || action.navigationType == .linkActivated {
+            if let url = action.request.url {
+                load(.init(url: url))
+            }
+        }
+        return nil
+    }
     
-//    func webView(_: WKWebView, contextMenuConfigurationFor: WKContextMenuElementInfo) async -> UIContextMenuConfiguration? {
-//        .init(identifier: nil, previewProvider: nil) { elements in
-//            var elements = elements
-//                .filter {
-//                    guard let name = ($0 as? UIAction)?.identifier.rawValue else { return true }
-//                    return !name.hasSuffix("Open")
-//                }
-//
-//            if let url = contextMenuConfigurationFor .linkURL {
-//                elements
-//                    .insert(UIAction(title: NSLocalizedString("Open", comment: ""),
-//                                     image: UIImage(systemName: "paperplane"))
-//                            { [weak self] _ in
-//                        self?.load(url: url)
-//                    }, at: 0)
-//
-//                elements
-//                    .insert(UIAction(title: NSLocalizedString("New Tab", comment: ""),
-//                                     image: UIImage(systemName: "plus.square"))
-//                            { [weak self] _ in
-//                        Task { [weak self] in
-//                            await self?.session.open(url: url, change: false)
-//                        }
-//                    }, at: 1)
-//
-//                elements
-//                    .insert(UIAction(title: NSLocalizedString("Change New Tab", comment: ""),
-//                                     image: UIImage(systemName: "plus.square.on.square"))
-//                            { [weak self] _ in
-//                        Task { [weak self] in
-//                            await self?.thumbnail()
-//                            await self?.session.open(url: url, change: true)
-//                        }
-//                    }, at: 2)
-//            }
-//            return .init(title: "", children: elements)
-//        }
-//    }
+    func webView(_: WKWebView, contextMenuConfigurationFor: WKContextMenuElementInfo) async -> UIContextMenuConfiguration? {
+        .init(identifier: nil, previewProvider: nil) { elements in
+            var elements = elements
+                .filter {
+                    guard let name = ($0 as? UIAction)?.identifier.rawValue else { return true }
+                    return !name.hasSuffix("Open")
+                }
+
+            if let url = contextMenuConfigurationFor .linkURL {
+                elements
+                    .insert(UIAction(title: "Open", image: .init(systemName: "paperplane"))
+                            { [weak self] _ in
+                        self?.load(.init(url: url))
+                    }, at: 0)
+
+                elements
+                    .insert(UIAction(title: "New Tab", image: .init(systemName: "plus.square"))
+                            { [weak self] _ in
+                        self?.session.open(url: url)
+                    }, at: 1)
+            }
+            return .init(children: elements)
+        }
+    }
     
-//    func webView(_: WKWebView, contextMenuForElement: WKContextMenuElementInfo, willCommitWithAnimator: UIContextMenuInteractionCommitAnimating) {
-//        if let url = contextMenuForElement.linkURL {
-//            load(url: url)
-//        } else if let data = (willCommitWithAnimator.previewViewController?.view.subviews.first as? UIImageView)?.image?.pngData() {
-//            load(url: data.temporal("image.png"))
-//        }
-//    }
+    func webView(_: WKWebView, contextMenuForElement: WKContextMenuElementInfo, willCommitWithAnimator: UIContextMenuInteractionCommitAnimating) {
+        if let url = contextMenuForElement.linkURL {
+            load(.init(url: url))
+        } else if let data = (willCommitWithAnimator.previewViewController?.view.subviews.first as? UIImageView)?.image?.pngData() {
+            load(.init(url: data.temporal("image.png")))
+        }
+    }
+    
+    @MainActor private func clean() {
+        scrollView.delegate = nil
+    }
 }

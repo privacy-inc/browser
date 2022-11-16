@@ -42,7 +42,6 @@ struct Bar: View {
                 ZStack {
                     RoundedRectangle(cornerRadius: 12, style: .continuous)
                         .fill(Color.secondary)
-                        .opacity(session.typing ? 0 : 1)
                 }
                 .frame(height: 36)
                 .frame(maxWidth: 160)

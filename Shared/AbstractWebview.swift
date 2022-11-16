@@ -1,4 +1,4 @@
-import WebKit
+@preconcurrency import WebKit
 import Combine
 import Archivable
 import Engine
@@ -80,11 +80,9 @@ class AbstractWebview: WKWebView, WKNavigationDelegate, WKUIDelegate, WKDownload
     }
     
     deinit {
-//        stopLoading()
-//        uiDelegate = nil
-//        navigationDelegate = nil
-//        
-//        configuration.userContentController.removeScriptMessageHandler(forName: Script.location.method)
+        Task {
+            await clean()
+        }
     }
     
 //    func deeplink(url: URL) {
@@ -237,4 +235,12 @@ class AbstractWebview: WKWebView, WKNavigationDelegate, WKUIDelegate, WKDownload
 //        }
 //        await store.removeData(ofTypes: WKWebsiteDataStore.allWebsiteDataTypes(), modifiedSince: .distantPast)
 //    }
+    
+    @MainActor private func clean() {
+        stopLoading()
+        uiDelegate = nil
+        navigationDelegate = nil
+        
+        //        configuration.userContentController.removeScriptMessageHandler(forName: Script.location.method)
+    }
 }
