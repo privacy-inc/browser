@@ -63,9 +63,17 @@ extension Bookmarks {
                             saving = false
                             return
                         }
-                        Task {
-                            await session.cloud.add(bookmark: bookmark)
+                        
+                        if let url = self.bookmark?.url {
+                            Task {
+                                await session.cloud.update(bookmark: bookmark, for: url)
+                            }
+                        } else {
+                            Task {
+                                await session.cloud.add(bookmark: bookmark)
+                            }
                         }
+                        
                         dismiss()
                         session.content = nil
                         
