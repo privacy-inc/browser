@@ -10,8 +10,7 @@ struct Bar: View {
     var body: some View {
         HStack(spacing: 0) {
             button(icon: "sidebar.leading") {
-                session.field.resignFirstResponder()
-                session.typing = false
+                UIApplication.shared.hide()
                 
                 if UIDevice.current.userInterfaceIdiom == .pad {
                     switch session.columns {
