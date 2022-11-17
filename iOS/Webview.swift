@@ -109,28 +109,41 @@ final class Webview: AbstractWebview {
     }
     
     func webView(_: WKWebView, contextMenuConfigurationFor: WKContextMenuElementInfo) async -> UIContextMenuConfiguration? {
-        .init(identifier: nil, previewProvider: nil) { elements in
+        .init(actionProvider:  { elements in
             var elements = elements
                 .filter {
                     guard let name = ($0 as? UIAction)?.identifier.rawValue else { return true }
-                    return !name.hasSuffix("Open")
+                    switch name {
+                    case "WKElementActionTypeOpen", "WKElementActionTypeAddToReadingList":
+                        return false
+                    default:
+                        return true
+                    }
                 }
-
-            if let url = contextMenuConfigurationFor .linkURL {
+            
+            if let url = contextMenuConfigurationFor.linkURL {
                 elements
-                    .insert(UIAction(title: "Open", image: .init(systemName: "paperplane"))
+                    .insert(UIAction(title: "Open", image: .init(systemName: "link"))
                             { [weak self] _ in
                         self?.load(.init(url: url))
                     }, at: 0)
-
+                
                 elements
-                    .insert(UIAction(title: "New Tab", image: .init(systemName: "plus.square"))
+                    .insert(UIAction(title: "Open in new tab", image: .init(systemName: "plus.square"))
                             { [weak self] _ in
                         self?.session.open(url: url)
                     }, at: 1)
+                
+                elements
+                    .insert(UIAction(title: "Add to reading list", image: .init(systemName: "eyeglasses"))
+                            { [weak self] _ in
+                        Task { [weak self] in
+                            await self?.session.cloud.add(read: .init(url: url.absoluteString, title: ""))
+                        }
+                    }, at: 2)
             }
             return .init(children: elements)
-        }
+        })
     }
     
     func webView(_: WKWebView, contextMenuForElement: WKContextMenuElementInfo, willCommitWithAnimator: UIContextMenuInteractionCommitAnimating) {

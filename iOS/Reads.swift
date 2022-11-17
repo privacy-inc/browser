@@ -21,31 +21,41 @@ struct Reads: View {
             } else {
                 ForEach(items, id: \.url) { item in
                     Button {
+                        Task {
+                            await session.cloud.update(read: item.url)
+                        }
+                        
                         session.open(url: item.url)
                     } label: {
-                        Website(session: session, url: item.url, title: item.title)
+                        Website(session: session, url: item.url, title: item.title, badge: !item.read)
+                    }
+                    .swipeActions {
+                        Button {
+                            Task {
+                                await session.cloud.delete(read: item.url)
+                            }
+                        } label: {
+                            Label("Delete", systemImage: "trash.circle.fill")
+                                .symbolRenderingMode(.hierarchical)
+                        }
+                        .tint(.pink)
+                    }
+                }
+                .onMove { index, destination in
+                    Task {
+                        await session.cloud.move(read: index, destination: destination)
                     }
                 }
             }
         }
         .listStyle(.plain)
         .navigationTitle("Reading list")
-//        .toolbar {
-//            ToolbarItem(placement: .primaryAction) {
-//                Button {
-//                    alert = true
-//                } label: {
-//                    Image(systemName: "trash.circle.fill")
-//                        .foregroundStyle(session.tabs.isEmpty ? .tertiary : .secondary)
-//                        .foregroundColor(session.tabs.isEmpty ? .secondary : .pink)
-//                        .symbolRenderingMode(.hierarchical)
-//                        .font(.system(size: 24, weight: .regular))
-//                        .frame(width: 40, height: 36)
-//                        .contentShape(Rectangle())
-//                }
-//                .disabled(session.tabs.isEmpty)
-//            }
-//        }
+        .toolbar {
+            ToolbarItem(placement: .primaryAction) {
+                EditButton()
+                    .disabled(items.count < 2)
+            }
+        }
         .onReceive(session.cloud) {
             items = $0.reads
         }

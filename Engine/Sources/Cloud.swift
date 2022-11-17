@@ -67,6 +67,37 @@ extension Cloud where Output == Archive {
         await update(model: model)
     }
     
+    public func add(read: Read) async {
+        var model = await model
+        guard !model.reads.contains(where: { $0.url == read.url }) else { return }
+        model.reads.append(read)
+        await update(model: model)
+    }
+    
+    public func delete(read url: String) async {
+        var model = await model
+        model
+            .reads
+            .remove {
+                $0.url == url
+            }
+        await update(model: model)
+    }
+    
+    public func update(read: String) async {
+        var model = await model
+        guard let index = model.reads.firstIndex(where: { $0.url == read }) else { return }
+        let item = model.reads.remove(at: index)
+        model.reads.insert(item.done, at: index)
+        await update(model: model)
+    }
+    
+    public func move(read index: IndexSet, destination: Int) async {
+        var model = await model
+        model.reads = model.reads.moving(from: index.first!, to: destination)
+        await update(model: model)
+    }
+    
     public func policy(request: URL, from url: URL) async -> Policy {
         var model = await model
         let response = request.policy

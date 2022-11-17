@@ -6,13 +6,15 @@ struct Website: View {
     private let url: String
     private let title: String
     private let domain: String
+    private let badge: Bool
     @StateObject private var icon = Icon()
     
-    init(session: Session, url: String, title: String) {
+    init(session: Session, url: String, title: String, badge: Bool = false) {
         self.session = session
         self.url = url
         self.domain = url.domain
-        self.title = title.isEmpty ? title : title + "\n"
+        self.title = (title.isEmpty ? (url.components(separatedBy: "://").last ?? url) : title) + "\n"
+        self.badge = badge
     }
     
     var body: some View {
@@ -33,6 +35,12 @@ struct Website: View {
                 .multilineTextAlignment(.leading)
                 .fixedSize(horizontal: false, vertical: true)
                 .frame(maxWidth: .greatestFiniteMagnitude, alignment: .leading)
+            
+            if badge {
+                Circle()
+                    .fill(Color.accentColor)
+                    .frame(width: 10, height: 10)
+            }
         }
         .frame(minHeight: 42)
         .onChange(of: url) { url in

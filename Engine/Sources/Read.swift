@@ -13,6 +13,10 @@ public struct Read: Storable, Website {
         .adding(read)
     }
     
+    var done: Self {
+        .init(url: url, title: title, read: true)
+    }
+    
     public init(data: inout Data) {
         url = data.string(size: UInt16.self)
         title = data.string(size: UInt16.self)
@@ -27,9 +31,5 @@ public struct Read: Storable, Website {
         self.url = url
         self.title = title
         self.read = read
-    }
-    
-    public func done() -> Self {
-        .init(url: url, title: title, read: true)
     }
 }
