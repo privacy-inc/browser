@@ -72,7 +72,7 @@ struct Bar: View {
     
     private var webview: Webview? {
         guard case let .tab(id) = session.content else { return nil }
-        return session[tab: id]
+        return session[tab: id]?.webview
     }
     
     private func button(icon: String, disabled: Bool = false, action: @escaping () -> Void) -> some View {

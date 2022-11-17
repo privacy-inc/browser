@@ -93,6 +93,11 @@ final class Webview: AbstractWebview {
 //        session.objectWillChange.send()
 //    }
     
+    override func error(_ error: Weberror) {
+        guard let index = session.current else { return }
+        session.tabs[index].error = error
+    }
+    
     func webView(_: WKWebView, didStartProvisionalNavigation: WKNavigation!) {
         UIApplication.shared.hide()
     }

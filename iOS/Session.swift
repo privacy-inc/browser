@@ -13,6 +13,11 @@ import Engine
     let cloud = Cloud<Archive>.new(identifier: "iCloud.privacy")
     let favicon = Favicon()
     
+    var current: Int? {
+        guard case let .tab(id) = content else { return nil }
+        return tabs.firstIndex { $0.id == id }
+    }
+    
     init() {
         let tab = Tab()
         tabs = [tab]
@@ -20,12 +25,11 @@ import Engine
         field.session = self
     }
     
-    subscript(tab id: UUID) -> Webview? {
+    subscript(tab id: UUID) -> Tab? {
         tabs
             .first {
                 $0.id == id
-            }?
-            .webview
+            }
     }
     
     func newTab() {
@@ -43,8 +47,7 @@ import Engine
     
     func search(string: String) {
         guard
-            case let .tab(id) = content,
-            let index = tabs.firstIndex(where: { $0.id == id }),
+            let index = current,
             let url = settings.search(string)
         else { return }
         
