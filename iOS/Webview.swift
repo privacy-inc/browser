@@ -109,7 +109,7 @@ final class Webview: AbstractWebview {
     }
     
     func webView(_: WKWebView, contextMenuConfigurationFor: WKContextMenuElementInfo) async -> UIContextMenuConfiguration? {
-        .init(actionProvider:  { elements in
+        .init(actionProvider: { elements in
             var elements = elements
                 .filter {
                     guard let name = ($0 as? UIAction)?.identifier.rawValue else { return true }
@@ -122,25 +122,25 @@ final class Webview: AbstractWebview {
                 }
             
             if let url = contextMenuConfigurationFor.linkURL {
-                elements
-                    .insert(UIAction(title: "Open", image: .init(systemName: "link"))
-                            { [weak self] _ in
+                elements.insert(contentsOf: [
+                    .init(title: "Open",
+                             image: .init(systemName: "link"))
+                    { [weak self] _ in
                         self?.load(.init(url: url))
-                    }, at: 0)
-                
-                elements
-                    .insert(UIAction(title: "Open in new tab", image: .init(systemName: "plus.square"))
-                            { [weak self] _ in
+                    },
+                    .init(title: "Open in new tab",
+                          image: .init(systemName: "plus.square"))
+                    { [weak self] _ in
                         self?.session.open(url: url)
-                    }, at: 1)
-                
-                elements
-                    .insert(UIAction(title: "Add to reading list", image: .init(systemName: "eyeglasses"))
-                            { [weak self] _ in
+                    },
+                    .init(title: "Add to reading list",
+                          image: .init(systemName: "eyeglasses"))
+                    { [weak self] _ in
                         Task { [weak self] in
                             await self?.session.cloud.add(read: .init(url: url.absoluteString, title: ""))
                         }
-                    }, at: 2)
+                    }
+                ] as [UIAction], at: 0)
             }
             return .init(children: elements)
         })
@@ -154,7 +154,7 @@ final class Webview: AbstractWebview {
         }
     }
     
-    @MainActor private func clean() {
+    private func clean() {
         scrollView.delegate = nil
     }
 }

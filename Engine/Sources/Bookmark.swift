@@ -2,7 +2,7 @@ import Foundation
 import Archivable
 import Domains
 
-public struct Bookmark: Storable, Hashable, Website, Sendable {
+public struct Bookmark: Storable, Hashable, Website {
     public let url: String
     public let title: String
     

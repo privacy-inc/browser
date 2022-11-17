@@ -89,15 +89,15 @@ class AbstractWebview: WKWebView, WKNavigationDelegate, WKUIDelegate, WKDownload
 //
 //    }
 //
-//    func message(info: Info) {
-//
-//    }
+    func error(_ error: Weberror) {
+        fatalError()
+    }
     
-    func webView(_: WKWebView, navigationAction: WKNavigationAction, didBecome: WKDownload) {
+    nonisolated func webView(_: WKWebView, navigationAction: WKNavigationAction, didBecome: WKDownload) {
         didBecome.delegate = self
     }
     
-    func webView(_: WKWebView, navigationResponse: WKNavigationResponse, didBecome: WKDownload) {
+    nonisolated func webView(_: WKWebView, navigationResponse: WKNavigationResponse, didBecome: WKDownload) {
         didBecome.delegate = self
     }
     
@@ -105,50 +105,36 @@ class AbstractWebview: WKWebView, WKNavigationDelegate, WKUIDelegate, WKDownload
         nil
     }
     
-    func download(_: WKDownload, didFailWithError error: Error, resumeData: Data?) {
+    nonisolated func download(_: WKDownload, didFailWithError error: Error, resumeData: Data?) {
 //        Task {
 //            await UNUserNotificationCenter.send(message: error.localizedDescription)
 //        }
     }
     
-    func downloadDidFinish(_: WKDownload) {
+    nonisolated func downloadDidFinish(_: WKDownload) {
 //        Task {
 //            await UNUserNotificationCenter.send(message: "Download finished!")
 //        }
     }
-        
-//    final func error(url: URL?, description: String) {
-//        progress.send(1)
-//        message(info: .init(url: url, title: description, icon: "exclamationmark.triangle.fill"))
-//
-//        Task
-//            .detached(priority: .utility) {
-//                guard let url = url else { return }
-//                await cloud.history(url: url, title: description)
-//            }
-//    }
     
 //    final func privacy(url: URL) {
 //        message(info: .init(url: url, title: "Privacy deeplink", icon: "eyeglasses"))
 //    }
     
-    final func webView(_: WKWebView, respondTo: URLAuthenticationChallenge) async -> (URLSession.AuthChallengeDisposition, URLCredential?) {
+    nonisolated final func webView(_: WKWebView, respondTo: URLAuthenticationChallenge) async -> (URLSession.AuthChallengeDisposition, URLCredential?) {
         (.useCredential, respondTo.protectionSpace.serverTrust.map(URLCredential.init(trust:)))
     }
     
-//    final func webView(_: WKWebView, didFailProvisionalNavigation: WKNavigation!, withError: Error) {
-//        guard
-//            (withError as NSError).code != NSURLErrorCancelled,
-//            (withError as NSError).code != Invalid.frameLoadInterrupted.rawValue
-//        else { return }
-//
-//        error(url: (withError as? URLError)
-//                .flatMap(\.failingURL)
-//                ?? url
-//                ?? {
-//                    $0?["NSErrorFailingURLKey"] as? URL
-//                } (withError._userInfo as? [String : Any]), description: withError.localizedDescription)
-//    }
+    nonisolated final func webView(_: WKWebView, didFailProvisionalNavigation: WKNavigation!, withError: Error) {
+        guard
+            (withError as NSError).code != NSURLErrorCancelled,
+            (withError as NSError).code != Weberror.frameLoadInterrupted
+        else { return }
+
+        Task {
+            await error(withError)
+        }
+    }
     
     final func webView(_: WKWebView, decidePolicyFor: WKNavigationAction, preferences: WKWebpagePreferences) async -> (WKNavigationActionPolicy, WKWebpagePreferences) {
         
@@ -161,7 +147,7 @@ class AbstractWebview: WKWebView, WKNavigationDelegate, WKUIDelegate, WKDownload
             if decidePolicyFor.shouldPerformDownload {
                 return (.download, preferences)
             } else {
-                print("allow \(decidePolicyFor.request.url!)")
+                print("allowed: \(decidePolicyFor.request.url!)")
                 preferences.allowsContentJavaScript = true
                 return (.allow, preferences)
             }
@@ -171,7 +157,7 @@ class AbstractWebview: WKWebView, WKNavigationDelegate, WKUIDelegate, WKDownload
                 .map(\.isMainFrame)
                 .map {
                     guard $0 else { return }
-//                    error(url: decidePolicyFor.request.url, description: "There was an error")
+                    error(url: decidePolicyFor.request.url, message: "There was an error loading this website.")
                 }
         case .block:
             decidePolicyFor
@@ -179,7 +165,7 @@ class AbstractWebview: WKWebView, WKNavigationDelegate, WKUIDelegate, WKDownload
                 .map(\.isMainFrame)
                 .map {
                     guard $0 else { return }
-//                    error(url: decidePolicyFor.request.url, description: "Blocked")
+                    error(url: decidePolicyFor.request.url, message: "Website blocked for privacy concerns.")
                 }
         case .deeplink:
 //            message(info: .init(url: decidePolicyFor.request.url!, title: "Deeplink opened", icon: "paperplane.circle.fill"))
@@ -236,11 +222,31 @@ class AbstractWebview: WKWebView, WKNavigationDelegate, WKUIDelegate, WKDownload
 //        await store.removeData(ofTypes: WKWebsiteDataStore.allWebsiteDataTypes(), modifiedSince: .distantPast)
 //    }
     
-    @MainActor private func clean() {
+    private func clean() {
         stopLoading()
         uiDelegate = nil
         navigationDelegate = nil
         
         //        configuration.userContentController.removeScriptMessageHandler(forName: Script.location.method)
+    }
+    
+    private func error(_ error: Error) {
+        self.error(url: (error as? URLError)
+                .flatMap(\.failingURL)
+                ?? url
+                ?? {
+                    $0?["NSErrorFailingURLKey"] as? URL
+                } (error._userInfo as? [String : Any]),
+              message: error.localizedDescription)
+    }
+    
+    private func error(url: URL?, message: String) {
+        error(.init(url: url, message: message))
+
+        Task
+            .detached(priority: .utility) { [weak self] in
+                guard let url = url else { return }
+                await self?.cloud.history(url: url, title: message)
+            }
     }
 }

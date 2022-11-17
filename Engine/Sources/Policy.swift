@@ -1,4 +1,4 @@
-public enum Policy: Equatable {
+public enum Policy: Equatable, Sendable {
     case
     deeplink,
     ignore,
