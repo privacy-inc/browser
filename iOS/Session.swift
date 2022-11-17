@@ -31,9 +31,13 @@ import Engine
     func newTab() {
         let tab = Tab()
         tabs.append(tab)
-        sidebar = .tabs
         content = .tab(tab.id)
-        columns = .detailOnly
+        sidebar = .tabs
+        
+        if UIDevice.current.userInterfaceIdiom == .pad {
+            columns = .detailOnly
+        }
+        
         field.becomeFirstResponder()
     }
     
@@ -56,13 +60,12 @@ import Engine
     }
     
     func open(url: URL) {
-        sidebar = .tabs
-        
         var tab = Tab()
         tab.webview = .init(session: self)
         tab.webview!.load(.init(url: url))
         tabs.append(tab)
         content = .tab(tab.id)
+        sidebar = .tabs
         
         if UIDevice.current.userInterfaceIdiom == .pad {
             columns = .detailOnly

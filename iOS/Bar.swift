@@ -21,6 +21,9 @@ struct Bar: View {
                     }
                 } else {
                     dismiss()
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+                        session.content = nil
+                    }
                 }
             }
             .padding(.leading, 10)
