@@ -22,7 +22,7 @@ struct Bar: View {
                     }
                 } else {
                     dismiss()
-                    DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
                         session.content = nil
                     }
                 }

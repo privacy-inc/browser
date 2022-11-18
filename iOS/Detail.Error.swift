@@ -4,6 +4,7 @@ extension Detail {
     struct Error: View {
         let session: Session
         let error: Weberror
+        @State private var animate = false
         
         var body: some View {
             Image(systemName: "exclamationmark.triangle.fill")
@@ -30,26 +31,58 @@ extension Detail {
             
             Spacer()
             
-            Button {
-                guard let current = session.current else { return }
-                
-                if let webview = session.tabs[current].webview {
-                    if webview.url == nil {
-                        session.tabs[current].webview?.clean()
-                        session.tabs[current].webview = nil
+            if animate {
+                Image(systemName: "arrow.clockwise.circle.fill")
+                    .font(.system(size: 50, weight: .regular))
+                    .symbolRenderingMode(.hierarchical)
+                    .foregroundColor(.accentColor)
+                    .padding(.bottom, 50)
+            } else {
+                Button {
+                    withAnimation(.easeInOut(duration: 0.3)) {
+                        animate = true
                     }
+                    
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+                        guard let current = session.current else { return }
+                        
+                        if let url = error.url {
+                            session.tabs[current].webview?.load(.init(url: url))
+                        }
+                        
+                        session.tabs[current].error = nil
+                    }
+                } label: {
+                    Text("Try again")
+                        .font(.body.weight(.medium))
+                        .padding(.horizontal, 12)
+                        .padding(.vertical, 4)
+                        .contentShape(Rectangle())
                 }
+                .buttonStyle(.borderedProminent)
+                .padding(.bottom, 15)
                 
-                session.tabs[current].error = nil
-            } label: {
-                Text("Dismiss")
-                    .font(.callout.weight(.medium))
-                    .foregroundStyle(.secondary)
-                    .padding(5)
-                    .contentShape(Rectangle())
+                Button {
+                    guard let current = session.current else { return }
+                    
+                    if let webview = session.tabs[current].webview {
+                        if webview.url == nil {
+                            session.tabs[current].webview?.clean()
+                            session.tabs[current].webview = nil
+                        }
+                    }
+                    
+                    session.tabs[current].error = nil
+                } label: {
+                    Text("Dismiss")
+                        .font(.body.weight(.medium))
+                        .foregroundStyle(.secondary)
+                        .padding(5)
+                        .contentShape(Rectangle())
+                }
+                .buttonStyle(.plain)
+                .padding(.bottom, 35)
             }
-            .buttonStyle(.plain)
-            .padding(.bottom, 30)
         }
     }
 }
