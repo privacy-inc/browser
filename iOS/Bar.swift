@@ -2,9 +2,9 @@ import SwiftUI
 
 struct Bar: View {
     @ObservedObject var session: Session
-    let error: Bool
     @State private var back = false
     @State private var forward = false
+    @State private var detail = false
     @State private var progress = AnimatablePair(Double(), Double())
     @Environment(\.dismiss) private var dismiss
     
@@ -29,55 +29,60 @@ struct Bar: View {
             }
             .padding(.leading, 10)
            
-            if error {
-                Spacer()
-            } else {
-                if let webview {
-                    button(icon: "chevron.backward", disabled: !back) {
-                        webview.goBack()
-                    }
-                    .onReceive(webview.publisher(for: \.canGoBack)) {
-                        back = $0
-                    }
-                }
+            if case let .tab(id) = session.content,
+               let tab = session[tab: id] {
                 
-                Spacer()
-                
-                Button {
-                    session.field.becomeFirstResponder()
-                } label: {
-                    ZStack {
-                        RoundedRectangle(cornerRadius: 12, style: .continuous)
-                            .fill(Color.secondary)
+                if tab.error == nil {
+                    if let webview = tab.webview {
+                        button(icon: "chevron.backward", disabled: !back) {
+                            webview.goBack()
+                        }
+                        .onReceive(webview.publisher(for: \.canGoBack)) {
+                            back = $0
+                        }
                     }
-                    .frame(height: 36)
-                    .frame(maxWidth: 160)
-                }
-                
-                Spacer()
-                
-                if let webview {
-                    button(icon: "chevron.forward", disabled: !forward) {
-                        webview.goForward()
+                    
+                    Spacer()
+                    
+                    Button {
+                        session.field.becomeFirstResponder()
+                    } label: {
+                        ZStack {
+                            RoundedRectangle(cornerRadius: 12, style: .continuous)
+                                .fill(Color.secondary)
+                        }
+                        .frame(height: 36)
+                        .frame(maxWidth: 260)
                     }
-                    .onReceive(webview.publisher(for: \.canGoForward)) {
-                        forward = $0
+                    
+                    if let webview = tab.webview {
+                        Spacer()
+                        
+                        button(icon: "chevron.forward", disabled: !forward) {
+                            webview.goForward()
+                        }
+                        .onReceive(webview.publisher(for: \.canGoForward)) {
+                            forward = $0
+                        }
+                        
+                        button(icon: "ellipsis") {
+                            detail = true
+                        }
+                        .padding(.trailing, 10)
+                        .sheet(isPresented: $detail) {
+                            Detail(session: session)
+                        }
+                    } else {
+                        Spacer()
+                            .frame(width: 32)
                     }
+                } else {
+                    Spacer()
                 }
             }
-            
-            button(icon: "ellipsis") {
-                
-            }
-            .padding(.trailing, 10)
         }
         .padding(.top, 12)
         .padding(.bottom, 4)
-    }
-    
-    private var webview: Webview? {
-        guard case let .tab(id) = session.content else { return nil }
-        return session[tab: id]?.webview
     }
     
     private func button(icon: String, disabled: Bool = false, action: @escaping () -> Void) -> some View {

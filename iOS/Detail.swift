@@ -25,7 +25,7 @@ struct Detail: View {
         .toolbar(.hidden, for: .navigationBar)
         .safeAreaInset(edge: .bottom, spacing: 0) {
             if !session.typing {
-                Bar(session: session, error: session[tab: id]?.error != nil)
+                Bar(session: session)
             }
         }
     }
