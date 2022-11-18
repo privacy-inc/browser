@@ -39,6 +39,7 @@
 		CEE1F16A29278FC00084A331 /* Detail.Tab.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEE1F16929278FC00084A331 /* Detail.Tab.swift */; };
 		CEE1F16C292790160084A331 /* Detail.Error.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEE1F16B292790160084A331 /* Detail.Error.swift */; };
 		CEE1F16E29279CA80084A331 /* Bar.Detail.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEE1F16D29279CA80084A331 /* Bar.Detail.swift */; };
+		CEE1F1702927B75A0084A331 /* Bar.Web.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEE1F16F2927B75A0084A331 /* Bar.Web.swift */; };
 		CEEB873129225255004968FC /* UIApplication.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEEB873029225255004968FC /* UIApplication.swift */; };
 /* End PBXBuildFile section */
 
@@ -78,6 +79,7 @@
 		CEE1F16929278FC00084A331 /* Detail.Tab.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Detail.Tab.swift; sourceTree = "<group>"; };
 		CEE1F16B292790160084A331 /* Detail.Error.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Detail.Error.swift; sourceTree = "<group>"; };
 		CEE1F16D29279CA80084A331 /* Bar.Detail.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Bar.Detail.swift; sourceTree = "<group>"; };
+		CEE1F16F2927B75A0084A331 /* Bar.Web.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Bar.Web.swift; sourceTree = "<group>"; };
 		CEEB873029225255004968FC /* UIApplication.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIApplication.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -109,6 +111,7 @@
 				CEAA603529112F5D00431596 /* App.swift */,
 				CEE1F16D29279CA80084A331 /* Bar.Detail.swift */,
 				CE1324422912D0FE00418B13 /* Bar.swift */,
+				CEE1F16F2927B75A0084A331 /* Bar.Web.swift */,
 				CEB9430C291E7F1C00DF793C /* Bookmarks.Edit.swift */,
 				CE6BFCFE291D51F200595BEF /* Bookmarks.swift */,
 				CE1324402912B00200418B13 /* Browser.swift */,
@@ -248,6 +251,7 @@
 				CEAA603829112F5D00431596 /* Navigation.swift in Sources */,
 				CEB94307291E51A900DF793C /* Tabber.swift in Sources */,
 				CEB9430B291E707B00DF793C /* Content.swift in Sources */,
+				CEE1F1702927B75A0084A331 /* Bar.Web.swift in Sources */,
 				CEE1F16E29279CA80084A331 /* Bar.Detail.swift in Sources */,
 				CECB8D8429116030002600F1 /* AbstractWebview.swift in Sources */,
 				CECB8D8129114C40002600F1 /* Tab.swift in Sources */,
