@@ -94,10 +94,10 @@ class AbstractWebview: WKWebView, WKNavigationDelegate, WKUIDelegate, WKDownload
         //        configuration.userContentController.removeScriptMessageHandler(forName: Script.location.method)
     }
     
-//    func deeplink(url: URL) {
-//
-//    }
-//
+    func deeplink(url: URL) {
+        fatalError()
+    }
+
     func error(_ error: Weberror) {
         fatalError()
     }
@@ -157,7 +157,6 @@ class AbstractWebview: WKWebView, WKNavigationDelegate, WKUIDelegate, WKDownload
                 return (.download, preferences)
             } else {
                 print("allowed: \(decidePolicyFor.request.url!)")
-                preferences.allowsContentJavaScript = true
                 return (.allow, preferences)
             }
         case .ignore:
@@ -177,11 +176,8 @@ class AbstractWebview: WKWebView, WKNavigationDelegate, WKUIDelegate, WKDownload
                     error(url: decidePolicyFor.request.url, message: "Website blocked for privacy concerns.")
                 }
         case .deeplink:
-//            message(info: .init(url: decidePolicyFor.request.url!, title: "Deeplink opened", icon: "paperplane.circle.fill"))
-//            deeplink(url: decidePolicyFor.request.url!)
-            break
+            deeplink(url: decidePolicyFor.request.url!)
         case .app:
-//            privacy(url: decidePolicyFor.request.url!)
             break
         }
         return (.cancel, preferences)

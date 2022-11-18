@@ -81,16 +81,16 @@ final class Webview: AbstractWebview {
 //        }
 //    }
     
-//    override func deeplink(url: URL) {
-//        UIApplication.shared.open(url)
-//    }
-    
 //    override func message(info: Info) {
 //        let index = session.index(self)
 //        session.items[index].info = info
 //        session.items[index].flow = .message
 //        session.objectWillChange.send()
 //    }
+    
+    override func deeplink(url: URL) {
+        UIApplication.shared.open(url)
+    }
     
     override func error(_ error: Weberror) {
         guard let index = session.current else { return }
