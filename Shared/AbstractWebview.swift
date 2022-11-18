@@ -4,9 +4,10 @@ import Archivable
 import Engine
 
 class AbstractWebview: WKWebView, WKNavigationDelegate, WKUIDelegate, WKDownloadDelegate {
+    final var subs = Set<AnyCancellable>()
     private static var rules: WKContentRuleList?
     private weak var cloud: Cloud<Archive>!
-    final var subs = Set<AnyCancellable>()
+    private let history = PassthroughSubject<(url: URL, title: String), Never>()
     
     required init?(coder: NSCoder) { nil }
     init(cloud: Cloud<Archive>, favicon: Favicon, configuration: WKWebViewConfiguration) {
@@ -42,6 +43,16 @@ class AbstractWebview: WKWebView, WKNavigationDelegate, WKUIDelegate, WKDownload
         uiDelegate = self
         allowsBackForwardNavigationGestures = true
         
+        history
+            .debounce(for: .seconds(1), scheduler: DispatchQueue.global(qos: .utility))
+            .sink { url, title in
+                Task
+                    .detached(priority: .utility) {
+                        await cloud.history(url: url, title: title)
+                    }
+            }
+            .store(in: &subs)
+        
         publisher(for: \.url)
             .compactMap {
                 $0
@@ -52,12 +63,8 @@ class AbstractWebview: WKWebView, WKNavigationDelegate, WKUIDelegate, WKDownload
                     $0
                 }
                 .removeDuplicates())
-            .debounce(for: .seconds(1), scheduler: DispatchQueue.global(qos: .utility))
-            .sink { url, title in
-                Task
-                    .detached(priority: .utility) {
-                        await cloud.history(url: url, title: title)
-                    }
+            .sink { [weak self] url, title in
+                self?.history.send((url, title))
             }
             .store(in: &subs)
         
@@ -242,11 +249,7 @@ class AbstractWebview: WKWebView, WKNavigationDelegate, WKUIDelegate, WKDownload
     
     private func error(url: URL?, message: String) {
         error(.init(url: url, message: message))
-
-        Task
-            .detached(priority: .utility) { [weak self] in
-                guard let url = url else { return }
-                await self?.cloud.history(url: url, title: message)
-            }
+        guard let url = url else { return }
+        history.send((url, message))
     }
 }

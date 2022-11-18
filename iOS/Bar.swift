@@ -2,6 +2,7 @@ import SwiftUI
 
 struct Bar: View {
     @ObservedObject var session: Session
+    let error: Bool
     @State private var back = false
     @State private var forward = false
     @State private var progress = AnimatablePair(Double(), Double())
@@ -28,36 +29,40 @@ struct Bar: View {
             }
             .padding(.leading, 10)
            
-            if let webview {
-                button(icon: "chevron.backward", disabled: !back) {
-                    webview.goBack()
+            if error {
+                Spacer()
+            } else {
+                if let webview {
+                    button(icon: "chevron.backward", disabled: !back) {
+                        webview.goBack()
+                    }
+                    .onReceive(webview.publisher(for: \.canGoBack)) {
+                        back = $0
+                    }
                 }
-                .onReceive(webview.publisher(for: \.canGoBack)) {
-                    back = $0
+                
+                Spacer()
+                
+                Button {
+                    session.field.becomeFirstResponder()
+                } label: {
+                    ZStack {
+                        RoundedRectangle(cornerRadius: 12, style: .continuous)
+                            .fill(Color.secondary)
+                    }
+                    .frame(height: 36)
+                    .frame(maxWidth: 160)
                 }
-            }
-            
-            Spacer()
-            
-            Button {
-                session.field.becomeFirstResponder()
-            } label: {
-                ZStack {
-                    RoundedRectangle(cornerRadius: 12, style: .continuous)
-                        .fill(Color.secondary)
-                }
-                .frame(height: 36)
-                .frame(maxWidth: 160)
-            }
-            
-            Spacer()
-            
-            if let webview {
-                button(icon: "chevron.forward", disabled: !forward) {
-                    webview.goForward()
-                }
-                .onReceive(webview.publisher(for: \.canGoForward)) {
-                    forward = $0
+                
+                Spacer()
+                
+                if let webview {
+                    button(icon: "chevron.forward", disabled: !forward) {
+                        webview.goForward()
+                    }
+                    .onReceive(webview.publisher(for: \.canGoForward)) {
+                        forward = $0
+                    }
                 }
             }
             

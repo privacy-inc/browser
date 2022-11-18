@@ -6,20 +6,31 @@ struct Website: View {
     private let url: String
     private let title: String
     private let domain: String
+    private let error: Bool
     private let badge: Bool
     @StateObject private var icon = Icon()
     
-    init(session: Session, url: String, title: String, badge: Bool = false) {
+    init(session: Session, url: String, title: String, error: Bool = false, badge: Bool = false) {
         self.session = session
         self.url = url
         self.domain = url.domain
         self.title = (title.isEmpty ? (url.components(separatedBy: "://").last ?? url) : title) + "\n"
+        self.error = error
         self.badge = badge
     }
     
     var body: some View {
         HStack(alignment: .top, spacing: 10) {
-            if let image = icon.image {
+            if error {
+                Image(systemName: "exclamationmark.triangle.fill")
+                    .font(.system(size: 22, weight: .medium))
+                    .symbolRenderingMode(.hierarchical)
+                    .foregroundColor(.orange)
+                    .frame(width: 28, height: 28)
+                    .allowsHitTesting(false)
+                    .offset(x: -4)
+                    .padding(.vertical, 3)
+            } else if let image = icon.image {
                 Image(uiImage: image)
                     .resizable()
                     .scaledToFit()
