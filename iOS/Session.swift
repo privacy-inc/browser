@@ -76,6 +76,7 @@ import Engine
     }
     
     func close(tab id: UUID) {
+        self[tab: id]?.webview?.clean()
         tabs
             .remove {
                 $0.id == id

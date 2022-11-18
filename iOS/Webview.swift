@@ -35,10 +35,9 @@ final class Webview: AbstractWebview {
         scrollView.clipsToBounds = true
     }
     
-    deinit {
-        Task {
-            await clean()
-        }
+    override func clean() {
+        super.clean()
+        scrollView.delegate = nil
     }
     
 //    @MainActor func resizeFont(size: CGFloat) async {
@@ -157,9 +156,5 @@ final class Webview: AbstractWebview {
         } else if let data = (willCommitWithAnimator.previewViewController?.view.subviews.first as? UIImageView)?.image?.pngData() {
             load(.init(url: data.temporal("image.png")))
         }
-    }
-    
-    private func clean() {
-        scrollView.delegate = nil
     }
 }

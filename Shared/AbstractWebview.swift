@@ -86,10 +86,12 @@ class AbstractWebview: WKWebView, WKNavigationDelegate, WKUIDelegate, WKDownload
             .store(in: &subs)
     }
     
-    deinit {
-        Task {
-            await clean()
-        }
+    func clean() {
+        stopLoading()
+        uiDelegate = nil
+        navigationDelegate = nil
+        
+        //        configuration.userContentController.removeScriptMessageHandler(forName: Script.location.method)
     }
     
 //    func deeplink(url: URL) {
@@ -228,14 +230,6 @@ class AbstractWebview: WKWebView, WKNavigationDelegate, WKUIDelegate, WKDownload
 //        }
 //        await store.removeData(ofTypes: WKWebsiteDataStore.allWebsiteDataTypes(), modifiedSince: .distantPast)
 //    }
-    
-    private func clean() {
-        stopLoading()
-        uiDelegate = nil
-        navigationDelegate = nil
-        
-        //        configuration.userContentController.removeScriptMessageHandler(forName: Script.location.method)
-    }
     
     private func error(_ error: Error) {
         self.error(url: (error as? URLError)

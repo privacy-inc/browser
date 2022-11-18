@@ -75,6 +75,9 @@ struct Tabs: View {
                     }
                     Button("Close all", role: .destructive) {
                         session.content = nil
+                        session.tabs.forEach {
+                            $0.webview?.clean()
+                        }
                         session.tabs = []
                     }
                     Button("Cancel", role: .cancel) { }
