@@ -40,9 +40,12 @@ struct Bar: View {
                         .onReceive(webview.publisher(for: \.canGoBack)) {
                             back = $0
                         }
+                        
+                        Spacer()
+                    } else {
+                        Spacer()
+                            .frame(width: 10)
                     }
-                    
-                    Spacer()
                     
                     Button {
                         session.field.becomeFirstResponder()
@@ -52,7 +55,6 @@ struct Bar: View {
                                 .fill(Color.secondary)
                         }
                         .frame(height: 36)
-                        .frame(maxWidth: 260)
                     }
                     
                     if let webview = tab.webview {
