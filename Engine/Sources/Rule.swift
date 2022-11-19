@@ -39,7 +39,7 @@ public struct Rule {
     }
     
     private static var items: [Self] {
-        cookies + ads + screen + dark + thirdParty
+        cookies + ads + screen + dark
     }
     
     private static var cookies: [Self] {
