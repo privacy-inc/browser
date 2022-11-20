@@ -3,6 +3,7 @@ import SwiftUI
 extension Bar {
     struct Detail: View {
         @ObservedObject var session: Session
+        @State private var reader = false
         
         var body: some View {
             NavigationStack {
@@ -17,26 +18,18 @@ extension Bar {
                             Button("Reload") {
                                 
                             }
-                            
-                            Menu {
-                                HStack {
-                                    Button("-") {
-                                        
-                                    }
-                                    
-                                    Text("8%")
-                                    
-                                    Button("+") {
-                                        
-                                    }
-                                }
+
+                            Button {
+                                reader = true
                             } label: {
                                 Image(systemName: "textformat.size")
                             }
-
+                            .sheet(isPresented: $reader) {
+                                Reader(session: session)
+                            }
                             
                             Button("Bookmark") {
-                                
+
                             }
                         }
                     }

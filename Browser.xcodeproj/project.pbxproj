@@ -35,6 +35,8 @@
 		CECB8D8129114C40002600F1 /* Tab.swift in Sources */ = {isa = PBXBuildFile; fileRef = CECB8D8029114C40002600F1 /* Tab.swift */; };
 		CECB8D8429116030002600F1 /* AbstractWebview.swift in Sources */ = {isa = PBXBuildFile; fileRef = CECB8D8329116030002600F1 /* AbstractWebview.swift */; };
 		CECB8D862911620F002600F1 /* Webview.swift in Sources */ = {isa = PBXBuildFile; fileRef = CECB8D852911620F002600F1 /* Webview.swift */; };
+		CECF48B4292A5C9B00251A2D /* Bar.Reader.swift in Sources */ = {isa = PBXBuildFile; fileRef = CECF48B3292A5C9B00251A2D /* Bar.Reader.swift */; };
+		CECF48B6292A5F6600251A2D /* AttributedString.swift in Sources */ = {isa = PBXBuildFile; fileRef = CECF48B5292A5F6600251A2D /* AttributedString.swift */; };
 		CEE1F16829278F740084A331 /* Detail.NewTab.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEE1F16729278F740084A331 /* Detail.NewTab.swift */; };
 		CEE1F16A29278FC00084A331 /* Detail.Tab.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEE1F16929278FC00084A331 /* Detail.Tab.swift */; };
 		CEE1F16C292790160084A331 /* Detail.Error.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEE1F16B292790160084A331 /* Detail.Error.swift */; };
@@ -75,6 +77,8 @@
 		CECB8D8029114C40002600F1 /* Tab.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Tab.swift; sourceTree = "<group>"; };
 		CECB8D8329116030002600F1 /* AbstractWebview.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AbstractWebview.swift; sourceTree = "<group>"; };
 		CECB8D852911620F002600F1 /* Webview.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Webview.swift; sourceTree = "<group>"; };
+		CECF48B3292A5C9B00251A2D /* Bar.Reader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Bar.Reader.swift; sourceTree = "<group>"; };
+		CECF48B5292A5F6600251A2D /* AttributedString.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AttributedString.swift; sourceTree = "<group>"; };
 		CEE1F16729278F740084A331 /* Detail.NewTab.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Detail.NewTab.swift; sourceTree = "<group>"; };
 		CEE1F16929278FC00084A331 /* Detail.Tab.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Detail.Tab.swift; sourceTree = "<group>"; };
 		CEE1F16B292790160084A331 /* Detail.Error.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Detail.Error.swift; sourceTree = "<group>"; };
@@ -110,6 +114,7 @@
 				CEAA60442911378A00431596 /* Info.plist */,
 				CEAA603529112F5D00431596 /* App.swift */,
 				CEE1F16D29279CA80084A331 /* Bar.Detail.swift */,
+				CECF48B3292A5C9B00251A2D /* Bar.Reader.swift */,
 				CE1324422912D0FE00418B13 /* Bar.swift */,
 				CEE1F16F2927B75A0084A331 /* Bar.Web.swift */,
 				CEB9430C291E7F1C00DF793C /* Bookmarks.Edit.swift */,
@@ -165,6 +170,7 @@
 			isa = PBXGroup;
 			children = (
 				CECB8D8329116030002600F1 /* AbstractWebview.swift */,
+				CECF48B5292A5F6600251A2D /* AttributedString.swift */,
 				CE67A58F292673120005FCB9 /* Weberror.swift */,
 			);
 			path = Shared;
@@ -248,6 +254,7 @@
 				CECB8D862911620F002600F1 /* Webview.swift in Sources */,
 				CE1324432912D0FE00418B13 /* Bar.swift in Sources */,
 				CECB8D7929113BA3002600F1 /* Session.swift in Sources */,
+				CECF48B6292A5F6600251A2D /* AttributedString.swift in Sources */,
 				CEAA603829112F5D00431596 /* Navigation.swift in Sources */,
 				CEB94307291E51A900DF793C /* Tabber.swift in Sources */,
 				CEB9430B291E707B00DF793C /* Content.swift in Sources */,
@@ -259,6 +266,7 @@
 				CE6BFCFF291D51F200595BEF /* Bookmarks.swift in Sources */,
 				CE36C092291534690038B79F /* Tabs.swift in Sources */,
 				CE6391E229197466000FCEF0 /* Icon.swift in Sources */,
+				CECF48B4292A5C9B00251A2D /* Bar.Reader.swift in Sources */,
 				CE36C0962915381B0038B79F /* Category.swift in Sources */,
 				CECB8D7729113A86002600F1 /* Sidebar.swift in Sources */,
 				CEACBD202917F14600A7104A /* History.swift in Sources */,
