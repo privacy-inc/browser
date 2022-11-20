@@ -26,7 +26,7 @@ final class Webview: AbstractWebview {
                            UserDefaults
                 .standard
                 .publisher(for: \.font))
-            .debounce(for: .seconds(0.2), scheduler: DispatchQueue.main)
+            .debounce(for: .seconds(0.1), scheduler: DispatchQueue.main)
             .sink { [weak self] result in
                 Task { [weak self] in
                     await self?.update(font: result.2)

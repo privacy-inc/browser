@@ -4,6 +4,7 @@ extension Bar {
     struct Detail: View {
         @ObservedObject var session: Session
         @State private var reader = false
+        @Environment(\.dismiss) private var dismiss
         
         var body: some View {
             NavigationStack {
@@ -24,7 +25,9 @@ extension Bar {
                             } label: {
                                 Image(systemName: "textformat.size")
                             }
-                            .sheet(isPresented: $reader) {
+                            .sheet(isPresented: $reader, onDismiss: {
+                                dismiss()
+                            }) {
                                 Reader(session: session)
                             }
                             
