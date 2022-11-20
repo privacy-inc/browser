@@ -3,38 +3,30 @@ import SwiftUI
 extension Bar {
     struct Reader: View {
         let session: Session
-        @State private var size = Double(1)
+        @AppStorage("font") private var size = Int(100)
         
         var body: some View {
             VStack {
                 HStack(spacing: 0) {
                     Button {
-                        if size > 0.3 {
-                            size -= 0.25
+                        if size > 30 {
+                            size -= 25
                         } else {
-                            size -= 0.025
+                            size -= 2
                         }
-    //
-    //                    Task {
-    //                        await session.items[index].web!.resizeFont(size: size)
-    //                    }
                     } label: {
                         Image(systemName: "textformat.size.smaller")
                             .font(.system(size: 20, weight: .semibold))
                             .contentShape(Rectangle())
                             .frame(width: 55, height: 50)
                     }
-                    .foregroundStyle(size > 0.03 ? .primary : .tertiary)
-                    .allowsHitTesting(size > 0.03)
+                    .foregroundStyle(size > 3 ? .primary : .tertiary)
+                    .allowsHitTesting(size > 3)
                     
                     Button {
-                        size = 1
-    //
-    //                    Task {
-    //                        await session.items[index].web!.resizeFont(size: size)
-    //                    }
+                        size = 100
                     } label: {
-                        Text((.plain(value: .init(size * 100)) + .init("%"))
+                        Text((.plain(value: size) + .init("%"))
                             .numeric(font: .init(UIFont.systemFont(ofSize: 20, weight: .bold, width: .condensed)).monospacedDigit(), color: .accentColor))
                         .font(.system(size: 14, weight: .regular))
                         .foregroundColor(.secondary)
@@ -47,24 +39,19 @@ extension Bar {
                     .padding(.vertical, 15)
                     
                     Button {
-                                            if size < 0.25 {
-                                                size = 0.25
-                                            } else {
-                                                size += 0.25
-                                            }
-                        //
-                        //                    Task {
-                        //                        await session.items[index].web!.resizeFont(size: size)
-                        //                    }
+                        if size < 25 {
+                            size = 25
+                        } else {
+                            size += 25
+                        }
                     } label: {
                         Image(systemName: "textformat.size.larger")
                             .font(.system(size: 20, weight: .semibold))
                             .contentShape(Rectangle())
                             .frame(width: 55, height: 50)
                     }
-                    
-                    .foregroundStyle(size < 15 ? .primary : .tertiary)
-                    .allowsHitTesting(size < 15)
+                    .foregroundStyle(size < 1500 ? .primary : .tertiary)
+                    .allowsHitTesting(size < 1500)
                 }
                 Spacer()
             }

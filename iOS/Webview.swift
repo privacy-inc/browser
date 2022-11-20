@@ -33,6 +33,19 @@ final class Webview: AbstractWebview {
         scrollView.keyboardDismissMode = .none
         scrollView.contentInsetAdjustmentBehavior = .never
         scrollView.clipsToBounds = true
+        
+        publisher(for: \.url)
+            .combineLatest(publisher(for: \.isLoading),
+                           UserDefaults
+                .standard
+                .publisher(for: \.font))
+            .debounce(for: .seconds(0.2), scheduler: DispatchQueue.main)
+            .sink { [weak self] result in
+                Task { [weak self] in
+                    await self?.update(font: result.2)
+                }
+            }
+            .store(in: &subs)
     }
     
     override func clean() {
@@ -157,5 +170,20 @@ final class Webview: AbstractWebview {
         } else if let data = (willCommitWithAnimator.previewViewController?.view.subviews.first as? UIImageView)?.image?.pngData() {
             load(.init(url: data.temporal("image.png")))
         }
+    }
+    
+    private func update(font: Int) async {
+        var current = 100
+        
+        if let string = try? await evaluateJavaScript("document.body.style.webkitTextSizeAdjust") as? String,
+           let read = Int(string.replacingOccurrences(of: "%", with: "")) {
+            current = read
+        }
+        
+        guard current != font else { return }
+        
+        print("update font \(font)")
+        evaluateJavaScript("document.body.style.webkitTextSizeAdjust='\(font)%'",
+                           completionHandler: nil)
     }
 }
