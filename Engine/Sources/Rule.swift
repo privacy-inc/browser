@@ -39,7 +39,7 @@ public struct Rule {
     }
     
     private static var items: [Self] {
-        cookies + ads + screen + dark
+        cookies + ads + screen
     }
     
     private static var cookies: [Self] {
@@ -153,11 +153,6 @@ public struct Rule {
          .init(.nytimes, [".expanded-dock"]),
          .init(.wordpress, ["#cmp-app-container"]),
          .init(["#gdpr-consent-tool-wrapper"])]
-    }
-    
-    private static var dark: [Self] {
-        [.init(.google, [".P1Ycoe",
-                         "#sDeBje"])]
     }
     
     private static var thirdParty: [Self] {
