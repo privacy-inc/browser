@@ -13,18 +13,18 @@ extension Bar {
         
         var body: some View {
             Section {
-                Text("\(title)\(Text(url).foregroundColor(.secondary).font(.callout.weight(.regular)))")
-                    .font(.title3.weight(.medium))
+                Text("\(title)\(Text(url).foregroundColor(.secondary).font(.footnote.weight(.regular)))")
+                    .font(.body.weight(.medium))
                     .fixedSize(horizontal: false, vertical: true)
                     .padding(.vertical, 3)
             } header: {
                 HStack {
                     Text(domain)
-                        .font(.callout.weight(.medium))
+                        .font(.footnote.weight(.medium))
                         .foregroundStyle(.secondary)
                     Spacer()
                     Image(systemName: secure ? "lock.fill" : "exclamationmark.triangle.fill")
-                        .font(.system(size: 16, weight: .medium))
+                        .font(.system(size: 12, weight: .medium))
                         .foregroundStyle(secure ? .blue : .pink)
                         .font(.footnote)
                 }
@@ -47,23 +47,15 @@ extension Bar {
             
             Section {
                 NavigationLink(destination: Circle()) {
-
-                    
                     HStack {
                         Text(trackersPrevented == 1 ? "Tracker prevented" : "Trackers prevented")
                             .font(.callout.weight(.regular))
+                        
                         Spacer()
                         
-                        ZStack {
-                            Capsule()
-                                .fill(Color.accentColor)
-                            Text("\(trackersPrevented.formatted())")
-                                .font(.init(UIFont.systemFont(ofSize: 16, weight: .semibold, width: .condensed)).monospacedDigit())
-                                .foregroundColor(.white)
-                                .padding(.vertical, 2)
-                                .padding(.horizontal, 10)
-                        }
-                        .fixedSize()
+                        Text("\(trackersPrevented.formatted())")
+                            .font(.init(UIFont.systemFont(ofSize: 20, weight: .bold, width: .condensed)).monospacedDigit())
+                            .foregroundColor(.accentColor)
                     }
                 }
                 .disabled(trackersPrevented == 0)
