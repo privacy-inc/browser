@@ -13,29 +13,36 @@ extension Bar {
         
         var body: some View {
             Section {
-                Text("\(title)\(Text(url).foregroundColor(.secondary).font(.footnote.weight(.regular)))")
-                    .font(.body.weight(.medium))
-                    .fixedSize(horizontal: false, vertical: true)
-                    .padding(.vertical, 3)
-            } header: {
-                HStack {
-                    Text(domain)
-                        .font(.footnote.weight(.medium))
+                VStack(alignment: .leading, spacing: 0) {
+                    HStack {
+                        Spacer()
+                        Image(systemName: secure ? "lock.fill" : "exclamationmark.triangle.fill")
+                            .font(.system(size: 14, weight: .medium))
+                            .foregroundStyle(secure ? .blue : .pink)
+                            .font(.footnote)
+                    }
+                    
+                    if !title.isEmpty {
+                        Text(title)
+                            .font(.body.weight(.medium))
+                            .fixedSize(horizontal: false, vertical: true)
+                            .textSelection(.enabled)
+                            .padding(.bottom, 2)
+                    }
+                    
+                    Text(url)
+                        .font(.footnote.weight(.regular))
                         .foregroundStyle(.secondary)
-                    Spacer()
-                    Image(systemName: secure ? "lock.fill" : "exclamationmark.triangle.fill")
-                        .font(.system(size: 12, weight: .medium))
-                        .foregroundStyle(secure ? .blue : .pink)
-                        .font(.footnote)
+                        .fixedSize(horizontal: false, vertical: true)
+                        .textSelection(.enabled)
+                        .padding(.bottom, 3)
                 }
-                .padding(.top)
+                .frame(maxWidth: .greatestFiniteMagnitude, alignment: .leading)
             }
-            .headerProminence(.increased)
             .listSectionSeparator(.hidden)
+            .listRowSeparator(.hidden)
             .onReceive(webview.publisher(for: \.title)) {
-                title = ($0?.isEmpty == false
-                         ? $0!
-                         : url.components(separatedBy: "://").last ?? url) + "\n"
+                title = $0 ?? ""
             }
             .onReceive(webview.publisher(for: \.url)) {
                 url = $0?.absoluteString ?? ""

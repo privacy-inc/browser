@@ -17,6 +17,24 @@ extension Bar {
                             Button("Reload") {
                                 
                             }
+                            
+                            Menu {
+                                HStack {
+                                    Button("-") {
+                                        
+                                    }
+                                    
+                                    Text("8%")
+                                    
+                                    Button("+") {
+                                        
+                                    }
+                                }
+                            } label: {
+                                Image(systemName: "textformat.size")
+                            }
+
+                            
                             Button("Bookmark") {
                                 
                             }
