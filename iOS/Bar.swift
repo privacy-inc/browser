@@ -92,7 +92,7 @@ struct Bar: View {
             Image(systemName: icon)
                 .foregroundStyle(disabled ? .tertiary : .primary)
                 .foregroundColor(.primary)
-                .font(.system(size: 21, weight: .medium))
+                .font(.system(size: 21, weight: .regular))
                 .contentShape(Rectangle())
                 .frame(width: 55, height: 40)
         }

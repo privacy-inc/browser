@@ -24,9 +24,8 @@ struct Detail: View {
         .id(id)
         .toolbar(.hidden, for: .navigationBar)
         .safeAreaInset(edge: .bottom, spacing: 0) {
-            if !session.typing {
-                Bar(session: session)
-            }
+            Bar(session: session)
         }
+        .ignoresSafeArea(.keyboard)
     }
 }

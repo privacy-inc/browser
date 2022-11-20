@@ -98,7 +98,8 @@ final class Webview: AbstractWebview {
     }
     
     func webView(_: WKWebView, didStartProvisionalNavigation: WKNavigation!) {
-        UIApplication.shared.hide()
+//        UIApplication.shared.hide()
+//        session.typing = false
     }
     
     func webView(_: WKWebView, createWebViewWith: WKWebViewConfiguration, for action: WKNavigationAction, windowFeatures: WKWindowFeatures) -> WKWebView? {

@@ -93,7 +93,6 @@ final class Field: UIView, UIKeyInput, UITextFieldDelegate {
     
     @discardableResult override func becomeFirstResponder() -> Bool {
         DispatchQueue.main.async { [weak self] in
-            self?.session.typing = true
             self?.field.becomeFirstResponder()
         }
         return super.becomeFirstResponder()
@@ -115,7 +114,6 @@ final class Field: UIView, UIKeyInput, UITextFieldDelegate {
     
     func textFieldDidEndEditing(_: UITextField) {
         editable = true
-        session.typing = false
         field.text = ""
     }
     

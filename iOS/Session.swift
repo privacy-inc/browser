@@ -6,7 +6,6 @@ import Engine
     @Published var sidebar: Category? = .tabs
     @Published var content: Content?
     @Published var tabs: [Tab]
-    @Published var typing = false
     @Published var settings = Settings()
     @Published var columns = NavigationSplitViewVisibility.doubleColumn
     let field = Field()
