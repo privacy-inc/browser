@@ -4,20 +4,7 @@ import Engine
 
 final class Webview: AbstractWebview {
     private weak var session: Session!
-//    private let session: Session
     
-//    @MainActor var fontSize: CGFloat {
-//        get async {
-//            guard
-//                let string = try? await evaluateJavaScript(Script.text.script) as? String,
-//                let int = Int(string.replacingOccurrences(of: "%", with: ""))
-//            else {
-//                return 1
-//            }
-//            return .init(int) / 100
-//        }
-//    }
-//
     required init?(coder: NSCoder) { nil }
     init(session: Session) {
         self.session = session
@@ -52,11 +39,6 @@ final class Webview: AbstractWebview {
         super.clean()
         scrollView.delegate = nil
     }
-    
-//    @MainActor func resizeFont(size: CGFloat) async {
-//        resignFirstResponder()
-//        _ = try? await evaluateJavaScript(Script.text(size: size))
-//    }
     
 //    override func webView(_ webView: WKWebView, navigationAction: WKNavigationAction, didBecome: WKDownload) {
 //        super.webView(webView, navigationAction: navigationAction, didBecome: didBecome)
@@ -111,8 +93,7 @@ final class Webview: AbstractWebview {
     }
     
     func webView(_: WKWebView, didStartProvisionalNavigation: WKNavigation!) {
-//        UIApplication.shared.hide()
-//        session.typing = false
+        UIApplication.shared.hide()
     }
     
     func webView(_: WKWebView, createWebViewWith: WKWebViewConfiguration, for action: WKNavigationAction, windowFeatures: WKWindowFeatures) -> WKWebView? {
@@ -182,7 +163,6 @@ final class Webview: AbstractWebview {
         
         guard current != font else { return }
         
-        print("update font \(font)")
         evaluateJavaScript("document.body.style.webkitTextSizeAdjust='\(font)%'",
                            completionHandler: nil)
     }
