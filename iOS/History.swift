@@ -1,9 +1,12 @@
 import SwiftUI
+import Engine
 
 struct History: View {
     @ObservedObject var session: Session
+    @State private var history = [Engine.History]()
     @State private var days = [Day]()
     @State private var alert = false
+    @State private var search = ""
     
     var body: some View {
         List {
@@ -45,6 +48,7 @@ struct History: View {
             }
         }
         .listStyle(.plain)
+        .searchable(text: $search)
         .navigationTitle("History")
         .toolbar {
             ToolbarItem(placement: .primaryAction) {
@@ -70,21 +74,37 @@ struct History: View {
                 }
             }
         }
+        .onChange(of: search) {
+            update(search: $0)
+        }
         .onReceive(session.cloud) {
-            days = $0
-                .history
-                .reduce(into: []) { result, item in
-                    guard let last = result.last?.date else {
-                        result.append(.init(item: item))
-                        return
-                    }
-                    if Calendar.current.isDate(last, inSameDayAs: .init(timestamp: item.date)) {
-                        var day = result.removeLast()
-                        day.items.append(item)
-                        result.append(day)
-                    } else {
-                        result.append(.init(item: item))
-                    }
+            history = $0.history
+            update(search: search)
+        }
+    }
+    
+    private func update(search: String) {
+        days = history
+            .filter {
+                let filter = search.trimmingCharacters(in: .whitespacesAndNewlines)
+                
+                guard !filter.isEmpty else { return true }
+                
+                return $0.url.localizedCaseInsensitiveContains(search)
+                    || $0.title.localizedCaseInsensitiveContains(search)
+            }
+            .reduce(into: []) { result, item in
+                guard let last = result.last?.date else {
+                    result.append(.init(item: item))
+                    return
+                }
+                
+                if Calendar.current.isDate(last, inSameDayAs: .init(timestamp: item.date)) {
+                    var day = result.removeLast()
+                    day.items.append(item)
+                    result.append(day)
+                } else {
+                    result.append(.init(item: item))
                 }
         }
     }
