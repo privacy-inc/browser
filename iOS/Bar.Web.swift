@@ -54,7 +54,7 @@ extension Bar {
                                 .foregroundStyle(.secondary)
                                 .foregroundColor(secure ? .blue : .pink)
                                 .contentShape(Rectangle())
-                                .frame(width: 50, height: 25)
+                                .frame(width: 50, height: 30)
                                 .padding(.top, 20)
                         }
                         .popover(isPresented: $encryption) {
@@ -82,15 +82,25 @@ extension Bar {
                     }
                     .frame(maxWidth: .greatestFiniteMagnitude, alignment: .leading)
                     
-                    Button {
-                        dismiss()
-                    } label: {
-                        Image(systemName: "xmark.circle.fill")
-                            .font(.system(size: 24, weight: .regular))
-                            .symbolRenderingMode(.hierarchical)
-                            .foregroundStyle(.secondary)
-                            .contentShape(Rectangle())
-                            .frame(width: 50, height: 45)
+                    HStack(spacing: 0) {
+                        ShareLink(item: webview.url!) {
+                            Image(systemName: "square.and.arrow.up")
+                                .symbolRenderingMode(.hierarchical)
+                                .font(.system(size: 19, weight: .bold))
+                                .contentShape(Rectangle())
+                                .frame(width: 70, height: 50)
+                        }
+                        
+                        Button {
+                            dismiss()
+                        } label: {
+                            Image(systemName: "xmark.circle.fill")
+                                .font(.system(size: 27, weight: .regular))
+                                .symbolRenderingMode(.hierarchical)
+                                .foregroundColor(.secondary)
+                                .contentShape(Rectangle())
+                                .frame(width: 55, height: 50)
+                        }
                     }
                 }
                 .fixedSize(horizontal: false, vertical: true)
