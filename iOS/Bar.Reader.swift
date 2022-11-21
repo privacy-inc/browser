@@ -19,6 +19,7 @@ extension Bar {
                             .font(.system(size: 20, weight: .semibold))
                             .contentShape(Rectangle())
                             .frame(width: 55, height: 50)
+                            .padding(.leading, 20)
                     }
                     .foregroundStyle(size > 3 ? .primary : .tertiary)
                     .allowsHitTesting(size > 3)
@@ -49,6 +50,7 @@ extension Bar {
                             .font(.system(size: 20, weight: .semibold))
                             .contentShape(Rectangle())
                             .frame(width: 55, height: 50)
+                            .padding(.trailing, 20)
                     }
                     .foregroundStyle(size < 1500 ? .primary : .tertiary)
                     .allowsHitTesting(size < 1500)

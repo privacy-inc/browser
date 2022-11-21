@@ -9,74 +9,102 @@ extension Bar {
         @State private var title = ""
         @State private var domain = ""
         @State private var secure = true
+        @State private var encryption = false
         @State private var trackersPrevented = 0
+        @Environment(\.dismiss) private var dismiss
         
         var body: some View {
-            Section {
-                VStack(alignment: .leading, spacing: 0) {
-                    HStack {
-                        Spacer()
-                        Image(systemName: secure ? "lock.fill" : "exclamationmark.triangle.fill")
-                            .font(.system(size: 14, weight: .medium))
-                            .foregroundStyle(secure ? .blue : .pink)
-                            .font(.footnote)
+            List {
+                Section {
+                    NavigationLink(destination: Circle()) {
+                        HStack {
+                            Text(trackersPrevented == 1 ? "Tracker prevented" : "Trackers prevented")
+                                .font(.callout.weight(.regular))
+                            
+                            Spacer()
+                            
+                            Text("\(trackersPrevented.formatted())")
+                                .font(.init(UIFont.systemFont(ofSize: 20, weight: .bold, width: .condensed)).monospacedDigit())
+                                .foregroundColor(.accentColor)
+                        }
                     }
+                    .disabled(trackersPrevented == 0)
+                }
+                .listSectionSeparator(.hidden)
+                .onReceive(session.cloud) {
+                    trackersPrevented = $0.tracking.count(domain: domain)
+                }
+                
+                Section("Media") {
                     
-                    if !title.isEmpty {
-                        Text(title)
-                            .font(.body.weight(.medium))
+                }
+                .textCase(.none)
+                .listSectionSeparator(.hidden)
+            }
+            .safeAreaInset(edge: .top, spacing: 0) {
+                ZStack(alignment: .topTrailing) {
+                    Color(.systemBackground)
+                    
+                    VStack(alignment: .leading, spacing: 0) {
+                        Button {
+                            encryption = true
+                        } label: {
+                            Image(systemName: secure ? "lock.fill" : "exclamationmark.triangle.fill")
+                                .font(.system(size: 14, weight: .medium))
+                                .foregroundStyle(.secondary)
+                                .foregroundColor(secure ? .blue : .pink)
+                                .contentShape(Rectangle())
+                                .frame(width: 50, height: 25)
+                                .padding(.top, 20)
+                        }
+                        .popover(isPresented: $encryption) {
+                            Encryption(url: url, secure: secure)
+                        }
+                        
+                        if !title.isEmpty {
+                            Text(title)
+                                .font(.body.weight(.medium))
+                                .fixedSize(horizontal: false, vertical: true)
+                                .textSelection(.enabled)
+                                .padding(.bottom, 2)
+                                .padding(.horizontal)
+                        }
+                        
+                        Text(url)
+                            .font(.footnote.weight(.regular))
+                            .foregroundStyle(.secondary)
                             .fixedSize(horizontal: false, vertical: true)
                             .textSelection(.enabled)
-                            .padding(.bottom, 2)
+                            .padding(.horizontal)
+                        
+                        Divider()
+                            .padding(.top, 14)
                     }
+                    .frame(maxWidth: .greatestFiniteMagnitude, alignment: .leading)
                     
-                    Text(url)
-                        .font(.footnote.weight(.regular))
-                        .foregroundStyle(.secondary)
-                        .fixedSize(horizontal: false, vertical: true)
-                        .textSelection(.enabled)
-                        .padding(.bottom, 3)
-                }
-                .frame(maxWidth: .greatestFiniteMagnitude, alignment: .leading)
-            }
-            .listSectionSeparator(.hidden)
-            .listRowSeparator(.hidden)
-            .onReceive(webview.publisher(for: \.title)) {
-                title = $0 ?? ""
-            }
-            .onReceive(webview.publisher(for: \.url)) {
-                url = $0?.absoluteString ?? ""
-                domain = url.domain
-            }
-            .onReceive(webview.publisher(for: \.hasOnlySecureContent)) {
-                secure = $0
-            }
-            
-            Section {
-                NavigationLink(destination: Circle()) {
-                    HStack {
-                        Text(trackersPrevented == 1 ? "Tracker prevented" : "Trackers prevented")
-                            .font(.callout.weight(.regular))
-                        
-                        Spacer()
-                        
-                        Text("\(trackersPrevented.formatted())")
-                            .font(.init(UIFont.systemFont(ofSize: 20, weight: .bold, width: .condensed)).monospacedDigit())
-                            .foregroundColor(.accentColor)
+                    Button {
+                        dismiss()
+                    } label: {
+                        Image(systemName: "xmark.circle.fill")
+                            .font(.system(size: 24, weight: .regular))
+                            .symbolRenderingMode(.hierarchical)
+                            .foregroundStyle(.secondary)
+                            .contentShape(Rectangle())
+                            .frame(width: 50, height: 45)
                     }
                 }
-                .disabled(trackersPrevented == 0)
+                .fixedSize(horizontal: false, vertical: true)
+                .onReceive(webview.publisher(for: \.title)) {
+                    title = $0 ?? ""
+                }
+                .onReceive(webview.publisher(for: \.url)) {
+                    url = $0?.absoluteString ?? ""
+                    domain = url.domain
+                }
+                .onReceive(webview.publisher(for: \.hasOnlySecureContent)) {
+                    secure = $0
+                }
             }
-            .listSectionSeparator(.hidden)
-            .onReceive(session.cloud) {
-                trackersPrevented = $0.tracking.count(domain: domain)
-            }
-            
-            Section("Media") {
-                
-            }
-            .textCase(.none)
-            .listSectionSeparator(.hidden)
         }
     }
 }

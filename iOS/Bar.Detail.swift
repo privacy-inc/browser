@@ -11,31 +11,40 @@ extension Bar {
                 if case let .tab(id) = session.content,
                    let webview = session[tab: id]?.webview,
                    webview.url != nil {
-                    List {
-                        Web(session: session, webview: webview)
-                    }
-                    .toolbar {
-                        ToolbarItemGroup(placement: .bottomBar) {
-                            Button("Reload") {
+                    Web(session: session, webview: webview)
+                        .toolbar {
+                            ToolbarItemGroup(placement: .bottomBar) {
+                                Button("Reload") {
+                                    
+                                }
                                 
-                            }
-
-                            Button {
-                                reader = true
-                            } label: {
-                                Image(systemName: "textformat.size")
-                            }
-                            .sheet(isPresented: $reader, onDismiss: {
-                                dismiss()
-                            }) {
-                                Reader(session: session)
-                            }
-                            
-                            Button("Bookmark") {
-
+                                if UIDevice.current.userInterfaceIdiom == .pad {
+                                    Button {
+                                        reader = true
+                                    } label: {
+                                        Image(systemName: "textformat.size")
+                                    }
+                                    .popover(isPresented: $reader) {
+                                        Reader(session: session)
+                                    }
+                                } else {
+                                    Button {
+                                        reader = true
+                                    } label: {
+                                        Image(systemName: "textformat.size")
+                                    }
+                                    .sheet(isPresented: $reader, onDismiss: {
+                                        dismiss()
+                                    }) {
+                                        Reader(session: session)
+                                    }
+                                }
+                                
+                                Button("Bookmark") {
+                                    
+                                }
                             }
                         }
-                    }
                 }
             }
             .presentationDetents([.medium, .large])
