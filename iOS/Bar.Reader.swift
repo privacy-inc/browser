@@ -4,6 +4,7 @@ extension Bar {
     struct Reader: View {
         let session: Session
         @AppStorage("font") private var size = Int(100)
+        @Environment(\.dismiss) private var dismiss
         
         var body: some View {
             VStack {
@@ -55,9 +56,21 @@ extension Bar {
                     .foregroundStyle(size < 1500 ? .primary : .tertiary)
                     .allowsHitTesting(size < 1500)
                 }
-                Spacer()
+                .padding(.vertical, 10)
+                
+                if UIDevice.current.userInterfaceIdiom != .pad {
+                    Spacer()
+                    
+                    Button {
+                        dismiss()
+                    } label: {
+                        Text("Done")
+                            .font(.callout.weight(.medium))
+                    }
+                    .buttonStyle(.borderedProminent)
+                }
             }
-            .presentationDetents([.height(80)])
+            .presentationDetents([.height(150)])
         }
     }
 }
