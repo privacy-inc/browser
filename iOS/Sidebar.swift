@@ -9,7 +9,8 @@ struct Sidebar: View {
                 ForEach([Category.tabs,
                          .bookmarks,
                          .history,
-                         .readingList], id: \.self) {
+                         .readingList,
+                         .downloads], id: \.self) {
                              link(for: $0)
                          }
             }

@@ -31,6 +31,8 @@ struct Navigation: View {
             History(session: session)
         case .readingList:
             Reads(session: session)
+        case .downloads:
+            Reads(session: session)
         default:
             EmptyView()
         }

@@ -4,6 +4,7 @@ enum Category {
     bookmarks,
     history,
     readingList,
+    downloads,
     forget,
     report,
     settings,
@@ -21,6 +22,8 @@ enum Category {
             return "History"
         case .readingList:
             return "Reading list"
+        case .downloads:
+            return "Downloads"
         case .forget:
             return "Forget"
         case .report:
@@ -46,6 +49,8 @@ enum Category {
             return "clock"
         case .readingList:
             return "eyeglasses"
+        case .downloads:
+            return "square.and.arrow.down"
         case .forget:
             return "flame"
         case .report:
