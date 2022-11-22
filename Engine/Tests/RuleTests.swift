@@ -156,12 +156,6 @@ final class RuleTests: XCTestCase {
         XCTAssertTrue(Parser(content: Rule.list)
             .css(selectors: ["#gdpr-consent-tool-wrapper"]))
     }
-
-    func testAntidark() {
-        XCTAssertTrue(Parser(content: Rule.list)
-            .css(url: "google.com", selectors: [".P1Ycoe",
-                                                "#sDeBje"]))
-    }
 }
 
 private struct Parser {
