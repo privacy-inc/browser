@@ -7,8 +7,7 @@ final class RuleTests: XCTestCase {
         XCTAssertEqual(1, Parser(content: Rule.list).amount(url: "google.com"))
         XCTAssertTrue(Parser(content: Rule.list)
             .css(url: "google.com", selectors: ["#taw",
-                                                "#consent-bump",
-                                                ".P1Ycoe"]))
+                                                "#consent-bump"]))
     }
 
     func testAds() {

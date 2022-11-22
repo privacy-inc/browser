@@ -98,9 +98,18 @@ extension Cloud where Output == Archive {
         await update(model: model)
     }
     
-    public func policy(request: URL, from url: URL) async -> Policy {
-        var model = await model
+    public func policy(request: URL, from url: URL) -> Policy {
         let response = request.policy
+        
+        Task {
+            await policy(response: response, request: request, from: url)
+        }
+        
+        return response
+    }
+    
+    private func policy(response: Policy, request: URL, from url: URL) async {
+        var model = await model
         let domain = url.absoluteString.domain
         switch response {
         case .allow:
@@ -113,6 +122,5 @@ extension Cloud where Output == Archive {
             break
         }
         await update(model: model)
-        return response
     }
 }

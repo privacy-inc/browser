@@ -151,7 +151,7 @@ class AbstractWebview: WKWebView, WKNavigationDelegate, WKUIDelegate, WKDownload
             !(decidePolicyFor.navigationType == .linkActivated && decidePolicyFor.sourceFrame.webView == nil)
         else { return (.cancel, preferences) }
 
-        switch await cloud.policy(request: decidePolicyFor.request.url!, from: url!) {
+        switch cloud.policy(request: decidePolicyFor.request.url!, from: url!) {
         case .allow:
             if decidePolicyFor.shouldPerformDownload {
                 return (.download, preferences)
@@ -198,34 +198,15 @@ class AbstractWebview: WKWebView, WKNavigationDelegate, WKUIDelegate, WKDownload
         return .download
     }
     
-//    final func download(_: WKDownload, decidedPolicyForHTTPRedirection: HTTPURLResponse, newRequest: URLRequest) async -> WKDownload.RedirectPolicy {
-//        switch await cloud.policy(request: newRequest.url!, from: decidedPolicyForHTTPRedirection.url ?? url!) {
-//        case .allow:
-//            return .allow
-//        default:
-//            return .cancel
-//        }
-//    }
+    final func download(_: WKDownload, decidedPolicyForHTTPRedirection: HTTPURLResponse, newRequest: URLRequest) async -> WKDownload.RedirectPolicy {
+        cloud.policy(request: newRequest.url!, from: decidedPolicyForHTTPRedirection.url ?? url!) == .allow
+        ? .allow
+        : .cancel
+    }
     
-//    final func download(_: WKDownload, respondTo: URLAuthenticationChallenge) async -> (URLSession.AuthChallengeDisposition, URLCredential?) {
-//        settings.http
-//        ? (.useCredential, respondTo.protectionSpace.serverTrust.map(URLCredential.init(trust:)))
-//        : (.performDefaultHandling, nil)
-//    }
-    
-//    @MainActor final class func clear() async {
-//        URLCache.shared.removeAllCachedResponses()
-//        HTTPCookieStorage.shared.removeCookies(since: .distantPast)
-//        await clear(store: .default())
-//        await clear(store: .nonPersistent())
-//    }
-    
-//    @MainActor private class func clear(store: WKWebsiteDataStore) async {
-//        for record in await store.dataRecords(ofTypes: WKWebsiteDataStore.allWebsiteDataTypes()) {
-//            await store.removeData(ofTypes: record.dataTypes, for: [record])
-//        }
-//        await store.removeData(ofTypes: WKWebsiteDataStore.allWebsiteDataTypes(), modifiedSince: .distantPast)
-//    }
+    nonisolated final func download(_: WKDownload, respondTo: URLAuthenticationChallenge) async -> (URLSession.AuthChallengeDisposition, URLCredential?) {
+        (.useCredential, respondTo.protectionSpace.serverTrust.map(URLCredential.init(trust:)))
+    }
     
     private func error(_ error: Error) {
         self.error(url: (error as? URLError)
