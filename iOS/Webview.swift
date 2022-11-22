@@ -163,11 +163,11 @@ final class Webview: AbstractWebview {
     }
     
     @MainActor private func add(download: WKDownload) {
-        session.downloads.insert(.init(download: download), at: 0)
+        session.downloads.insert(.init(webview: self, item: download), at: 0)
     }
     
     @MainActor private func failed(downloading: WKDownload, with: Download.Fail) {
-        guard let index = session.downloads.firstIndex(where: { $0.download == downloading }) else { return }
+        guard let index = session.downloads.firstIndex(where: { $0.item == downloading }) else { return }
         session.downloads[index].fail = with
     }
 }

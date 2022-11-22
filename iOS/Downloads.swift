@@ -18,24 +18,20 @@ struct Downloads: View {
                 .listSectionSeparator(.hidden)
             } else {
                 ForEach(session.downloads) { item in
-                    Button {
-                        
-                    } label: {
-                        Text("")
-                    }
-                    .swipeActions {
-                        Button {
-                            
-                        } label: {
-                            Label("Close", systemImage: "xmark.circle.fill")
-                                .symbolRenderingMode(.hierarchical)
+                    Item(download: item)
+                        .swipeActions {
+                            Button {
+                                
+                            } label: {
+                                Label("Remove", systemImage: "xmark.circle.fill")
+                                    .symbolRenderingMode(.hierarchical)
+                            }
+                            .tint(.pink)
                         }
-                        .tint(.pink)
-                    }
                 }
             }
         }
-        .listStyle(.plain)
+        .listStyle(.grouped)
         .navigationTitle(Category.downloads.title)
     }
 }

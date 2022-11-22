@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		CE0E06EB292CFC4300C1C034 /* Download.Fail.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE0E06EA292CFC4300C1C034 /* Download.Fail.swift */; };
+		CE0E06ED292CFEF100C1C034 /* Downloads.Item.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE0E06EC292CFEF100C1C034 /* Downloads.Item.swift */; };
 		CE1324412912B00200418B13 /* Browser.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE1324402912B00200418B13 /* Browser.swift */; };
 		CE1324432912D0FE00418B13 /* Bar.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE1324422912D0FE00418B13 /* Bar.swift */; };
 		CE1324452912D1E200418B13 /* Field.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE1324442912D1E100418B13 /* Field.swift */; };
@@ -52,6 +53,7 @@
 
 /* Begin PBXFileReference section */
 		CE0E06EA292CFC4300C1C034 /* Download.Fail.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Download.Fail.swift; sourceTree = "<group>"; };
+		CE0E06EC292CFEF100C1C034 /* Downloads.Item.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Downloads.Item.swift; sourceTree = "<group>"; };
 		CE1324402912B00200418B13 /* Browser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Browser.swift; sourceTree = "<group>"; };
 		CE1324422912D0FE00418B13 /* Bar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Bar.swift; sourceTree = "<group>"; };
 		CE1324442912D1E100418B13 /* Field.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Field.swift; sourceTree = "<group>"; };
@@ -140,6 +142,7 @@
 				CEE1F16929278FC00084A331 /* Detail.Tab.swift */,
 				CE0E06EA292CFC4300C1C034 /* Download.Fail.swift */,
 				CEA53E3C292CDCCB00676FB4 /* Download.swift */,
+				CE0E06EC292CFEF100C1C034 /* Downloads.Item.swift */,
 				CEA53E3E292CE1FC00676FB4 /* Downloads.swift */,
 				CE1324442912D1E100418B13 /* Field.swift */,
 				CEACBD232917F49B00A7104A /* History.Day.swift */,
@@ -270,6 +273,7 @@
 				CECB8D862911620F002600F1 /* Webview.swift in Sources */,
 				CE1324432912D0FE00418B13 /* Bar.swift in Sources */,
 				CECB8D7929113BA3002600F1 /* Session.swift in Sources */,
+				CE0E06ED292CFEF100C1C034 /* Downloads.Item.swift in Sources */,
 				CECF48B6292A5F6600251A2D /* AttributedString.swift in Sources */,
 				CEAA603829112F5D00431596 /* Navigation.swift in Sources */,
 				CEB94307291E51A900DF793C /* Tabber.swift in Sources */,

@@ -3,11 +3,13 @@ import WebKit
 
 struct Download: Identifiable {
     var fail: Fail?
-    private(set) weak var download: WKDownload!
+    private(set) weak var webview: Webview?
+    private(set) weak var item: WKDownload!
     let id: UUID
     
-    init(download: WKDownload) {
+    init(webview: Webview, item: WKDownload) {
         id = .init()
-        self.download = download
+        self.webview = webview
+        self.item = item
     }
 }
