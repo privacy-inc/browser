@@ -90,8 +90,6 @@ class AbstractWebview: WKWebView, WKNavigationDelegate, WKUIDelegate, WKDownload
         stopLoading()
         uiDelegate = nil
         navigationDelegate = nil
-        
-        //        configuration.userContentController.removeScriptMessageHandler(forName: Script.location.method)
     }
     
     func deeplink(url: URL) {
@@ -115,20 +113,12 @@ class AbstractWebview: WKWebView, WKNavigationDelegate, WKUIDelegate, WKDownload
     }
     
     nonisolated func download(_: WKDownload, didFailWithError error: Error, resumeData: Data?) {
-//        Task {
-//            await UNUserNotificationCenter.send(message: error.localizedDescription)
-//        }
+
     }
     
     nonisolated func downloadDidFinish(_: WKDownload) {
-//        Task {
-//            await UNUserNotificationCenter.send(message: "Download finished!")
-//        }
+
     }
-    
-//    final func privacy(url: URL) {
-//        message(info: .init(url: url, title: "Privacy deeplink", icon: "eyeglasses"))
-//    }
     
     nonisolated final func webView(_: WKWebView, respondTo: URLAuthenticationChallenge) async -> (URLSession.AuthChallengeDisposition, URLCredential?) {
         (.useCredential, respondTo.protectionSpace.serverTrust.map(URLCredential.init(trust:)))

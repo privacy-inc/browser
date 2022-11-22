@@ -1,4 +1,5 @@
 import SwiftUI
+import Combine
 import Archivable
 import Engine
 
@@ -9,9 +10,11 @@ import Engine
     @Published var downloads = [Download]()
     @Published var settings = Settings()
     @Published var columns = NavigationSplitViewVisibility.doubleColumn
+    var reviewed = false
     let field = Field()
     let cloud = Cloud<Archive>.new(identifier: "iCloud.privacy")
     let favicon = Favicon()
+    let review = PassthroughSubject<Void, Never>()
     
     var current: Int? {
         guard case let .tab(id) = content else { return nil }

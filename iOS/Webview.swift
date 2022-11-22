@@ -1,6 +1,5 @@
 import WebKit
 import Engine
-//import Specs
 
 final class Webview: AbstractWebview {
     private weak var session: Session!
@@ -40,48 +39,44 @@ final class Webview: AbstractWebview {
         scrollView.delegate = nil
     }
     
-//    override func webView(_ webView: WKWebView, navigationAction: WKNavigationAction, didBecome: WKDownload) {
-//        super.webView(webView, navigationAction: navigationAction, didBecome: didBecome)
-//        session.downloads.append((download: didBecome, status: .on))
-//    }
+    override func webView(_ webView: WKWebView, navigationAction: WKNavigationAction, didBecome: WKDownload) {
+        super.webView(webView, navigationAction: navigationAction, didBecome: didBecome)
+        
+        Task {
+            await add(download: didBecome)
+        }
+    }
     
-//    override func webView(_ webView: WKWebView, navigationResponse: WKNavigationResponse, didBecome: WKDownload) {
-//        super.webView(webView, navigationResponse: navigationResponse, didBecome: didBecome)
-//        session.downloads.append((download: didBecome, status: .on))
-//    }
+    override func webView(_ webView: WKWebView, navigationResponse: WKNavigationResponse, didBecome: WKDownload) {
+        super.webView(webView, navigationResponse: navigationResponse, didBecome: didBecome)
+        
+        Task {
+            await add(download: didBecome)
+        }
+    }
     
-//    override func download(_ download: WKDownload, decideDestinationUsing: URLResponse, suggestedFilename: String) async -> URL? {
-//        FileManager.default.fileExists(atPath: URL.temporal(suggestedFilename).path)
-//        ? URL.temporal(UUID().uuidString + "_" + suggestedFilename)
-//        : URL.temporal(suggestedFilename)
-//    }
+    override func download(_ download: WKDownload, decideDestinationUsing: URLResponse, suggestedFilename: String) async -> URL? {
+        URL.temporal(suggestedFilename)
+    }
     
-//    override func download(_ download: WKDownload, didFailWithError: Error, resumeData: Data?) {
-//        super.download(download, didFailWithError: didFailWithError, resumeData: resumeData)
-//        session
-//            .downloads
-//            .remove {
-//                $0.download == download
-//            }
-//
-//        if let data = resumeData {
-//            session.downloads.append((download: download, status: .cancelled(data)))
-//        }
-//    }
+    override func download(_ download: WKDownload, didFailWithError: Error, resumeData: Data?) {
+        super.download(download, didFailWithError: didFailWithError, resumeData: resumeData)
+        let fail = Download.Fail(error: didFailWithError.localizedDescription, data: resumeData ?? .init())
+        
+        Task {
+            await failed(downloading: download, with: fail)
+        }
+    }
     
-//    override func downloadDidFinish(_ download: WKDownload) {
-//        super.downloadDidFinish(download)
-//        if Defaults.rate {
-//            UIApplication.shared.review()
-//        }
-//    }
-    
-//    override func message(info: Info) {
-//        let index = session.index(self)
-//        session.items[index].info = info
-//        session.items[index].flow = .message
-//        session.objectWillChange.send()
-//    }
+    override func downloadDidFinish(_ download: WKDownload) {
+        super.downloadDidFinish(download)
+        
+        Task {
+            await MainActor.run {
+                session.review.send()
+            }
+        }
+    }
     
     override func deeplink(url: URL) {
         UIApplication.shared.open(url)
@@ -165,5 +160,14 @@ final class Webview: AbstractWebview {
         
         evaluateJavaScript("document.body.style.webkitTextSizeAdjust='\(font)%'",
                            completionHandler: nil)
+    }
+    
+    @MainActor private func add(download: WKDownload) {
+        session.downloads.insert(.init(download: download), at: 0)
+    }
+    
+    @MainActor private func failed(downloading: WKDownload, with: Download.Fail) {
+        guard let index = session.downloads.firstIndex(where: { $0.download == downloading }) else { return }
+        session.downloads[index].fail = with
     }
 }

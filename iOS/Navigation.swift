@@ -1,7 +1,7 @@
 import SwiftUI
 
 struct Navigation: View {
-    @StateObject private var session = Session()
+    @ObservedObject var session: Session
     
     var body: some View {
         NavigationSplitView(columnVisibility: $session.columns) {
