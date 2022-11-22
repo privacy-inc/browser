@@ -39,7 +39,7 @@ struct Tabs: View {
             }
         }
         .listStyle(.plain)
-        .navigationTitle("Tabs")
+        .navigationTitle(Category.tabs.title)
         .onChange(of: session.content) { _ in
             if UIDevice.current.userInterfaceIdiom == .pad {
                 switch UIApplication.shared.scene?.interfaceOrientation {

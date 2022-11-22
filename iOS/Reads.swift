@@ -49,7 +49,7 @@ struct Reads: View {
             }
         }
         .listStyle(.plain)
-        .navigationTitle("Reading list")
+        .navigationTitle(Category.readingList.title)
         .toolbar {
             ToolbarItem(placement: .primaryAction) {
                 EditButton()

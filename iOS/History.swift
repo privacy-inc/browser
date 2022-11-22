@@ -49,7 +49,7 @@ struct History: View {
         }
         .listStyle(.plain)
         .searchable(text: $search)
-        .navigationTitle("History")
+        .navigationTitle(Category.history.title)
         .toolbar {
             ToolbarItem(placement: .primaryAction) {
                 Button {

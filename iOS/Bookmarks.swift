@@ -57,7 +57,7 @@ struct Bookmarks: View {
             }
         }
         .listStyle(.plain)
-        .navigationTitle("Bookmarks")
+        .navigationTitle(Category.bookmarks.title)
         .toolbar {
             ToolbarItemGroup(placement: .primaryAction) {
                 EditButton()

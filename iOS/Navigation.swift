@@ -32,7 +32,7 @@ struct Navigation: View {
         case .readingList:
             Reads(session: session)
         case .downloads:
-            Reads(session: session)
+            Downloads(session: session)
         default:
             EmptyView()
         }
