@@ -66,7 +66,7 @@ extension Bar {
                                     Label(isBookmark ? "Remove from bookmarks" : "Add to bookmarks",
                                           systemImage: isBookmark ? "bookmark.fill" : "bookmark")
                                         .symbolRenderingMode(.hierarchical)
-                                        .font(.system(size: 15, weight: .bold))
+                                        .font(.system(size: 14, weight: .bold))
                                         .contentShape(Rectangle())
                                         .frame(minWidth: 50, minHeight: 40)
                                 }

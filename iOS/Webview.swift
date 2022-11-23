@@ -1,8 +1,10 @@
-import WebKit
+@preconcurrency import WebKit
+import Combine
 import Engine
 
 final class Webview: AbstractWebview {
     private weak var session: Session!
+    let downloads = PassthroughSubject<Void, Never>()
     
     required init?(coder: NSCoder) { nil }
     init(session: Session) {
@@ -74,6 +76,7 @@ final class Webview: AbstractWebview {
         Task {
             await MainActor.run {
                 session.review.send()
+                downloads.send()
             }
         }
     }
@@ -164,10 +167,12 @@ final class Webview: AbstractWebview {
     
     @MainActor private func add(download: WKDownload) {
         session.downloads.insert(.init(webview: self, item: download), at: 0)
+        downloads.send()
     }
     
     @MainActor private func failed(downloading: WKDownload, with: Download.Fail) {
         guard let index = session.downloads.firstIndex(where: { $0.item == downloading }) else { return }
         session.downloads[index].fail = with
+        downloads.send()
     }
 }

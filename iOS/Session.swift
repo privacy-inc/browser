@@ -36,16 +36,24 @@ import Engine
     }
     
     func newTab() {
-        let tab = Tab()
-        tabs.append(tab)
-        content = .tab(tab.id)
-        sidebar = .tabs
+        var waiting = 0.0
         
-        if UIDevice.current.userInterfaceIdiom == .pad {
-            columns = .detailOnly
+        if UIDevice.current.userInterfaceIdiom == .phone, sidebar != .tabs {
+            waiting = 0.5
         }
         
-        field.becomeFirstResponder()
+        let tab = Tab()
+        tabs.append(tab)
+        sidebar = .tabs
+        
+        DispatchQueue.main.asyncAfter(deadline: .now() + waiting) { [weak self] in
+            self?.content = .tab(tab.id)
+            self?.field.becomeFirstResponder()
+            
+            if UIDevice.current.userInterfaceIdiom == .pad {
+                self?.columns = .detailOnly
+            }
+        }
     }
     
     func search(string: String) {

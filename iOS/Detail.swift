@@ -10,7 +10,7 @@ struct Detail: View {
                 if let error = tab.error {
                     Error(session: session, error: error)
                 } else {
-                    Tab(webview: webview)
+                    Tab(session: session, webview: webview)
                 }
             } else {
                 NewTab(session: session)
