@@ -16,10 +16,6 @@ extension Detail {
                     .frame(maxWidth: .greatestFiniteMagnitude, maxHeight: .greatestFiniteMagnitude)
             }
             .ignoresSafeArea(.all)
-            .task {
-                guard session.tabs.count > 1 else { return }
-                session.field.becomeFirstResponder()
-            }
         }
     }
 }

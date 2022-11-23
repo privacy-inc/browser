@@ -6,7 +6,7 @@ struct Detail: View {
     
     var body: some View {
         VStack(spacing: 0) {
-            if let tab = session[tab: id], let webview = tab.webview {
+            if let tab = session.tabs[id], let webview = tab.webview {
                 if let error = tab.error {
                     Error(session: session, error: error)
                 } else {

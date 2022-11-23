@@ -9,7 +9,7 @@ extension Tabs {
         
         var body: some View {
             NavigationLink(value: Content.tab(id)) {
-                if let tab = session[tab: id] {
+                if let tab = session.tabs[id] {
                     if let error = tab.error {
                         Website(session: session,
                                 url: error.url?.absoluteString ?? "",

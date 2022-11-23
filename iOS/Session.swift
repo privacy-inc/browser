@@ -28,31 +28,21 @@ import Engine
         field.session = self
     }
     
-    subscript(tab id: UUID) -> Tab? {
-        tabs
-            .first {
-                $0.id == id
-            }
-    }
-    
     func newTab() {
-        var waiting = 0.0
-        
-        if UIDevice.current.userInterfaceIdiom == .phone, sidebar != .tabs {
-            waiting = 0.5
-        }
-        
+        UINavigationBar.setAnimationsEnabled(false)
         let tab = Tab()
         tabs.append(tab)
+        content = .tab(tab.id)
         sidebar = .tabs
         
-        DispatchQueue.main.asyncAfter(deadline: .now() + waiting) { [weak self] in
-            self?.content = .tab(tab.id)
-            self?.field.becomeFirstResponder()
-            
-            if UIDevice.current.userInterfaceIdiom == .pad {
-                self?.columns = .detailOnly
-            }
+        if UIDevice.current.userInterfaceIdiom == .pad {
+            columns = .detailOnly
+        }
+        
+        field.becomeFirstResponder()
+        
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+            UINavigationBar.setAnimationsEnabled(true)
         }
     }
     
@@ -87,7 +77,7 @@ import Engine
     }
     
     func close(tab id: UUID) {
-        self[tab: id]?.webview?.clean()
+        tabs[id]?.webview?.clean()
         tabs
             .remove {
                 $0.id == id

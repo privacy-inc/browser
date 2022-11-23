@@ -30,7 +30,7 @@ struct Bar: View {
             .padding(.leading, 10)
            
             if case let .tab(id) = session.content,
-               let tab = session[tab: id] {
+               let tab = session.tabs[id]! {
                 
                 if tab.error == nil {
                     if let webview = tab.webview {
