@@ -21,6 +21,7 @@ struct Downloads: View {
                     Item(download: item)
                         .swipeActions {
                             Button {
+                                session.downloads.first { $0.id == item.id }?.item.cancel()
                                 withAnimation {
                                     _ = session.downloads.remove { $0.id == item.id }
                                 }
