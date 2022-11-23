@@ -6,7 +6,6 @@ extension Detail {
         let webview: Webview
         @State private var downloads = false
         @State private var progress = AnimatablePair(Double(), Double())
-        @Environment(\.dismiss) private var dismiss
         
         var body: some View {
             ZStack {
@@ -46,7 +45,7 @@ extension Detail {
                             .toolbar {
                                 ToolbarItem(placement: .navigationBarTrailing) {
                                     Button {
-                                        dismiss()
+                                        downloads = false
                                     } label: {
                                         Image(systemName: "xmark.circle.fill")
                                             .font(.system(size: 18, weight: .medium))

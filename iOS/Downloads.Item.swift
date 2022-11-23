@@ -5,7 +5,8 @@ extension Downloads {
         @Binding var download: Download
         @State private var progress = Double()
         @State private var title = ""
-        @State private var weight = ""
+        @State private var completedWeight = Int64()
+        @State private var totalWeight = Int64()
         @State private var finished = false
         @State private var url: URL?
         
@@ -13,11 +14,20 @@ extension Downloads {
             HStack {
                 if finished {
                     if let url {
-                        Text(url.lastPathComponent)
-                            .font(.body.weight(.medium))
-                            .fixedSize(horizontal: false, vertical: true)
-                            .frame(maxWidth: .greatestFiniteMagnitude, alignment: .leading)
-                            .padding(.vertical, 8)
+                        VStack {
+                            Text(url.lastPathComponent)
+                                .font(.body.weight(.medium))
+                                .fixedSize(horizontal: false, vertical: true)
+                                .frame(maxWidth: .greatestFiniteMagnitude, alignment: .leading)
+                                
+                            Text(totalWeight.formatted(.byteCount(style: .file).attributed)
+                                .numeric(font: .init(UIFont.systemFont(ofSize: 16, weight: .medium, width: .condensed)).monospacedDigit()))
+                                .font(.system(size: 12, weight: .regular))
+                                .foregroundColor(.secondary)
+                                .lineLimit(1)
+                                .frame(maxWidth: .greatestFiniteMagnitude, alignment: .leading)
+                        }
+                        .padding(.vertical, 8)
                         
                         Divider()
                         
@@ -39,17 +49,21 @@ extension Downloads {
                                     .font(.system(size: 18, weight: .medium))
                                     .foregroundColor(.yellow)
                                 Text(fail.error)
-                                    .font(.footnote.weight(.medium))
+                                    .font(.footnote.weight(.regular))
                                     .fixedSize(horizontal: false, vertical: true)
                                     .frame(maxWidth: .greatestFiniteMagnitude, alignment: .leading)
                             }
-                            
-                            Divider()
+                            .padding(.bottom, 5)
                         }
                         
                         Text(title)
                             .font(.body.weight(.medium))
                             .fixedSize(horizontal: false, vertical: true)
+                        Text(weight)
+                            .font(.system(size: 12, weight: .regular))
+                            .foregroundColor(.secondary)
+                            .lineLimit(1)
+                            .frame(maxWidth: .greatestFiniteMagnitude, alignment: .trailing)
                         ProgressView(value: progress)
                             .tint(.blue)
                     }
@@ -76,8 +90,11 @@ extension Downloads {
             .onReceive(download.item.progress.publisher(for: \.localizedDescription)) {
                 title = $0
             }
-            .onReceive(download.item.progress.publisher(for: \.localizedAdditionalDescription)) {
-                weight = $0
+            .onReceive(download.item.progress.publisher(for: \.totalUnitCount)) {
+                totalWeight = $0
+            }
+            .onReceive(download.item.progress.publisher(for: \.completedUnitCount)) {
+                completedWeight = $0
             }
         }
         
@@ -112,6 +129,13 @@ extension Downloads {
                     .frame(width: 50, height: 50)
             }
             .buttonStyle(.plain)
+        }
+        
+        private var weight: AttributedString {
+            (completedWeight.formatted(.byteCount(style: .file).attributed)
+            + .init(" of ")
+            + totalWeight.formatted(.byteCount(style: .file).attributed))
+            .numeric(font: .init(UIFont.systemFont(ofSize: 16, weight: .medium, width: .condensed)).monospacedDigit())
         }
         
         @MainActor private func resume(data: Data) async {
