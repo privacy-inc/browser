@@ -43,22 +43,22 @@ extension Detail {
                 .sheet(isPresented: $downloads) {
                     NavigationStack {
                         Downloads(session: session)
-                            .presentationDetents([.medium])
                             .toolbar {
                                 ToolbarItem(placement: .navigationBarTrailing) {
                                     Button {
                                         dismiss()
                                     } label: {
                                         Image(systemName: "xmark.circle.fill")
-                                            .font(.system(size: 27, weight: .regular))
+                                            .font(.system(size: 18, weight: .medium))
                                             .symbolRenderingMode(.hierarchical)
-                                            .foregroundColor(.secondary)
+                                            .foregroundStyle(.secondary)
                                             .contentShape(Rectangle())
-                                            .frame(width: 55, height: 50)
+                                            .frame(width: 35, height: 40)
                                     }
                                 }
                             }
                     }
+                    .presentationDetents([.medium])
                 }
         }
     }

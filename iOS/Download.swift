@@ -3,7 +3,7 @@ import Foundation
 
 struct Download: Identifiable, Sendable {
     var fail: Fail?
-    private(set) weak var item: WKDownload!
+    var item: WKDownload
     let id: UUID
     let webview: Webview
     

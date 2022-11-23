@@ -58,7 +58,13 @@ final class Webview: AbstractWebview {
     }
     
     override func download(_ download: WKDownload, decideDestinationUsing: URLResponse, suggestedFilename: String) async -> URL? {
-        URL.temporal(suggestedFilename)
+        let url = URL.temporal(suggestedFilename)
+        
+        if FileManager.default.fileExists(atPath: url.path) {
+            try? FileManager.default.removeItem(at: url)
+        }
+    
+        return url
     }
     
     override func download(_ download: WKDownload, didFailWithError: Error, resumeData: Data?) {
