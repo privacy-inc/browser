@@ -2,7 +2,7 @@ import SwiftUI
 
 extension Downloads {
     struct Item: View {
-        @State var download: Download
+        @Binding var download: Download
         @State private var progress = Double()
         @State private var title = ""
         @State private var weight = ""
@@ -75,7 +75,13 @@ extension Downloads {
         
         private var retry: some View {
             Button {
-                
+                guard let fail = download.fail else { return }
+                Task {
+                    let resumed = await download.webview.resumeDownload(fromResumeData: fail.data)
+                    resumed.delegate = download.webview
+                    resumed.progress.fileURL = download.item.progress.fileURL
+                    download.fail = nil
+                }
             } label: {
                 Image(systemName: "arrow.clockwise.circle.fill")
                     .font(.system(size: 28, weight: .medium))
@@ -88,7 +94,11 @@ extension Downloads {
         
         private var pause: some View {
             Button {
-                
+                Task {
+                    if let data = await download.item.cancel() {
+                        download.fail = .init(error: "Paused", data: data)
+                    }
+                }
             } label: {
                 Image(systemName: "pause.circle.fill")
                     .font(.system(size: 28, weight: .medium))

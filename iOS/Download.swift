@@ -1,11 +1,11 @@
 import Foundation
-import WebKit
+@preconcurrency import WebKit
 
-struct Download: Identifiable {
+struct Download: Identifiable, Sendable {
     var fail: Fail?
-    private(set) weak var webview: Webview?
     private(set) weak var item: WKDownload!
     let id: UUID
+    let webview: Webview
     
     init(webview: Webview, item: WKDownload) {
         id = .init()

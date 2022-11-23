@@ -17,11 +17,13 @@ struct Downloads: View {
                 .listRowSeparator(.hidden)
                 .listSectionSeparator(.hidden)
             } else {
-                ForEach(session.downloads) { item in
+                ForEach($session.downloads) { item in
                     Item(download: item)
                         .swipeActions {
                             Button {
-                                
+                                withAnimation {
+                                    _ = session.downloads.remove { $0.id == item.id }
+                                }
                             } label: {
                                 Label("Remove", systemImage: "xmark.circle.fill")
                                     .symbolRenderingMode(.hierarchical)
@@ -31,7 +33,7 @@ struct Downloads: View {
                 }
             }
         }
-        .listStyle(.grouped)
+        .listStyle(.plain)
         .navigationTitle(Category.downloads.title)
     }
 }
