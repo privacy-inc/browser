@@ -4,7 +4,7 @@ import Archivable
 import Engine
 
 @MainActor final class Session: ObservableObject {
-    @Published var sidebar: Category? = .history
+    @Published var sidebar: Category? = .tabs
     @Published var content: Content?
     @Published var tabs: [Tab]
     @Published var downloads = [Download]()
@@ -24,7 +24,7 @@ import Engine
     init() {
         let tab = Tab()
         tabs = [tab]
-//        content = .tab(tab.id)
+        content = .tab(tab.id)
         field.session = self
     }
     
