@@ -12,7 +12,7 @@ extension Bar {
         
         var body: some View {
             NavigationStack {
-                if let id = session.tab,
+                if let id = session.path.first,
                    let webview = session.tabs[id]?.webview,
                    let url = webview.url {
                     

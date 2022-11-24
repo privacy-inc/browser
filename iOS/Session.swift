@@ -5,7 +5,6 @@ import Engine
 
 @MainActor final class Session: ObservableObject {
     @Published var sidebar: Category? = .tabs
-    @Published var tab: UUID?
     @Published var path = [UUID]()
     @Published var tabs = [Tab()]
     @Published var downloads = [Download]()
@@ -28,7 +27,7 @@ import Engine
     
     func search(string: String) {
         guard
-            let id = tab,
+            let id = path.first,
             let url = settings.search(string)
         else { return }
         
@@ -60,6 +59,7 @@ import Engine
     
     private func open(tab: Tab) {
         tabs.append(tab)
-        self.tab = tab.id
+        path = [tab.id]
+        sidebar = .tabs
     }
 }

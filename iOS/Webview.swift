@@ -92,7 +92,7 @@ final class Webview: AbstractWebview {
     }
     
     override func error(_ error: Weberror) {
-        guard let id = session.tab else { return }
+        guard let id = session.path.first else { return }
         session.tabs[id]?.error = error
     }
     

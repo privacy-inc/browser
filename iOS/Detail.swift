@@ -2,6 +2,7 @@ import SwiftUI
 
 struct Detail: View {
     @ObservedObject var session: Session
+    @State private var bar = true
     let id: UUID
     
     var body: some View {
@@ -22,10 +23,13 @@ struct Detail: View {
                 .frame(height: 0)
         }
         .id(id)
-        .toolbar(.hidden, for: .navigationBar)
+        .toolbar(bar ? .visible : .hidden, for: .navigationBar)
         .safeAreaInset(edge: .bottom, spacing: 0) {
             Bar(session: session)
         }
         .ignoresSafeArea(.keyboard)
+        .onAppear {
+            bar = false
+        }
     }
 }

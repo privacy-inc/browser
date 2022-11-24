@@ -16,7 +16,7 @@ struct Bar: View {
             }
             .padding(.leading, 10)
            
-            if let id = session.tab,
+            if let id = session.path.first,
                let tab = session.tabs[id]! {
                 
                 if tab.error == nil {
