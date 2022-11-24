@@ -48,6 +48,7 @@ struct History: View {
             }
         }
         .listStyle(.plain)
+        .scrollDismissesKeyboard(.immediately)
         .searchable(text: $search)
         .navigationTitle(Category.history.title)
         .toolbar {

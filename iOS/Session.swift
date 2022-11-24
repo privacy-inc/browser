@@ -29,21 +29,8 @@ import Engine
     }
     
     func newTab() {
-        UINavigationBar.setAnimationsEnabled(false)
-        let tab = Tab()
-        tabs.append(tab)
-        content = .tab(tab.id)
-        sidebar = .tabs
-        
-        if UIDevice.current.userInterfaceIdiom == .pad {
-            columns = .detailOnly
-        }
-        
+        open(tab: .init())
         field.becomeFirstResponder()
-        
-        DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
-            UINavigationBar.setAnimationsEnabled(true)
-        }
     }
     
     func search(string: String) {
@@ -67,13 +54,7 @@ import Engine
         var tab = Tab()
         tab.webview = .init(session: self)
         tab.webview!.load(.init(url: url))
-        tabs.append(tab)
-        content = .tab(tab.id)
-        sidebar = .tabs
-        
-        if UIDevice.current.userInterfaceIdiom == .pad {
-            columns = .detailOnly
-        }
+        open(tab: tab)
     }
     
     func close(tab id: UUID) {
@@ -82,5 +63,15 @@ import Engine
             .remove {
                 $0.id == id
             }
+    }
+    
+    private func open(tab: Tab) {
+        tabs.append(tab)
+        content = .tab(tab.id)
+//        sidebar = .tabs
+        
+//        if UIDevice.current.userInterfaceIdiom == .pad {
+//            columns = .detailOnly
+//        }
     }
 }

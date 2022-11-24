@@ -12,7 +12,7 @@ struct Tabber: View {
             } label: {
                 Image(systemName: "plus.circle.fill")
                     .symbolRenderingMode(.hierarchical)
-                    .font(.system(size: 40, weight: .regular))
+                    .font(.system(size: 28, weight: .medium))
                     .contentShape(Rectangle())
                     .frame(width: 50, height: 44)
             }

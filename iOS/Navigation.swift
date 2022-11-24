@@ -6,15 +6,10 @@ struct Navigation: View {
     var body: some View {
         NavigationSplitView(columnVisibility: $session.columns) {
             Sidebar(session: session)
-                .safeAreaInset(edge: .bottom, spacing: 0) {
-                    Tabber(session: session)
-                }
         } content: {
             content
-                .safeAreaInset(edge: .bottom, spacing: 0) {
-                    if !(UIDevice.current.userInterfaceIdiom == .pad && session.columns == .all) {
-                        Tabber(session: session)
-                    }
+                .navigationDestination(for: Content.self) { _ in
+                    detail
                 }
         } detail: {
             detail

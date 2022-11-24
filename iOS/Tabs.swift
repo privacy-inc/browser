@@ -83,6 +83,10 @@ struct Tabs: View {
                     Button("Cancel", role: .cancel) { }
                 }
             }
+            
+            ToolbarItem(placement: .bottomBar) {
+                Tabber(session: session)
+            }
         }
     }
 }
