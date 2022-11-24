@@ -36,5 +36,6 @@ struct Downloads: View {
         }
         .listStyle(.plain)
         .navigationTitle(Category.downloads.title)
+        .navigationBarTitleDisplayMode(.large)
     }
 }

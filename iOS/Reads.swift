@@ -50,6 +50,7 @@ struct Reads: View {
         }
         .listStyle(.plain)
         .navigationTitle(Category.readingList.title)
+        .navigationBarTitleDisplayMode(.large)
         .toolbar {
             ToolbarItem(placement: .primaryAction) {
                 EditButton()

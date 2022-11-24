@@ -40,7 +40,9 @@ struct Tabs: View {
                 }
             }
             .listStyle(.plain)
+            .navigationBarTitleDisplayMode(.large)
             .navigationTitle(Category.tabs.title)
+            .navigationBarTitleDisplayMode(.large)
             .navigationDestination(for: UUID.self) {
                 Detail(session: session, id: $0)
             }

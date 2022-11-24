@@ -57,6 +57,7 @@ struct Bookmarks: View {
         }
         .listStyle(.plain)
         .navigationTitle(Category.bookmarks.title)
+        .navigationBarTitleDisplayMode(.large)
         .navigationDestination(isPresented: $edit) {
             Edit(session: session, bookmark: $bookmark)
         }
