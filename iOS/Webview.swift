@@ -92,8 +92,8 @@ final class Webview: AbstractWebview {
     }
     
     override func error(_ error: Weberror) {
-        guard let index = session.current else { return }
-        session.tabs[index].error = error
+        guard let id = session.tab else { return }
+        session.tabs[id]?.error = error
     }
     
     func webView(_: WKWebView, didStartProvisionalNavigation: WKNavigation!) {

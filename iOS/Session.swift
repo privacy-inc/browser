@@ -5,26 +5,19 @@ import Engine
 
 @MainActor final class Session: ObservableObject {
     @Published var sidebar: Category? = .tabs
-    @Published var content: Content?
-    @Published var tabs: [Tab]
+    @Published var tab: UUID?
+    @Published var path = [UUID]()
+    @Published var tabs = [Tab()]
     @Published var downloads = [Download]()
     @Published var settings = Settings()
-    @Published var columns = NavigationSplitViewVisibility.doubleColumn
     var reviewed = false
     let field = Field()
     let cloud = Cloud<Archive>.new(identifier: "iCloud.privacy")
     let favicon = Favicon()
     let review = PassthroughSubject<Void, Never>()
     
-    var current: Int? {
-        guard case let .tab(id) = content else { return nil }
-        return tabs.firstIndex { $0.id == id }
-    }
-    
     init() {
-        let tab = Tab()
-        tabs = [tab]
-        content = .tab(tab.id)
+        path = [tabs.first!.id]
         field.session = self
     }
     
@@ -35,15 +28,15 @@ import Engine
     
     func search(string: String) {
         guard
-            let index = current,
+            let id = tab,
             let url = settings.search(string)
         else { return }
         
-        if tabs[index].webview == nil {
-            tabs[index].webview = .init(session: self)
+        if tabs[id]?.webview == nil {
+            tabs[id]?.webview = .init(session: self)
         }
         
-        tabs[index].webview!.load(.init(url: url))
+        tabs[id]?.webview?.load(.init(url: url))
     }
     
     func open(url: String) {
@@ -67,11 +60,6 @@ import Engine
     
     private func open(tab: Tab) {
         tabs.append(tab)
-        content = .tab(tab.id)
-//        sidebar = .tabs
-        
-//        if UIDevice.current.userInterfaceIdiom == .pad {
-//            columns = .detailOnly
-//        }
+        self.tab = tab.id
     }
 }

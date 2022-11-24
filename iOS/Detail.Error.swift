@@ -44,13 +44,13 @@ extension Detail {
                     }
                     
                     DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
-                        guard let current = session.current else { return }
+                        guard let id = session.tab else { return }
                         
                         if let url = error.url {
-                            session.tabs[current].webview?.load(.init(url: url))
+                            session.tabs[id]?.webview?.load(.init(url: url))
                         }
                         
-                        session.tabs[current].error = nil
+                        session.tabs[id]?.error = nil
                     }
                 } label: {
                     Text("Try again")
@@ -63,16 +63,16 @@ extension Detail {
                 .padding(.bottom, 15)
                 
                 Button {
-                    guard let current = session.current else { return }
+                    guard let id = session.tab else { return }
                     
-                    if let webview = session.tabs[current].webview {
+                    if let webview = session.tabs[id]?.webview {
                         if webview.url == nil {
-                            session.tabs[current].webview?.clean()
-                            session.tabs[current].webview = nil
+                            session.tabs[id]?.webview?.clean()
+                            session.tabs[id]?.webview = nil
                         }
                     }
                     
-                    session.tabs[current].error = nil
+                    session.tabs[id]?.error = nil
                 } label: {
                     Text("Dismiss")
                         .font(.body.weight(.medium))

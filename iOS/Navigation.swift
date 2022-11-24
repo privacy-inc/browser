@@ -4,15 +4,10 @@ struct Navigation: View {
     @ObservedObject var session: Session
     
     var body: some View {
-        NavigationSplitView(columnVisibility: $session.columns) {
+        NavigationSplitView {
             Sidebar(session: session)
-        } content: {
-            content
-                .navigationDestination(for: Content.self) { _ in
-                    detail
-                }
         } detail: {
-            detail
+            content
         }
     }
     
@@ -28,17 +23,6 @@ struct Navigation: View {
             Reads(session: session)
         case .downloads:
             Downloads(session: session)
-        default:
-            EmptyView()
-        }
-    }
-    
-    @ViewBuilder private var detail: some View {
-        switch session.content {
-        case let .tab(id):
-            Detail(session: session, id: id)
-        case let .bookmark(bookmark):
-            Bookmarks.Edit(session: session, bookmark: bookmark)
         default:
             EmptyView()
         }

@@ -12,24 +12,11 @@ struct Bar: View {
         HStack(spacing: 0) {
             button(icon: "sidebar.leading") {
                 UIApplication.shared.hide()
-                
-                if UIDevice.current.userInterfaceIdiom == .pad {
-                    switch session.columns {
-                    case .all, .doubleColumn:
-                        session.columns = .detailOnly
-                    default:
-                        session.columns = .doubleColumn
-                    }
-                } else {
-                    dismiss()
-                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
-                        session.content = nil
-                    }
-                }
+                dismiss()
             }
             .padding(.leading, 10)
            
-            if case let .tab(id) = session.content,
+            if let id = session.tab,
                let tab = session.tabs[id]! {
                 
                 if tab.error == nil {

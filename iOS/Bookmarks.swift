@@ -4,9 +4,11 @@ import Engine
 struct Bookmarks: View {
     @ObservedObject var session: Session
     @State private var items = [Bookmark]()
+    @State private var edit = false
+    @State private var bookmark: Bookmark?
     
     var body: some View {
-        List(selection: $session.content) {
+        List {
             if items.isEmpty {
                 VStack(spacing: 10) {
                     Image(systemName: Category.bookmarks.image)
@@ -27,11 +29,8 @@ struct Bookmarks: View {
                     }
                     .swipeActions {
                         Button {
-                            session.content = .bookmark(item)
-                            
-                            if UIDevice.current.userInterfaceIdiom == .pad {
-                                session.columns = .detailOnly
-                            }
+                            bookmark = item
+                            edit = true
                         } label: {
                             Label("Edit", systemImage: "pencil.circle.fill")
                                 .symbolRenderingMode(.hierarchical)
@@ -58,17 +57,17 @@ struct Bookmarks: View {
         }
         .listStyle(.plain)
         .navigationTitle(Category.bookmarks.title)
+        .navigationDestination(isPresented: $edit) {
+            Edit(session: session, bookmark: $bookmark)
+        }
         .toolbar {
             ToolbarItemGroup(placement: .primaryAction) {
                 EditButton()
                     .disabled(items.count < 2)
                 
                 Button {
-                    session.content = .bookmark(nil)
-                    
-                    if UIDevice.current.userInterfaceIdiom == .pad {
-                        session.columns = .detailOnly
-                    }
+                    bookmark = nil
+                    edit = true
                 } label: {
                     Image(systemName: "plus.square")
                         .symbolRenderingMode(.hierarchical)

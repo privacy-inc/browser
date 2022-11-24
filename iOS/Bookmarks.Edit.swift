@@ -4,7 +4,7 @@ import Engine
 extension Bookmarks {
     struct Edit: View {
         @ObservedObject var session: Session
-        let bookmark: Bookmark?
+        @Binding var bookmark: Bookmark?
         @State private var title: String
         @State private var url: String
         @State private var fail = false
@@ -13,11 +13,11 @@ extension Bookmarks {
         @FocusState private var urlFocus: Bool
         @Environment(\.dismiss) private var dismiss
         
-        init(session: Session, bookmark: Bookmark?) {
+        init(session: Session, bookmark: Binding<Bookmark?>) {
             self.session = session
-            self.bookmark = bookmark
-            _title = .init(initialValue: bookmark?.title ?? "")
-            _url = .init(initialValue: bookmark?.url ?? "")
+            _bookmark = bookmark
+            _title = .init(initialValue: bookmark.wrappedValue?.title ?? "")
+            _url = .init(initialValue: bookmark.wrappedValue?.url ?? "")
         }
         
         var body: some View {
@@ -30,6 +30,7 @@ extension Bookmarks {
                             guard url.isEmpty else { return }
                             urlFocus = true
                         }
+                    
                     TextField("URL", text: $url)
                         .focused($urlFocus)
                         .keyboardType(.URL)
@@ -74,12 +75,8 @@ extension Bookmarks {
                             }
                         }
                         
+                        self.bookmark = nil
                         dismiss()
-                        session.content = nil
-                        
-                        if UIDevice.current.userInterfaceIdiom == .pad {
-                            session.columns = .all
-                        }
                     } label: {
                         Text("Save")
                             .bold()
@@ -92,7 +89,8 @@ extension Bookmarks {
                     Button("Cancel") {
                         titleFocus = false
                         urlFocus = false
-                        session.content = nil
+                        bookmark = nil
+                        dismiss()
                     }
                     .buttonStyle(.plain)
                     .foregroundStyle(.secondary)
@@ -102,6 +100,7 @@ extension Bookmarks {
                 .listRowBackground(Color.clear)
             }
             .navigationTitle(bookmark == nil ? "New bookmark" : "Edit bookmark")
+            
         }
     }
 }
