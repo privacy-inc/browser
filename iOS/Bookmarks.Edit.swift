@@ -5,21 +5,14 @@ extension Bookmarks {
     struct Edit: View {
         @ObservedObject var session: Session
         @Binding var bookmark: Bookmark?
-        @State private var title: String
-        @State private var url: String
+        @State private var title = ""
+        @State private var url = ""
         @State private var fail = false
         @State private var saving = false
         @FocusState private var titleFocus: Bool
         @FocusState private var urlFocus: Bool
         @Environment(\.dismiss) private var dismiss
-        
-        init(session: Session, bookmark: Binding<Bookmark?>) {
-            self.session = session
-            _bookmark = bookmark
-            _title = .init(initialValue: bookmark.wrappedValue?.title ?? "")
-            _url = .init(initialValue: bookmark.wrappedValue?.url ?? "")
-        }
-        
+
         var body: some View {
             Form {
                 Section {
@@ -100,7 +93,12 @@ extension Bookmarks {
                 .listRowBackground(Color.clear)
             }
             .navigationTitle(bookmark == nil ? "New bookmark" : "Edit bookmark")
-            
+            .task {
+                if let bookmark {
+                    title = bookmark.title
+                    url = bookmark.url
+                }
+            }
         }
     }
 }

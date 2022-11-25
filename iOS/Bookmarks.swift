@@ -8,73 +8,75 @@ struct Bookmarks: View {
     @State private var bookmark: Bookmark?
     
     var body: some View {
-        List {
-            if items.isEmpty {
-                VStack(spacing: 10) {
-                    Image(systemName: Category.bookmarks.image)
-                        .font(.system(size: 60, weight: .medium))
-                        .padding(.top, 60)
-                    Text("No bookmarks")
-                }
-                .foregroundStyle(.secondary)
-                .frame(maxWidth: .greatestFiniteMagnitude)
-                .listRowSeparator(.hidden)
-                .listSectionSeparator(.hidden)
-            } else {
-                ForEach(items, id: \.url) { item in
-                    Button {
-                        session.open(url: item.url)
-                    } label: {
-                        Website(session: session, url: item.url, title: item.title)
+        NavigationStack {
+            List {
+                if items.isEmpty {
+                    VStack(spacing: 10) {
+                        Image(systemName: Category.bookmarks.image)
+                            .font(.system(size: 60, weight: .medium))
+                            .padding(.top, 60)
+                        Text("No bookmarks")
                     }
-                    .swipeActions {
+                    .foregroundStyle(.secondary)
+                    .frame(maxWidth: .greatestFiniteMagnitude)
+                    .listRowSeparator(.hidden)
+                    .listSectionSeparator(.hidden)
+                } else {
+                    ForEach(items, id: \.url) { item in
                         Button {
-                            bookmark = item
-                            edit = true
+                            session.open(url: item.url)
                         } label: {
-                            Label("Edit", systemImage: "pencil.circle.fill")
-                                .symbolRenderingMode(.hierarchical)
+                            Website(session: session, url: item.url, title: item.title)
                         }
-                        .tint(.blue)
-                        
-                        Button {
-                            Task {
-                                await session.cloud.delete(bookmark: item.url)
+                        .swipeActions {
+                            Button {
+                                bookmark = item
+                                edit = true
+                            } label: {
+                                Label("Edit", systemImage: "pencil.circle.fill")
+                                    .symbolRenderingMode(.hierarchical)
                             }
-                        } label: {
-                            Label("Delete", systemImage: "trash.circle.fill")
-                                .symbolRenderingMode(.hierarchical)
+                            .tint(.blue)
+                            
+                            Button {
+                                Task {
+                                    await session.cloud.delete(bookmark: item.url)
+                                }
+                            } label: {
+                                Label("Delete", systemImage: "trash.circle.fill")
+                                    .symbolRenderingMode(.hierarchical)
+                            }
+                            .tint(.pink)
                         }
-                        .tint(.pink)
                     }
-                }
-                .onMove { index, destination in
-                    Task {
-                        await session.cloud.move(bookmark: index, destination: destination)
+                    .onMove { index, destination in
+                        Task {
+                            await session.cloud.move(bookmark: index, destination: destination)
+                        }
                     }
                 }
             }
-        }
-        .listStyle(.plain)
-        .navigationTitle(Category.bookmarks.title)
-        .navigationBarTitleDisplayMode(.large)
-        .navigationDestination(isPresented: $edit) {
-            Edit(session: session, bookmark: $bookmark)
-        }
-        .toolbar {
-            ToolbarItemGroup(placement: .primaryAction) {
-                EditButton()
-                    .disabled(items.count < 2)
-                
-                Button {
-                    bookmark = nil
-                    edit = true
-                } label: {
-                    Image(systemName: "plus.square")
-                        .symbolRenderingMode(.hierarchical)
-                        .font(.system(size: 20, weight: .regular))
-                        .frame(width: 40, height: 36)
-                        .contentShape(Rectangle())
+            .listStyle(.plain)
+            .navigationTitle(Category.bookmarks.title)
+            .navigationBarTitleDisplayMode(.large)
+            .navigationDestination(isPresented: $edit) {
+                Edit(session: session, bookmark: $bookmark)
+            }
+            .toolbar {
+                ToolbarItemGroup(placement: .primaryAction) {
+                    EditButton()
+                        .disabled(items.count < 2)
+                    
+                    Button {
+                        bookmark = nil
+                        edit = true
+                    } label: {
+                        Image(systemName: "plus.square")
+                            .symbolRenderingMode(.hierarchical)
+                            .font(.system(size: 20, weight: .regular))
+                            .frame(width: 40, height: 36)
+                            .contentShape(Rectangle())
+                    }
                 }
             }
         }
