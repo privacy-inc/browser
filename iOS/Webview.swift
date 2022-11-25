@@ -96,6 +96,15 @@ final class Webview: AbstractWebview {
         session.tabs[id]?.error = error
     }
     
+    override func buildMenu(with: UIMenuBuilder) {
+        with.replaceChildren(ofMenu: .lookup) { elements in
+            elements.filter {
+                ($0 as? UICommand)?.action.description != "_define:"
+            }
+        }
+        super.buildMenu(with: with)
+    }
+    
     func webView(_: WKWebView, didStartProvisionalNavigation: WKNavigation!) {
         UIApplication.shared.hide()
     }
