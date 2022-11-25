@@ -5,6 +5,7 @@ import StoreKit
 struct App: SwiftUI.App {
     @StateObject private var session = Session()
     @Environment(\.requestReview) private var review
+    @UIApplicationDelegateAdaptor(Delegate.self) private var delegate
     
     var body: some Scene {
         WindowGroup {

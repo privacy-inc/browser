@@ -42,6 +42,7 @@ class AbstractWebview: WKWebView, WKNavigationDelegate, WKUIDelegate, WKDownload
         navigationDelegate = self
         uiDelegate = self
         allowsBackForwardNavigationGestures = true
+        isFindInteractionEnabled = true
         
         history
             .debounce(for: .seconds(1), scheduler: DispatchQueue.global(qos: .utility))

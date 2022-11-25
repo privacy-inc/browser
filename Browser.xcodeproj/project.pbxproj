@@ -14,6 +14,7 @@
 		CE1324452912D1E200418B13 /* Field.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE1324442912D1E100418B13 /* Field.swift */; };
 		CE1324472912D26700418B13 /* Search.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE1324462912D26700418B13 /* Search.swift */; };
 		CE28A8BB292BB17900ADB312 /* Bar.Encryption.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE28A8BA292BB17900ADB312 /* Bar.Encryption.swift */; };
+		CE2E090A2930E5C2001E8FCC /* Delegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE2E09092930E5C2001E8FCC /* Delegate.swift */; };
 		CE36C092291534690038B79F /* Tabs.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE36C091291534690038B79F /* Tabs.swift */; };
 		CE36C0942915349B0038B79F /* Tabs.Item.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE36C0932915349B0038B79F /* Tabs.Item.swift */; };
 		CE36C0962915381B0038B79F /* Category.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE36C0952915381B0038B79F /* Category.swift */; };
@@ -59,6 +60,7 @@
 		CE1324442912D1E100418B13 /* Field.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Field.swift; sourceTree = "<group>"; };
 		CE1324462912D26700418B13 /* Search.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Search.swift; sourceTree = "<group>"; };
 		CE28A8BA292BB17900ADB312 /* Bar.Encryption.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Bar.Encryption.swift; sourceTree = "<group>"; };
+		CE2E09092930E5C2001E8FCC /* Delegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Delegate.swift; sourceTree = "<group>"; };
 		CE36C091291534690038B79F /* Tabs.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Tabs.swift; sourceTree = "<group>"; };
 		CE36C0932915349B0038B79F /* Tabs.Item.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Tabs.Item.swift; sourceTree = "<group>"; };
 		CE36C0952915381B0038B79F /* Category.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Category.swift; sourceTree = "<group>"; };
@@ -135,6 +137,7 @@
 				CE6BFCFE291D51F200595BEF /* Bookmarks.swift */,
 				CE1324402912B00200418B13 /* Browser.swift */,
 				CE36C0952915381B0038B79F /* Category.swift */,
+				CE2E09092930E5C2001E8FCC /* Delegate.swift */,
 				CEE1F16B292790160084A331 /* Detail.Error.swift */,
 				CEE1F16729278F740084A331 /* Detail.NewTab.swift */,
 				CEB3172D291A75AC0099992E /* Detail.Progress.swift */,
@@ -299,6 +302,7 @@
 				CEAFD8F5292A922100B55BB5 /* UserDefaults.swift in Sources */,
 				CE36C0942915349B0038B79F /* Tabs.Item.swift in Sources */,
 				CEAA603629112F5D00431596 /* App.swift in Sources */,
+				CE2E090A2930E5C2001E8FCC /* Delegate.swift in Sources */,
 				CE1324472912D26700418B13 /* Search.swift in Sources */,
 				CEB3172E291A75AC0099992E /* Detail.Progress.swift in Sources */,
 				CEE1F16829278F740084A331 /* Detail.NewTab.swift in Sources */,

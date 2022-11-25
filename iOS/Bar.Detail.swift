@@ -8,6 +8,7 @@ extension Bar {
         @State private var reader = false
         @State private var isBookmark = false
         @State private var isReadingList = false
+        @State private var detent = PresentationDetent.medium
         @Environment(\.dismiss) private var dismiss
         
         var body: some View {
@@ -19,19 +20,6 @@ extension Bar {
                     Web(session: session, webview: webview)
                         .toolbar {
                             ToolbarItemGroup(placement: .bottomBar) {
-                                if UIDevice.current.userInterfaceIdiom == .pad {
-                                    readerButton
-                                        .popover(isPresented: $reader) {
-                                            Reader(session: session)
-                                        }
-                                } else {
-                                    readerButton
-                                        .sheet(isPresented: $reader, onDismiss: {
-                                            dismiss()
-                                        }) {
-                                            Reader(session: session)
-                                        }
-                                }
                                 
                                 Button {
                                     guard !isReadingList else { return }
@@ -50,6 +38,8 @@ extension Bar {
                                 }
                                 .disabled(isReadingList)
                                 
+                                Spacer()
+                                
                                 Button {
                                     Task {
                                         if isBookmark {
@@ -66,13 +56,44 @@ extension Bar {
                                     Label(isBookmark ? "Remove from bookmarks" : "Add to bookmarks",
                                           systemImage: isBookmark ? "bookmark.fill" : "bookmark")
                                         .symbolRenderingMode(.hierarchical)
-                                        .font(.system(size: 14, weight: .bold))
+                                        .font(.system(size: 13, weight: .bold))
                                         .contentShape(Rectangle())
                                         .frame(minWidth: 50, minHeight: 40)
                                 }
                                 .onReceive(session.cloud) {
                                     isBookmark = $0.bookmarks.contains { $0.url == url.absoluteString }
                                 }
+                                
+                                Spacer()
+                                
+                                if UIDevice.current.userInterfaceIdiom == .pad {
+                                    readerButton
+                                        .popover(isPresented: $reader) {
+                                            Reader(session: session)
+                                        }
+                                } else {
+                                    readerButton
+                                        .sheet(isPresented: $reader, onDismiss: {
+                                            dismiss()
+                                        }) {
+                                            Reader(session: session)
+                                        }
+                                }
+                                
+                                Spacer()
+                                
+                                Button {
+                                    detent = .height(50)
+                                    webview.findInteraction?.presentFindNavigator(showingReplace: false)
+                                } label: {
+                                    Label("Find on page", systemImage: "magnifyingglass")
+                                        .symbolRenderingMode(.hierarchical)
+                                        .font(.system(size: 15, weight: .bold))
+                                        .contentShape(Rectangle())
+                                        .frame(minWidth: 50, minHeight: 40)
+                                }
+                                
+                                Spacer()
                                 
                                 Button {
                                     if loading {
@@ -98,7 +119,7 @@ extension Bar {
                         }
                 }
             }
-            .presentationDetents([.medium, .large])
+            .presentationDetents([.medium, .large, .height(50)], selection: $detent)
         }
         
         private var readerButton: some View {
