@@ -39,7 +39,7 @@ struct Downloads: View {
         .navigationTitle(Category.downloads.title)
         .navigationBarTitleDisplayMode(.large)
         .toolbar {
-            ToolbarItem(placement: .primaryAction) {
+            ToolbarItem(placement: .navigationBarTrailing) {
                 Button {
                     alert = true
                 } label: {
