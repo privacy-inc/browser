@@ -83,7 +83,7 @@ extension Bar {
                                 Spacer()
                                 
                                 Button {
-                                    detent = .height(50)
+                                    detent = .height(0)
                                     webview.findInteraction?.presentFindNavigator(showingReplace: false)
                                 } label: {
                                     Label("Find on page", systemImage: "magnifyingglass")
@@ -119,7 +119,11 @@ extension Bar {
                         }
                 }
             }
-            .presentationDetents([.medium, .large, .height(50)], selection: $detent)
+            .presentationDetents([.medium, .large, .height(0)], selection: $detent)
+            .onChange(of: detent) {
+                guard $0 == .height(0) else { return }
+                dismiss()
+            }
         }
         
         private var readerButton: some View {
