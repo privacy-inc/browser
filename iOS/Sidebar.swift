@@ -5,9 +5,13 @@ struct Sidebar: View {
     
     var body: some View {
         List(selection: $session.sidebar) {
+            Section("Tabs") {
+                Tabs(session: session)
+            }
+            .headerProminence(.increased)
+            
             Section("Browser") {
-                ForEach([Category.tabs,
-                         .bookmarks,
+                ForEach([Category.bookmarks,
                          .history,
                          .readingList,
                          .downloads], id: \.self) {

@@ -7,16 +7,14 @@ struct Navigation: View {
         NavigationSplitView {
             Sidebar(session: session)
         } detail: {
-            NavigationStack(path: $session.path) {
-                content
-            }
+            content
         }
     }
     
     @ViewBuilder private var content: some View {
         switch session.sidebar {
-        case .tabs:
-            Tabs(session: session)
+        case let .tabs(id):
+            Detail(session: session, id: id)
         case .bookmarks:
             Bookmarks(session: session)
         case .history:

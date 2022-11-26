@@ -1,6 +1,7 @@
-enum Category {
+import Foundation
+
+enum Category: Hashable {
     case
-    tabs,
     bookmarks,
     history,
     readingList,
@@ -10,7 +11,8 @@ enum Category {
     settings,
     sponsor,
     policy,
-    about
+    about,
+    tabs(UUID)
     
     var title: String {
         switch self {

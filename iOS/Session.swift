@@ -4,7 +4,7 @@ import Archivable
 import Engine
 
 @MainActor final class Session: ObservableObject {
-    @Published var sidebar: Category? = .tabs
+    @Published var sidebar: Category?
     @Published var path = [UUID]()
     @Published var tabs = [Tab()]
     @Published var downloads = [Download]()
@@ -17,6 +17,7 @@ import Engine
     
     init() {
         path = [tabs.first!.id]
+        sidebar = .tabs(tabs.first!.id)
         field.session = self
     }
     
@@ -60,6 +61,6 @@ import Engine
     private func open(tab: Tab) {
         tabs.append(tab)
         path = [tab.id]
-        sidebar = .tabs
+        sidebar = .tabs(tab.id)
     }
 }
