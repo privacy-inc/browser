@@ -8,8 +8,6 @@ extension Bar {
         @State private var url = ""
         @State private var title = ""
         @State private var domain = ""
-        @State private var secure = true
-        @State private var encryption = false
         @State private var trackersPrevented = 0
         @Environment(\.dismiss) private var dismiss
         
@@ -46,21 +44,6 @@ extension Bar {
                     Color(.systemBackground)
                     
                     VStack(alignment: .leading, spacing: 0) {
-                        Button {
-                            encryption = true
-                        } label: {
-                            Image(systemName: secure ? "lock.fill" : "exclamationmark.triangle.fill")
-                                .font(.system(size: 14, weight: .medium))
-                                .foregroundStyle(.secondary)
-                                .foregroundColor(secure ? .blue : .pink)
-                                .contentShape(Rectangle())
-                                .frame(width: 50, height: 30)
-                                .padding(.top, 20)
-                        }
-                        .popover(isPresented: $encryption) {
-                            Encryption(url: url, secure: secure)
-                        }
-                        
                         if !title.isEmpty {
                             Text(title)
                                 .font(.body.weight(.medium))
@@ -110,9 +93,6 @@ extension Bar {
                 .onReceive(webview.publisher(for: \.url)) {
                     url = $0?.absoluteString ?? ""
                     domain = url.domain
-                }
-                .onReceive(webview.publisher(for: \.hasOnlySecureContent)) {
-                    secure = $0
                 }
             }
         }

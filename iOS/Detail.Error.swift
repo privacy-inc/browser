@@ -32,18 +32,15 @@ extension Detail {
             Spacer()
             
             if animate {
-                Image(systemName: "arrow.clockwise.circle.fill")
-                    .font(.system(size: 50, weight: .regular))
-                    .symbolRenderingMode(.hierarchical)
-                    .foregroundColor(.accentColor)
-                    .padding(.bottom, 50)
+                ProgressView()
+                    .progressViewStyle(.circular)
+                    .tint(.accentColor)
+                    .padding(.bottom, 60)
             } else {
                 Button {
-                    withAnimation(.easeInOut(duration: 0.3)) {
-                        animate = true
-                    }
+                    animate = true
                     
-                    DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.7) {
                         guard let id = session.path.first else { return }
                         
                         if let url = error.url {

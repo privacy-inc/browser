@@ -2,7 +2,6 @@ import SwiftUI
 
 struct Detail: View {
     @ObservedObject var session: Session
-    @State private var bar = true
     let id: UUID
     
     var body: some View {
@@ -14,22 +13,36 @@ struct Detail: View {
                     Tab(session: session, webview: webview)
                 }
             } else {
-                NewTab(session: session)
+                Spacer()
+                
+                Button {
+                    session.field.becomeFirstResponder()
+                } label: {
+                    Image(systemName: "magnifyingglass")
+                        .font(.system(size: 34, weight: .semibold))
+                        .foregroundStyle(.tertiary)
+                        .foregroundColor(.secondary)
+                        .contentShape(Rectangle())
+                        .frame(width: 150, height: 150)
+                }
+                .ignoresSafeArea(.keyboard)
+                
+                Spacer()
             }
-            
-            Divider()
             
             Search(session: session)
                 .frame(height: 0)
         }
         .id(id)
-        .toolbar(bar ? .visible : .hidden, for: .navigationBar)
+        .frame(maxWidth: .greatestFiniteMagnitude, maxHeight: .greatestFiniteMagnitude)
+        .navigationBarTitleDisplayMode(.inline)
         .safeAreaInset(edge: .bottom, spacing: 0) {
-            Bar(session: session)
+            if let id = session.path.first,
+               let tab = session.tabs[id],
+               tab.error == nil {
+                Bar(session: session, tab: tab)
+            }
         }
         .ignoresSafeArea(.keyboard)
-        .onAppear {
-            bar = false
-        }
     }
 }

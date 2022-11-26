@@ -20,7 +20,6 @@ extension Bar {
                     Web(session: session, webview: webview)
                         .toolbar {
                             ToolbarItemGroup(placement: .bottomBar) {
-                                
                                 Button {
                                     guard !isReadingList else { return }
                                     isReadingList = true

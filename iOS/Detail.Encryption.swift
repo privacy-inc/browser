@@ -1,16 +1,16 @@
 import SwiftUI
 
-extension Bar {
+extension Detail {
     struct Encryption: View {
-        let url: String
+        let domain: String
         let secure: Bool
         @Environment(\.dismiss) private var dismiss
         
         var body: some View {
             VStack(spacing: 0) {
                 Text(secure
-                     ? "Privacy Browser is using an encrypted connection to \(Text(url.domain).bold())"
-                     : "Connection to \(Text(url.domain).bold()) is not secure")
+                     ? "Privacy Browser is using an encrypted connection to \(Text(domain).bold())"
+                     : "Connection to \(Text(domain).bold()) is not secure")
                 .font(.callout.weight(.regular))
                 .fixedSize(horizontal: false, vertical: true)
                 .frame(maxWidth: .greatestFiniteMagnitude, alignment: .leading)
