@@ -7,9 +7,7 @@ struct Navigation: View {
         NavigationSplitView {
             Sidebar(session: session)
         } detail: {
-            NavigationStack {
-                content
-            }
+            content
         }
     }
     

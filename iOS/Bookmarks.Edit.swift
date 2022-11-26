@@ -99,6 +99,7 @@ extension Bookmarks {
                     url = bookmark.url
                 }
             }
+            .presentationDetents([.medium, .large])
         }
     }
 }
