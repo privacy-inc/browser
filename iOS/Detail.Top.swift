@@ -19,22 +19,22 @@ extension Detail {
                         RoundedRectangle(cornerRadius: 6)
                             .fill(secure ? Color.blue : .pink)
                             .opacity(0.1)
-                            .frame(width: 200 * progress)
+                            .frame(width: 170 * progress)
                         HStack(spacing: 0) {
                             Spacer()
                             Text(domain)
-                                .font(.system(size: 14, weight: .regular))
+                                .font(.system(size: 12, weight: .regular))
                                 .lineLimit(1)
-                                .frame(maxWidth: 160, alignment: .trailing)
+                                .frame(maxWidth: 130, alignment: .trailing)
                             
                             Image(systemName: secure ? "lock.fill" : "exclamationmark.triangle.fill")
-                                .font(.system(size: 10, weight: .medium))
-                                .frame(width: 26, height: 32)
+                                .font(.system(size: 8, weight: .medium))
+                                .frame(width: 22, height: 26)
                                 .padding(.trailing, 4)
                         }
                         .foregroundColor(.primary)
                     }
-                    .frame(width: 200, height: 2)
+                    .frame(width: 170, height: 2)
                 }
                 .popover(isPresented: $encryption) {
                     Encryption(domain: domain, secure: secure)
@@ -45,7 +45,7 @@ extension Detail {
                 .onReceive(webview.publisher(for: \.hasOnlySecureContent)) {
                     secure = $0
                 }
-                .onReceive(webview.publisher(for: \.estimatedProgress).dropFirst()) {
+                .onReceive(webview.publisher(for: \.estimatedProgress)) {
                     progress = $0
                 }
             }
