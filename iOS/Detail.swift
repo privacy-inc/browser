@@ -20,10 +20,9 @@ struct Detail: View {
                 } label: {
                     Image(systemName: "magnifyingglass")
                         .font(.system(size: 34, weight: .semibold))
-                        .foregroundStyle(.tertiary)
-                        .foregroundColor(.secondary)
+                        .foregroundStyle(.secondary)
                         .contentShape(Rectangle())
-                        .frame(width: 150, height: 150)
+                        .frame(width: 100, height: 100)
                 }
                 .ignoresSafeArea(.keyboard)
                 
@@ -35,7 +34,6 @@ struct Detail: View {
         }
         .id(id)
         .frame(maxWidth: .greatestFiniteMagnitude, maxHeight: .greatestFiniteMagnitude)
-        .navigationBarTitleDisplayMode(.inline)
         .safeAreaInset(edge: .bottom, spacing: 0) {
             if let id = session.path.first,
                let tab = session.tabs[id],

@@ -39,7 +39,7 @@ struct Sidebar: View {
             .headerProminence(.increased)
         }
         .listStyle(.sidebar)
-        .navigationTitle("Menu")
+        .navigationTitle("")
     }
     
     private func link(for category: Category) -> some View {
