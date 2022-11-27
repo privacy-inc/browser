@@ -57,7 +57,7 @@ struct Bookmarks: View {
         }
         .listStyle(.plain)
         .navigationTitle(Category.bookmarks.title)
-        .navigationBarTitleDisplayMode(.inline)
+        .navigationBarTitleDisplayMode(.large)
         .sheet(isPresented: $edit) {
             Edit(session: session, bookmark: $bookmark)
         }

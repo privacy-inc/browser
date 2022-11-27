@@ -51,7 +51,7 @@ struct History: View {
         .scrollDismissesKeyboard(.immediately)
         .searchable(text: $search)
         .navigationTitle(Category.history.title)
-        .navigationBarTitleDisplayMode(.inline)
+        .navigationBarTitleDisplayMode(.large)
         .toolbar {
             ToolbarItem(placement: .primaryAction) {
                 Button {

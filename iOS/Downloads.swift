@@ -37,7 +37,7 @@ struct Downloads: View {
         }
         .listStyle(.plain)
         .navigationTitle(Category.downloads.title)
-        .navigationBarTitleDisplayMode(.inline)
+        .navigationBarTitleDisplayMode(.large)
         .toolbar {
             ToolbarItem(placement: .navigationBarTrailing) {
                 Button {

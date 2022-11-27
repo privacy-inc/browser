@@ -32,7 +32,7 @@ extension Detail {
                     .presentationDetents([.medium])
                 }
                 .toolbar {
-                    ToolbarItem(placement: .navigationBarTrailing) {
+                    ToolbarItemGroup(placement: .principal) {
                         Top(webview: webview)
                     }
                 }
