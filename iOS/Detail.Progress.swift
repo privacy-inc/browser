@@ -1,25 +1,23 @@
-import SwiftUI
-
-extension Detail {
-    struct Progress: Shape {
-        var progress: AnimatablePair<Double, Double>
-
-        func path(in rect: CGRect) -> Path {
-            .init {
-                if progress.first != 1 && progress.second != 0 {
-                    $0.move(to: .init(x: progress.first * rect.width, y: 1))
-                    $0.addLine(to: .init(x: progress.second * rect.width, y: 1))
-                }
-            }
-        }
-
-        var animatableData: AnimatablePair<Double, Double> {
-            get {
-                progress
-            }
-            set {
-                progress = newValue
-            }
-        }
-    }
-}
+//import SwiftUI
+//
+//extension Detail {
+//    struct Progress: Shape {
+//        var progress: Double
+//
+//        func path(in rect: CGRect) -> Path {
+//            .init {
+//                $0.move(to: .init(x: progress.first * rect.width / 2, y: 0))
+//                $0.addLine(to: .init(x: progress.second * rect.width, y: 1))
+//            }
+//        }
+//
+//        var animatableData: Double {
+//            get {
+//                progress
+//            }
+//            set {
+//                progress = newValue
+//            }
+//        }
+//    }
+//}

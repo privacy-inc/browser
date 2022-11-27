@@ -19,15 +19,21 @@ extension Detail {
                     webview.reload()
                 }
             } label: {
-                Gauge(value: progress) {
+                ZStack {
+                    Circle()
+                        .stroke(Color.primary.opacity(0.1), style: .init(lineWidth: 2, lineCap: .round))
+                        .frame(width: 26, height: 26)
+                    Circle()
+                        .trim(to: progress)
+                        .stroke(Color.accentColor, style: .init(lineWidth: 2, lineCap: .round))
+                        .rotationEffect(.degrees(-90))
+                        .animation(.spring(), value: progress)
+                        .frame(width: 26, height: 26)
                     Image(systemName: loading ? "pause" : "arrow.clockwise")
-                        .font(.system(size: 18, weight: .bold))
+                        .font(.system(size: 11, weight: .bold))
                 }
-                .gaugeStyle(.accessoryCircularCapacity)
-                .animation(.spring(), value: progress)
-                .tint(.accentColor)
-                .scaleEffect(0.6)
                 .contentShape(Rectangle())
+                .frame(width: 40, height: 40)
             }
             .onReceive(webview.publisher(for: \.url)) {
                 domain = $0?.absoluteString.domain ?? ""
