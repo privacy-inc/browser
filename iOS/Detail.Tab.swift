@@ -36,7 +36,6 @@ extension Detail {
                         Top(webview: webview)
                     }
                 }
-            Divider()
         }
     }
 }

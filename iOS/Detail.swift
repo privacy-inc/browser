@@ -34,11 +34,13 @@ struct Detail: View {
         }
         .id(id)
         .frame(maxWidth: .greatestFiniteMagnitude, maxHeight: .greatestFiniteMagnitude)
-        .safeAreaInset(edge: .bottom, spacing: 0) {
-            if let id = session.path.first,
-               let tab = session.tabs[id],
-               tab.error == nil {
-                Bar(session: session, tab: tab)
+        .toolbar {
+            ToolbarItemGroup(placement: .bottomBar) {
+                if let id = session.path.first,
+                   let tab = session.tabs[id],
+                   tab.error == nil {
+                    Bar(session: session, tab: tab)
+                }
             }
         }
         .ignoresSafeArea(.keyboard)

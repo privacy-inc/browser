@@ -20,7 +20,7 @@ final class Webview: AbstractWebview {
         isOpaque = true
         scrollView.keyboardDismissMode = .none
         scrollView.contentInsetAdjustmentBehavior = .never
-        scrollView.clipsToBounds = true
+        scrollView.clipsToBounds = false
         
         publisher(for: \.url)
             .combineLatest(publisher(for: \.isLoading),
