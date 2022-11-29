@@ -40,6 +40,23 @@ struct Sidebar: View {
         }
         .listStyle(.sidebar)
         .navigationTitle("Menu")
+        .safeAreaInset(edge: .bottom, spacing: 0) {
+            VStack {
+                Divider()
+                
+                Button {
+                    session.newTab()
+                } label: {
+                    Image(systemName: "plus.circle.fill")
+                        .symbolRenderingMode(.hierarchical)
+                        .font(.system(size: 30, weight: .regular))
+                        .contentShape(Rectangle())
+                        .frame(width: 50, height: 38)
+                }
+            }
+            .frame(maxWidth: .greatestFiniteMagnitude)
+            .background(.ultraThinMaterial)
+        }
     }
     
     private func link(for category: Category) -> some View {

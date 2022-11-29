@@ -57,17 +57,7 @@ struct Tabs: View {
 //                }
 //            }
 //            
-//            ToolbarItem(placement: .bottomBar) {
-//                Button {
-//                    session.newTab()
-//                } label: {
-//                    Image(systemName: "plus.circle.fill")
-//                        .symbolRenderingMode(.hierarchical)
-//                        .font(.system(size: 28, weight: .medium))
-//                        .contentShape(Rectangle())
-//                        .frame(width: 50, height: 38)
-//                }
-//            }
+            
 //        }
     }
 }
