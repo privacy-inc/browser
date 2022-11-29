@@ -63,21 +63,18 @@ extension Detail {
                         Divider()
                             .padding(.top, 14)
                     }
+                    .padding(.top, 16)
                     .frame(maxWidth: .greatestFiniteMagnitude, alignment: .leading)
                     
-                    HStack(spacing: 0) {
-                        
-                        
-                        Button {
-                            dismiss()
-                        } label: {
-                            Image(systemName: "xmark.circle.fill")
-                                .font(.system(size: 27, weight: .regular))
-                                .symbolRenderingMode(.hierarchical)
-                                .foregroundColor(.secondary)
-                                .contentShape(Rectangle())
-                                .frame(width: 55, height: 50)
-                        }
+                    Button {
+                        dismiss()
+                    } label: {
+                        Image(systemName: "xmark.circle.fill")
+                            .font(.system(size: 20, weight: .regular))
+                            .symbolRenderingMode(.hierarchical)
+                            .foregroundColor(.secondary)
+                            .contentShape(Rectangle())
+                            .frame(width: 55, height: 50)
                     }
                 }
                 .fixedSize(horizontal: false, vertical: true)

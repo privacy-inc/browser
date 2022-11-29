@@ -118,7 +118,7 @@ extension Detail {
                         }
                 }
             }
-            .presentationDetents([.medium, .large, .height(0)], selection: $detent)
+            .presentationDetents([.medium], selection: $detent)
             .onChange(of: detent) {
                 guard $0 == .height(0) else { return }
                 dismiss()

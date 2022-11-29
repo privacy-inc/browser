@@ -41,7 +41,7 @@ extension Detail {
                         Rectangle()
                             .fill(Color.primary.opacity(0.05))
                         Progress(value: progress)
-                            .stroke(Color.blue, style: .init(lineWidth: 2))
+                            .stroke(Color.accentColor, style: .init(lineWidth: 2))
                     }
                     .frame(height: 2)
                 }
