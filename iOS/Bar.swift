@@ -1,35 +1,14 @@
 import SwiftUI
 
 struct Bar: View {
-    @ObservedObject var session: Session
+    let session: Session
     let tab: Tab
-    @State private var back = false
-    @State private var forward = false
-    @State private var detail = false
+    
     @State private var loading = false
     
     var body: some View {
         if let webview = tab.webview {
-//            button(icon: loading ? "pause" : "arrow.clockwise") {
-//                UIApplication.shared.hide()
-//
-//                if loading {
-//                    webview.stopLoading()
-//                } else {
-//                    webview.reload()
-//                }
-//            }
-//            .onReceive(webview.publisher(for: \.isLoading)) {
-//                loading = $0
-//            }
             
-//            button(icon: "chevron.backward", disabled: !back) {
-//                UIApplication.shared.hide()
-//                webview.goBack()
-//            }
-//            .onReceive(webview.publisher(for: \.canGoBack)) {
-//                back = $0
-//            }
             
         }
         
@@ -37,28 +16,16 @@ struct Bar: View {
             session.field.becomeFirstResponder()
         } label: {
             ZStack {
-                RoundedRectangle(cornerRadius: 12, style: .continuous)
-                    .fill(Color.secondary)
+                RoundedRectangle(cornerRadius: 10, style: .continuous)
+                    .fill(Color(.tertiarySystemBackground))
+                    .shadow(color: .init(white: 0, opacity: 0.1), radius: 5)
             }
             .frame(width: 300, height: 36)
+            .contentShape(Rectangle())
         }
         
         if let webview = tab.webview {
-//            button(icon: "chevron.forward", disabled: !forward) {
-//                UIApplication.shared.hide()
-//                webview.goForward()
-//            }
-//            .onReceive(webview.publisher(for: \.canGoForward)) {
-//                forward = $0
-//            }
-//            
-//            button(icon: "ellipsis") {
-//                UIApplication.shared.hide()
-//                detail = true
-//            }
-//            .sheet(isPresented: $detail) {
-//                Detail(session: session)
-//            }
+            
         }
     }
     

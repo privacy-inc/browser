@@ -1,7 +1,7 @@
 import SwiftUI
 import Domains
 
-extension Bar {
+extension Detail {
     struct Web: View {
         @ObservedObject var session: Session
         let webview: Webview
@@ -66,13 +66,7 @@ extension Bar {
                     .frame(maxWidth: .greatestFiniteMagnitude, alignment: .leading)
                     
                     HStack(spacing: 0) {
-                        ShareLink(item: webview.url!) {
-                            Image(systemName: "square.and.arrow.up")
-                                .symbolRenderingMode(.hierarchical)
-                                .font(.system(size: 19, weight: .bold))
-                                .contentShape(Rectangle())
-                                .frame(width: 70, height: 50)
-                        }
+                        
                         
                         Button {
                             dismiss()

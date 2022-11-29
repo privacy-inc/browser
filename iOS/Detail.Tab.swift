@@ -7,6 +7,13 @@ extension Detail {
         @State private var downloads = false
         
         var body: some View {
+            
+            
+            
+            
+            
+            
+            
             Browser(webview: webview)
                 .onReceive(webview.downloads) {
                     downloads = true
@@ -32,10 +39,12 @@ extension Detail {
                     .presentationDetents([.medium])
                 }
                 .toolbar {
-                    ToolbarItemGroup(placement: .principal) {
-                        Top(webview: webview)
+                    ToolbarItemGroup(placement: .navigationBarTrailing) {
+                        Top(session: session, webview: webview)
                     }
                 }
         }
+        
+        
     }
 }

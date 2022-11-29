@@ -1,8 +1,8 @@
 import SwiftUI
 import Engine
 
-extension Bar {
-    struct Detail: View {
+extension Detail {
+    struct More: View {
         @ObservedObject var session: Session
         @State private var loading = false
         @State private var reader = false

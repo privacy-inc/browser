@@ -1,6 +1,6 @@
 import SwiftUI
 
-extension Bar {
+extension Detail {
     struct Reader: View {
         let session: Session
         @AppStorage("font") private var size = Int(100)
