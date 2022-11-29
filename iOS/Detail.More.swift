@@ -4,11 +4,9 @@ import Engine
 extension Detail {
     struct More: View {
         @ObservedObject var session: Session
-        @State private var loading = false
         @State private var reader = false
         @State private var isBookmark = false
         @State private var isReadingList = false
-        @State private var detent = PresentationDetent.medium
         @Environment(\.dismiss) private var dismiss
         
         var body: some View {
@@ -82,7 +80,6 @@ extension Detail {
                                 Spacer()
                                 
                                 Button {
-                                    detent = .height(0)
                                     webview.findInteraction?.presentFindNavigator(showingReplace: false)
                                 } label: {
                                     Label("Find on page", systemImage: "magnifyingglass")
@@ -91,38 +88,11 @@ extension Detail {
                                         .contentShape(Rectangle())
                                         .frame(minWidth: 50, minHeight: 40)
                                 }
-                                
-                                Spacer()
-                                
-                                Button {
-                                    if loading {
-                                        webview.stopLoading()
-                                    } else {
-                                        webview.reload()
-                                    }
-                                    
-                                    dismiss()
-                                } label: {
-                                    Label(loading ? "Store" : "Reload",
-                                          systemImage: loading ? "xmark.square" : "arrow.clockwise.circle")
-                                    .symbolRenderingMode(.hierarchical)
-                                    .symbolVariant(.fill)
-                                    .font(.system(size: 22, weight: .medium))
-                                    .contentShape(Rectangle())
-                                    .frame(minWidth: 50, minHeight: 40)
-                                }
-                                .onReceive(webview.publisher(for: \.isLoading)) {
-                                    loading = $0
-                                }
                             }
                         }
                 }
             }
-            .presentationDetents([.medium], selection: $detent)
-            .onChange(of: detent) {
-                guard $0 == .height(0) else { return }
-                dismiss()
-            }
+            .presentationDetents([.medium])
         }
         
         private var readerButton: some View {

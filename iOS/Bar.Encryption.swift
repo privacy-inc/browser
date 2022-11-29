@@ -13,6 +13,7 @@ extension Bar {
                      : "Connection to \(Text(domain).bold()) is not secure")
                 .font(.callout.weight(.regular))
                 .fixedSize(horizontal: false, vertical: true)
+                .multilineTextAlignment(.leading)
                 .frame(maxWidth: .greatestFiniteMagnitude, alignment: .leading)
                 .padding(20)
                 
