@@ -1,6 +1,6 @@
 import SwiftUI
 
-extension Detail {
+extension Bar {
     struct Encryption: View {
         let domain: String
         let secure: Bool
