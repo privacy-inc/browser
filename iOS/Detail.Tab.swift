@@ -44,7 +44,5 @@ extension Detail {
                     }
                 }
         }
-        
-        
     }
 }

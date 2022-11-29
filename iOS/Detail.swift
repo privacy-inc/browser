@@ -33,10 +33,11 @@ struct Detail: View {
                 .frame(height: 0)
         }
         .id(id)
+        .navigationBarTitleDisplayMode(.inline)
         .frame(maxWidth: .greatestFiniteMagnitude, maxHeight: .greatestFiniteMagnitude)
         .toolbar {
-            ToolbarItemGroup(placement: .bottomBar) {
-                if let id = session.path.first,
+            ToolbarItem(placement: .bottomBar) {
+                if case let .tab(id) = session.sidebar,
                    let tab = session.tabs[id],
                    tab.error == nil {
                     Bar(session: session, tab: tab)

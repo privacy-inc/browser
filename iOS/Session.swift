@@ -5,7 +5,6 @@ import Engine
 
 @MainActor final class Session: ObservableObject {
     @Published var sidebar: Category?
-    @Published var path = [UUID]()
     @Published var tabs = [Tab()]
     @Published var downloads = [Download]()
     @Published var settings = Settings()
@@ -16,8 +15,7 @@ import Engine
     let review = PassthroughSubject<Void, Never>()
     
     init() {
-        path = [tabs.first!.id]
-        sidebar = .tabs(tabs.first!.id)
+        sidebar = .tab(tabs.first!.id)
         field.session = self
     }
     
@@ -28,7 +26,7 @@ import Engine
     
     func search(string: String) {
         guard
-            let id = path.first,
+            case let .tab(id) = sidebar,
             let url = settings.search(string)
         else { return }
         
@@ -60,7 +58,6 @@ import Engine
     
     private func open(tab: Tab) {
         tabs.append(tab)
-        path = [tab.id]
-        sidebar = .tabs(tab.id)
+        sidebar = .tab(tab.id)
     }
 }

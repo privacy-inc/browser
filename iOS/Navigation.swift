@@ -13,7 +13,7 @@ struct Navigation: View {
     
     @ViewBuilder private var content: some View {
         switch session.sidebar {
-        case let .tabs(id):
+        case let .tab(id):
             Detail(session: session, id: id)
         case .bookmarks:
             Bookmarks(session: session)

@@ -13,7 +13,7 @@ extension Detail {
         
         var body: some View {
             NavigationStack {
-                if let id = session.path.first,
+                if case let .tab(id) = session.sidebar,
                    let webview = session.tabs[id]?.webview,
                    let url = webview.url {
                     

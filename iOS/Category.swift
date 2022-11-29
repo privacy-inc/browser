@@ -12,11 +12,11 @@ enum Category: Hashable {
     sponsor,
     policy,
     about,
-    tabs(UUID)
+    tab(UUID)
     
     var title: String {
         switch self {
-        case .tabs:
+        case .tab:
             return "Tabs"
         case .bookmarks:
             return "Bookmarks"
@@ -43,7 +43,7 @@ enum Category: Hashable {
     
     var image: String {
         switch self {
-        case .tabs:
+        case .tab:
             return "square.on.square.dashed"
         case .bookmarks:
             return "bookmark"

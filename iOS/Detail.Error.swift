@@ -41,7 +41,7 @@ extension Detail {
                     animate = true
                     
                     DispatchQueue.main.asyncAfter(deadline: .now() + 0.7) {
-                        guard let id = session.path.first else { return }
+                        guard case let .tab(id) = session.sidebar else { return }
                         
                         if let url = error.url {
                             session.tabs[id]?.webview?.load(.init(url: url))
@@ -60,7 +60,7 @@ extension Detail {
                 .padding(.bottom, 15)
                 
                 Button {
-                    guard let id = session.path.first else { return }
+                    guard case let .tab(id) = session.sidebar else { return }
                     
                     if let webview = session.tabs[id]?.webview {
                         if webview.url == nil {

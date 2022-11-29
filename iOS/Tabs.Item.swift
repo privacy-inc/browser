@@ -8,7 +8,7 @@ extension Tabs {
         @State private var url: String?
         
         var body: some View {
-            NavigationLink(value: Category.tabs(id)) {
+            NavigationLink(value: Category.tab(id)) {
                 if let tab = session.tabs[id] {
                     if let error = tab.error {
                         Website(session: session,

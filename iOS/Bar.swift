@@ -26,19 +26,16 @@ struct Bar: View {
                         .popover(isPresented: $encryption) {
                             Encryption(domain: domain, secure: secure)
                         }
-                        
-                        Spacer()
-                        
+
                         Text(domain)
                             .font(.callout.weight(.regular))
                             .foregroundColor(.primary)
                             .lineLimit(1)
                             .allowsHitTesting(false)
-                        
-                        Spacer()
-                        
+                            .frame(maxWidth: .greatestFiniteMagnitude)
+
                         button(icon: loading ? "pause" : "arrow.clockwise") {
-                            UIApplication.shared.hide()        
+                            UIApplication.shared.hide()
                             if loading {
                                 webview.stopLoading()
                             } else {

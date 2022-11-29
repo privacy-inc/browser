@@ -56,7 +56,7 @@ extension Detail {
             Image(systemName: icon)
                 .foregroundStyle(disabled ? .tertiary : .primary)
                 .foregroundColor(.primary)
-                .font(.system(size: 13, weight: .regular))
+                .font(.system(size: 12, weight: .regular))
                 .contentShape(Rectangle())
                 .frame(width: 45, height: 34)
         }
