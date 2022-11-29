@@ -34,7 +34,7 @@ struct Bar: View {
                             .allowsHitTesting(false)
                             .frame(maxWidth: .greatestFiniteMagnitude)
 
-                        button(icon: loading ? "pause" : "arrow.clockwise") {
+                        button(icon: loading ? "xmark" : "arrow.clockwise") {
                             UIApplication.shared.hide()
                             if loading {
                                 webview.stopLoading()

@@ -16,8 +16,10 @@ extension Detail {
         @State private var progress = Double()
         
         var body: some View {
-            ShareLink(item: webview.url!) {
-                image(icon: "square.and.arrow.up")
+            if let url = webview.url {
+                ShareLink(item: url) {
+                    image(icon: "square.and.arrow.up")
+                }
             }
             
             button(icon: "chevron.backward", disabled: !back) {
