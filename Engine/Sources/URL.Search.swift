@@ -1,43 +1,33 @@
 import Foundation
 import Domains
 
-public enum Search: UInt8, Equatable, Sendable {
-    case
-    google,
-    ecosia
+private let dataPrefix = "\(Embeded.data.rawValue):"
+private let filePrefix = "\(Embeded.file.rawValue):"
+
+extension URL {
+    private static let components: URLComponents = {
+        var components = URLComponents(string: "//www.google.com")!
+        components.scheme = "https"
+        components.path = "/search"
+        return components
+    } ()
     
-    var components: URLComponents {
-        {
-            var components = URLComponents(string: "//www." + $0.rawValue + "." + $0.tld.rawValue)!
-            components.scheme = "https"
-            components.path = "/search"
-            return components
-        } (url)
+    public init?(search: String) {
+        guard let search = search
+            .trimmed(transform: {
+                $0.hasPrefix(dataPrefix)
+                || $0.hasPrefix(filePrefix)
+                    ? $0
+                    : $0.url
+                        ?? $0.file
+                        ?? $0.partial
+                        ?? Self.query(search: $0)
+            })
+        else { return nil }
+        self.init(string: search)
     }
     
-    private var url: Allowed {
-        switch self {
-        case .google: return .google
-        case .ecosia: return .ecosia
-        }
-    }
-    
-    public func callAsFunction(_ search: String) -> URL? {
-        search
-            .trimmed {
-                $0.hasPrefix(Embeded.data.rawValue + ":") || $0.hasPrefix(Embeded.file.rawValue + ":")
-                ? $0
-                : $0.url
-                    ?? $0.file
-                    ?? $0.partial
-                    ?? query(search: $0)
-            }
-            .flatMap {
-                .init(string: $0)
-            }
-    }
-    
-    private func query(search: String) -> String? {
+    private static func query(search: String) -> String? {
         var components = components
         components.queryItems = [.init(name: "q", value: search)]
         return components.string

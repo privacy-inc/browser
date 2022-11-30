@@ -7,7 +7,6 @@ import Engine
     @Published var sidebar: Category?
     @Published var tabs = [Tab()]
     @Published var downloads = [Download]()
-    @Published var settings = Settings()
     var reviewed = false
     let field = Field()
     let cloud = Cloud<Archive>.new(identifier: "iCloud.privacy")
@@ -27,7 +26,7 @@ import Engine
     func search(string: String) {
         guard
             case let .tab(id) = sidebar,
-            let url = settings.search(string)
+            let url = URL(search: string)
         else { return }
         
         if tabs[id]?.webview == nil {
