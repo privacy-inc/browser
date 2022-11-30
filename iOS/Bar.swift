@@ -44,7 +44,7 @@ struct Bar: View {
                         }
                     }
                     .onReceive(webview.publisher(for: \.url)) {
-                        domain = $0?.absoluteString.domain ?? ""
+                        domain = $0?.searchbar ?? ""
                     }
                     .onReceive(webview.publisher(for: \.hasOnlySecureContent)) {
                         secure = $0
