@@ -35,13 +35,11 @@ struct Detail: View {
         .id(id)
         .navigationBarTitleDisplayMode(.inline)
         .frame(maxWidth: .greatestFiniteMagnitude, maxHeight: .greatestFiniteMagnitude)
-        .toolbar {
-            ToolbarItem(placement: .bottomBar) {
-                if case let .tab(id) = session.sidebar,
-                   let tab = session.tabs[id],
-                   tab.error == nil {
-                    Bar(session: session, tab: tab)
-                }
+        .safeAreaInset(edge: .bottom, spacing: 0) {
+            if case let .tab(id) = session.sidebar,
+               let tab = session.tabs[id],
+               tab.error == nil {
+                Bar(session: session, tab: tab)
             }
         }
         .ignoresSafeArea(.keyboard)

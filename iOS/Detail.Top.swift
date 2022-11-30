@@ -60,7 +60,7 @@ extension Detail {
                 .foregroundColor(.primary)
                 .font(.system(size: 12, weight: .regular))
                 .contentShape(Rectangle())
-                .frame(width: 45, height: 34)
+                .frame(width: 40, height: 34)
         }
     }
 }

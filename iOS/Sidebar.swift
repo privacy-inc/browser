@@ -41,7 +41,7 @@ struct Sidebar: View {
         .listStyle(.sidebar)
         .navigationTitle("Menu")
         .safeAreaInset(edge: .bottom, spacing: 0) {
-            VStack {
+            VStack(spacing: 14) {
                 Divider()
                 
                 Button {
@@ -53,9 +53,10 @@ struct Sidebar: View {
                         .contentShape(Rectangle())
                         .frame(width: 50, height: 38)
                 }
+                .padding(.bottom, 8)
             }
             .frame(maxWidth: .greatestFiniteMagnitude)
-            .background(.ultraThinMaterial)
+            .background(Color(.systemBackground))
         }
     }
     

@@ -8,7 +8,6 @@ extension Detail {
         @State private var downloads = false
         
         var body: some View {
-            
             Browser(webview: webview)
                 .onReceive(webview.publisher(for: \.estimatedProgress)) {
                     progress = $0
@@ -50,6 +49,8 @@ extension Detail {
                         Top(session: session, webview: webview)
                     }
                 }
+            
+            Divider()
         }
     }
 }
