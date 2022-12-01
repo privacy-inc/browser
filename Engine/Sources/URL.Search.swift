@@ -1,7 +1,6 @@
 import Foundation
 import Domains
 
-private let google = "https://www.google.com/search"
 private let dataPrefix = "\(Embeded.data.rawValue):"
 private let filePrefix = "\(Embeded.file.rawValue):"
 
@@ -23,7 +22,7 @@ extension URL {
     
     public var searchbar: String {
         guard
-            absoluteString.hasPrefix(google),
+            absoluteString.hasPrefix("https://www.google."),
             let components = URLComponents(url: self, resolvingAgainstBaseURL: true),
             let query = components.queryItems?.first(where: { $0.name == "q" }),
             let search = query.value,
@@ -33,7 +32,7 @@ extension URL {
     }
     
     private static func query(search: String) -> String? {
-        var components = URLComponents(string: google)!
+        var components = URLComponents(string: "https://www.google.com/search")!
         components.queryItems = [.init(name: "q", value: search)]
         return components.string
     }
