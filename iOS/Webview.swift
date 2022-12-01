@@ -18,7 +18,7 @@ final class Webview: AbstractWebview {
         
         super.init(cloud: session.cloud, favicon: session.favicon, configuration: configuration)
         isOpaque = true
-        scrollView.keyboardDismissMode = .none
+        scrollView.keyboardDismissMode = .onDrag
         scrollView.contentInsetAdjustmentBehavior = .never
         scrollView.clipsToBounds = true
         
