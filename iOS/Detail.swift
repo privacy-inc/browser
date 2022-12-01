@@ -33,7 +33,7 @@ struct Detail: View {
                 .frame(height: 0)
         }
         .id(id)
-        .navigationBarTitleDisplayMode(.inline)
+        .toolbar(.hidden, for: .navigationBar)
         .frame(maxWidth: .greatestFiniteMagnitude, maxHeight: .greatestFiniteMagnitude)
         .safeAreaInset(edge: .bottom, spacing: 0) {
             if case let .tab(id) = session.sidebar,
