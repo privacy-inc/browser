@@ -54,7 +54,7 @@ struct Sidebar: View {
                                 .foregroundStyle(session.tabs.isEmpty ? .tertiary : .secondary)
                                 .foregroundColor(session.tabs.isEmpty ? .secondary : .pink)
                                 .symbolRenderingMode(.hierarchical)
-                                .font(.system(size: 24, weight: .regular))
+                                .font(.system(size: 28, weight: .regular))
                                 .contentShape(Rectangle())
                                 .frame(width: 50, height: 38)
                         }
@@ -86,7 +86,7 @@ struct Sidebar: View {
                     } label: {
                         Image(systemName: "plus.circle.fill")
                             .symbolRenderingMode(.hierarchical)
-                            .font(.system(size: 30, weight: .regular))
+                            .font(.system(size: 32, weight: .regular))
                             .contentShape(Rectangle())
                             .frame(width: 50, height: 38)
                     }

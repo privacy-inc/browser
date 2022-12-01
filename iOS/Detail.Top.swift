@@ -72,7 +72,7 @@ extension Detail {
                    let webview = tab.webview {
                     ZStack(alignment: .top) {
                         Rectangle()
-                            .fill(Color.primary.opacity(0.05))
+                            .fill(Color.primary.opacity(0.1))
                         Progress(value: progress)
                             .stroke(Color.accentColor, style: .init(lineWidth: 2))
                             .frame(height: 2)
@@ -102,7 +102,7 @@ extension Detail {
             Image(systemName: icon)
                 .foregroundStyle(disabled ? .tertiary : .primary)
                 .foregroundColor(.primary)
-                .font(.system(size: 14, weight: .regular))
+                .font(.system(size: 16, weight: .regular))
                 .contentShape(Rectangle())
                 .frame(width: 60, height: 45)
         }
