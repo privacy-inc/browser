@@ -18,7 +18,7 @@ struct Bar: View {
                 session.field.becomeFirstResponder()
             } label: {
                 ZStack {
-                    RoundedRectangle(cornerRadius: 10, style: .continuous)
+                    RoundedRectangle(cornerRadius: 12, style: .continuous)
                         .fill(Color(.tertiarySystemBackground))
                         .shadow(color: .init(white: 0, opacity: 0.1), radius: 7)
                     
@@ -60,13 +60,13 @@ struct Bar: View {
                         }
                     }
                 }
-                .frame(width: 300, height: 36)
+                .frame(width: 300, height: 40)
                 .contentShape(Rectangle())
             }
         }
         .frame(maxWidth: .greatestFiniteMagnitude)
-        .padding(.top, 14)
-        .padding(.bottom, 12)
+        .padding(.top, 12)
+        .padding(.bottom, 10)
     }
     
     private func button(icon: String, action: @escaping () -> Void) -> some View {
@@ -75,7 +75,7 @@ struct Bar: View {
                 .foregroundColor(.primary)
                 .font(.system(size: 13, weight: .regular))
                 .contentShape(Rectangle())
-                .frame(width: 40, height: 36)
+                .frame(width: 40, height: 40)
         }
     }
 }
