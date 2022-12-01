@@ -22,7 +22,7 @@ final class Field: UIView, UIKeyInput, UITextFieldDelegate {
     private weak var field: UITextField!
     private weak var doneButton: UIButton!
     private var editable = true
-    private let input = UIInputView(frame: .init(x: 0, y: 0, width: 0, height: 52), inputViewStyle: .keyboard)
+    private let input = UIInputView(frame: .init(x: 0, y: 0, width: 0, height: 54), inputViewStyle: .keyboard)
     
     required init?(coder: NSCoder) { nil }
     @MainActor init() {
@@ -72,7 +72,7 @@ final class Field: UIView, UIKeyInput, UITextFieldDelegate {
         background.leftAnchor.constraint(equalTo: input.safeAreaLayoutGuide.leftAnchor, constant: 55).isActive = true
         background.rightAnchor.constraint(equalTo: input.safeAreaLayoutGuide.rightAnchor, constant: -55).isActive = true
         background.centerYAnchor.constraint(equalTo: field.centerYAnchor).isActive = true
-        background.heightAnchor.constraint(equalToConstant: 36).isActive = true
+        background.heightAnchor.constraint(equalToConstant: 38).isActive = true
         
         field.centerYAnchor.constraint(equalTo: input.centerYAnchor, constant: 3).isActive = true
         field.leftAnchor.constraint(equalTo: background.leftAnchor, constant: 12).isActive = true
@@ -98,6 +98,13 @@ final class Field: UIView, UIKeyInput, UITextFieldDelegate {
         return super.becomeFirstResponder()
     }
     
+    func textFieldDidBeginEditing(_: UITextField) {
+        field.selectAll(nil)
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) { [weak self] in
+            self?.field.becomeFirstResponder()
+        }
+    }
+    
     func textFieldDidChangeSelection(_: UITextField) {
         update()
     }
@@ -106,7 +113,7 @@ final class Field: UIView, UIKeyInput, UITextFieldDelegate {
         done()
         return true
     }
-
+    
     func textFieldShouldEndEditing(_: UITextField) -> Bool {
         editable = false
         return true
@@ -117,8 +124,8 @@ final class Field: UIView, UIKeyInput, UITextFieldDelegate {
         field.text = ""
     }
     
-    func insertText(_: String) {
-        
+    func insertText(_ text: String) {
+        field.text = text
     }
     
     func deleteBackward() {

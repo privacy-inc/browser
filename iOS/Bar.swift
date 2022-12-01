@@ -3,6 +3,7 @@ import SwiftUI
 struct Bar: View {
     let session: Session
     let tab: Tab
+    @State private var url: URL?
     @State private var domain = ""
     @State private var secure = true
     @State private var loading = false
@@ -11,6 +12,9 @@ struct Bar: View {
     var body: some View {
         HStack {
             Button {
+                if let url {
+                    session.field.insertText(url.absoluteString)
+                }
                 session.field.becomeFirstResponder()
             } label: {
                 ZStack {
@@ -29,7 +33,7 @@ struct Bar: View {
                             }
 
                             Text(domain)
-                                .font(.callout.weight(.regular))
+                                .font(.body.weight(.regular))
                                 .foregroundColor(.primary)
                                 .lineLimit(1)
                                 .allowsHitTesting(false)
@@ -45,7 +49,8 @@ struct Bar: View {
                             }
                         }
                         .onReceive(webview.publisher(for: \.url)) {
-                            domain = $0?.searchbar ?? ""
+                            url = $0
+                            domain = url?.searchbar ?? ""
                         }
                         .onReceive(webview.publisher(for: \.hasOnlySecureContent)) {
                             secure = $0
@@ -68,9 +73,9 @@ struct Bar: View {
         Button(action: action) {
             Image(systemName: icon)
                 .foregroundColor(.primary)
-                .font(.system(size: 12, weight: .regular))
+                .font(.system(size: 13, weight: .regular))
                 .contentShape(Rectangle())
-                .frame(width: 45, height: 36)
+                .frame(width: 40, height: 36)
         }
     }
 }

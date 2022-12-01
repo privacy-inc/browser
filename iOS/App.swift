@@ -18,13 +18,3 @@ struct App: SwiftUI.App {
         }
     }
 }
-//
-//extension UINavigationController {
-//    override open func viewDidLoad() {
-//        super.viewDidLoad()
-//        hidesBarsOnSwipe = true
-//        hidesBarsWhenKeyboardAppears = true
-//        // other customizations
-//        //    navigationBar.tintColor = .white
-//    }
-//}
