@@ -26,17 +26,16 @@ extension Tabs {
                                 url = $0?.absoluteString
                             }
                     } else {
-                        HStack(spacing: 10) {
+                        HStack(spacing: 5) {
                             Image(systemName: "plus.viewfinder")
-                                .font(.system(size: 24, weight: .medium))
+                                .font(.system(size: 16, weight: .medium))
                                 .symbolRenderingMode(.hierarchical)
-                                .frame(width: 28, height: 28)
-                                .offset(x: -4)
+                                .frame(width: 22, height: 22)
+                                .offset(x: -5)
                             Text("New tab")
-                                .font(.callout.weight(.medium))
+                                .font(.callout.weight(.regular))
                                 .frame(maxWidth: .greatestFiniteMagnitude, alignment: .leading)
                         }
-                        .frame(minHeight: 42)
                     }
                 }
             }

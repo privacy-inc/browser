@@ -31,9 +31,6 @@ extension Detail {
                     }
                     .presentationDetents([.medium])
                 }
-                .safeAreaInset(edge: .top, spacing: 0) {
-                    Top(session: session, webview: webview)
-                }
             
             Divider()
         }

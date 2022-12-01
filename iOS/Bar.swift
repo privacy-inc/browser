@@ -29,7 +29,8 @@ struct Bar: View {
                                 encryption = true
                             }
                             .popover(isPresented: $encryption) {
-                                Encryption(domain: domain, secure: secure)
+                                Encryption(domain: url?.absoluteString.domain ?? "",
+                                           secure: secure)
                             }
 
                             Text(domain)

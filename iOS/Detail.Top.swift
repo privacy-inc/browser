@@ -3,7 +3,7 @@ import SwiftUI
 extension Detail {
     struct Top: View {
         let session: Session
-        let webview: Webview
+        let id: UUID
         @State private var back = false
         @State private var forward = false
         @State private var detail = false
@@ -34,7 +34,8 @@ extension Detail {
                                 .contentShape(Rectangle())
                         }
                         
-                    } else {
+                    } else if let tab = session.tabs[id],
+                                let webview = tab.webview {
                         button(icon: "chevron.backward", disabled: !back) {
                             UIApplication.shared.hide()
                             webview.goBack()
@@ -67,16 +68,19 @@ extension Detail {
                     }
                 }
                 
-                ZStack(alignment: .top) {
-                    Rectangle()
-                        .fill(Color.primary.opacity(0.05))
-                    Progress(value: progress)
-                        .stroke(Color.accentColor, style: .init(lineWidth: 2))
-                        .frame(height: 2)
-                }
-                .frame(height: 3)
-                .onReceive(webview.publisher(for: \.estimatedProgress)) {
-                    progress = $0
+                if let tab = session.tabs[id],
+                   let webview = tab.webview {
+                    ZStack(alignment: .top) {
+                        Rectangle()
+                            .fill(Color.primary.opacity(0.05))
+                        Progress(value: progress)
+                            .stroke(Color.accentColor, style: .init(lineWidth: 2))
+                            .frame(height: 2)
+                    }
+                    .frame(height: 3)
+                    .onReceive(webview.publisher(for: \.estimatedProgress)) {
+                        progress = $0
+                    }
                 }
             }
             .onReceive(NotificationCenter.default.publisher(for: UIResponder.keyboardWillShowNotification)) { _ in
@@ -85,17 +89,6 @@ extension Detail {
             .onReceive(NotificationCenter.default.publisher(for: UIResponder.keyboardWillHideNotification)) { _ in
                 keyboard = false
             }
-            
-            /*
-             NotificationCenter
-                       .default
-                       .publisher(for: UIResponder.keyboardWillShowNotification)
-                       .map { _ in true },
-                     NotificationCenter
-                       .default
-                       .publisher(for: UIResponder.keyboardWillHideNotification)
-                       .map { _ in false })
-             */
         }
         
         private func button(icon: String, disabled: Bool = false, action: @escaping () -> Void) -> some View {

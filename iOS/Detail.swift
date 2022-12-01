@@ -35,6 +35,9 @@ struct Detail: View {
         .id(id)
         .toolbar(.hidden, for: .navigationBar)
         .frame(maxWidth: .greatestFiniteMagnitude, maxHeight: .greatestFiniteMagnitude)
+        .safeAreaInset(edge: .top, spacing: 0) {
+            Top(session: session, id: id)
+        }
         .safeAreaInset(edge: .bottom, spacing: 0) {
             if case let .tab(id) = session.sidebar,
                let tab = session.tabs[id],
