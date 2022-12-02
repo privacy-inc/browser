@@ -26,7 +26,7 @@ struct Bar: View {
                         HStack(spacing: 0) {
                             button(icon: secure ? "lock.fill" : "exclamationmark.triangle.fill") {
                                 UIApplication.shared.hide()
-                                encryption = true
+                                encryption.toggle()
                             }
                             .popover(isPresented: $encryption) {
                                 Encryption(domain: url?.absoluteString.domain ?? "",
