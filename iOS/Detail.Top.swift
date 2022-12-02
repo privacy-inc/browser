@@ -5,12 +5,13 @@ extension Detail {
     struct Top: View {
         let session: Session
         let id: UUID
+        @State private var keyboard = false
         @State private var back = false
         @State private var forward = false
-        @State private var reader = false
-        @State private var keyboard = false
         @State private var isBookmark = false
         @State private var isReadingList = false
+        @State private var more = false
+        @State private var reader = false
         @State private var progress = Double()
         @Environment(\.dismiss) private var dismiss
         
@@ -46,70 +47,7 @@ extension Detail {
                     } else if let tab = session.tabs[id],
                               let webview = tab.webview,
                               let url = webview.url {
-                        button(icon: "chevron.backward", disabled: !back) {
-                            UIApplication.shared.hide()
-                            webview.goBack()
-                        }
-                        .onReceive(webview.publisher(for: \.canGoBack)) {
-                            back = $0
-                        }
-                        
-                        button(icon: "chevron.forward", disabled: !forward) {
-                            UIApplication.shared.hide()
-                            webview.goForward()
-                        }
-                        .onReceive(webview.publisher(for: \.canGoForward)) {
-                            forward = $0
-                        }
-                        
-                        if let url = webview.url {
-                            ShareLink(item: url) {
-                                image(icon: "square.and.arrow.up")
-                            }
-                        }
-                        
-                        Menu {
-                            element(title: "Bookmark",
-                                    icon: isBookmark ? "bookmark.fill" : "bookmark") {
-                                Task {
-                                    if isBookmark {
-                                        await session.cloud.delete(bookmark: url.absoluteString)
-                                    } else {
-                                        guard
-                                            let bookmark = Bookmark(url: url.absoluteString,
-                                                                    title: webview.title ?? "")
-                                        else { return }
-                                        await session.cloud.add(bookmark: bookmark)
-                                    }
-                                }
-                            }
-                            .onReceive(session.cloud) {
-                                isBookmark = $0.bookmarks.contains { $0.url == url.absoluteString }
-                            }
-                            
-                            element(title: "Reading list",
-                                    icon: isReadingList ? "checkmark.circle" : "eyeglasses") {
-                                guard !isReadingList else { return }
-                                isReadingList = true
-                                Task {
-                                    await session.cloud.add(read: .init(url: url.absoluteString,
-                                                                        title: webview.title ?? ""))
-                                }
-                            }
-                            .disabled(isReadingList)
-                            
-                            Divider()
-                            
-                            element(title: "Reader", icon: "textformat.size") {
-                                reader = true
-                            }
-                            
-                            element(title: "Find on page", icon: "magnifyingglass") {
-                                webview.findInteraction?.presentFindNavigator(showingReplace: false)
-                            }
-                        } label: {
-                            image(icon: "ellipsis")
-                        }
+                        options(webview: webview, url: url)
                     }
                 }
                 
@@ -134,9 +72,135 @@ extension Detail {
             .onReceive(NotificationCenter.default.publisher(for: UIResponder.keyboardWillHideNotification)) { _ in
                 keyboard = false
             }
+            .sheet(isPresented: $more) {
+                More(session: session)
+            }
             .popover(isPresented: $reader) {
                 Reader(session: session)
             }
+        }
+        
+        @ViewBuilder @MainActor private func options(webview: Webview, url: URL) -> some View {
+            button(icon: "chevron.backward", disabled: !back) {
+                UIApplication.shared.hide()
+                webview.goBack()
+            }
+            .onReceive(webview.publisher(for: \.canGoBack)) {
+                back = $0
+            }
+            
+            button(icon: "chevron.forward", disabled: !forward) {
+                UIApplication.shared.hide()
+                webview.goForward()
+            }
+            .onReceive(webview.publisher(for: \.canGoForward)) {
+                forward = $0
+            }
+            
+            ShareLink(item: url) {
+                image(icon: "square.and.arrow.up")
+            }
+            
+            Menu {
+                menu(webview: webview, url: url)
+            } label: {
+                image(icon: "slider.horizontal.3")
+            }
+        }
+        
+        @ViewBuilder @MainActor private func menu(webview: Webview, url: URL) -> some View {
+            element(title: "Bookmark",
+                    icon: isBookmark ? "bookmark.fill" : "bookmark") {
+                Task {
+                    if isBookmark {
+                        await session.cloud.delete(bookmark: url.absoluteString)
+                    } else {
+                        guard
+                            let bookmark = Bookmark(url: url.absoluteString,
+                                                    title: webview.title ?? "")
+                        else { return }
+                        await session.cloud.add(bookmark: bookmark)
+                    }
+                }
+            }
+            .onReceive(session.cloud) {
+                isBookmark = $0.bookmarks.contains { $0.url == url.absoluteString }
+            }
+            
+            element(title: "Reading list",
+                    icon: isReadingList ? "checkmark.circle" : "eyeglasses") {
+                guard !isReadingList else { return }
+                isReadingList = true
+                Task {
+                    await session.cloud.add(read: .init(url: url.absoluteString,
+                                                        title: webview.title ?? ""))
+                }
+            }
+            .disabled(isReadingList)
+            
+            Divider()
+            
+            element(title: "Reader", icon: "textformat.size") {
+                reader = true
+            }
+            
+            element(title: "Find on page", icon: "magnifyingglass") {
+                webview.findInteraction?.presentFindNavigator(showingReplace: false)
+            }
+            
+            extra(webview: webview, url: url)
+            
+            element(title: "Website details", icon: "ellipsis") {
+                more = true
+            }
+            
+            Menu("Export as...") {
+                element(title: "Download", icon: "square.and.arrow.down") {
+                    more = true
+                }
+                
+                element(title: "Print", icon: "printer") {
+                    more = true
+                }
+                
+                element(title: "Snapshot", icon: "text.below.photo.fill") {
+                    more = true
+                }
+                
+                element(title: "PDF", icon: "doc.richtext") {
+                    more = true
+                }
+                
+                element(title: "Web archive", icon: "doc.zipper") {
+                    more = true
+                }
+                
+                if true {
+                    Divider()
+                    
+                    element(title: "Add to photos", icon: "photo") {
+                        more = true
+                    }
+                }
+            }
+        }
+        
+        @ViewBuilder @MainActor private func extra(webview: Webview, url: URL) -> some View {
+            Divider()
+            
+            element(title: "Full screen", icon: "arrow.up.left.and.arrow.down.right") {
+                more = true
+            }
+            
+            element(title: "Pause all media", icon: "pause") {
+                more = true
+            }
+            
+            element(title: "Allow text selection", icon: "selection.pin.in.out") {
+                more = true
+            }
+            
+            Divider()
         }
         
         private func button(icon: String, disabled: Bool = false, action: @escaping () -> Void) -> some View {
@@ -149,7 +213,6 @@ extension Detail {
         private func element(title: String, icon: String, action: @escaping () -> Void) -> some View {
             Button(action: action) {
                 Label(title, systemImage: icon)
-                    .symbolRenderingMode(.hierarchical)
             }
         }
         
@@ -158,7 +221,7 @@ extension Detail {
                 .foregroundStyle(disabled ? .tertiary : .primary)
                 .foregroundColor(.primary)
                 .symbolRenderingMode(.hierarchical)
-                .font(.system(size: 16, weight: .regular))
+                .font(.system(size: 17, weight: .regular))
                 .contentShape(Rectangle())
                 .frame(width: 60, height: 45)
         }

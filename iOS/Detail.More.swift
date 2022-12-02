@@ -4,107 +4,93 @@ import Engine
 extension Detail {
     struct More: View {
         @ObservedObject var session: Session
-        @State private var reader = false
-        @State private var isBookmark = false
-        @State private var isReadingList = false
+        @State private var url = ""
+        @State private var title = ""
+        @State private var domain = ""
+        @State private var trackersPrevented = 0
         @Environment(\.dismiss) private var dismiss
         
         var body: some View {
             NavigationStack {
                 if case let .tab(id) = session.sidebar,
-                   let webview = session.tabs[id]?.webview,
-                   let url = webview.url {
-                    
-                    Web(session: session, webview: webview)
-                        .toolbar {
-                            ToolbarItemGroup(placement: .bottomBar) {
-                                Button {
-                                    guard !isReadingList else { return }
-                                    isReadingList = true
-                                    Task {
-                                        await session.cloud.add(read: .init(url: url.absoluteString,
-                                                                            title: webview.title ?? ""))
-                                    }
-                                } label: {
-                                    Label("Add to reading list",
-                                          systemImage: isReadingList ? "checkmark.circle.fill" : "eyeglasses")
-                                        .symbolRenderingMode(.hierarchical)
-                                        .font(.system(size: 15, weight: .bold))
-                                        .contentShape(Rectangle())
-                                        .frame(minWidth: 50, minHeight: 40)
-                                }
-                                .disabled(isReadingList)
-                                
-                                Spacer()
-                                
-                                Button {
-                                    Task {
-                                        if isBookmark {
-                                            await session.cloud.delete(bookmark: url.absoluteString)
-                                        } else {
-                                            guard
-                                                let bookmark = Bookmark(url: url.absoluteString,
-                                                                        title: webview.title ?? "")
-                                            else { return }
-                                            await session.cloud.add(bookmark: bookmark)
-                                        }
-                                    }
-                                } label: {
-                                    Label(isBookmark ? "Remove from bookmarks" : "Add to bookmarks",
-                                          systemImage: isBookmark ? "bookmark.fill" : "bookmark")
-                                        .symbolRenderingMode(.hierarchical)
-                                        .font(.system(size: 13, weight: .bold))
-                                        .contentShape(Rectangle())
-                                        .frame(minWidth: 50, minHeight: 40)
-                                }
-                                .onReceive(session.cloud) {
-                                    isBookmark = $0.bookmarks.contains { $0.url == url.absoluteString }
-                                }
-                                
-                                Spacer()
-                                
-                                if UIDevice.current.userInterfaceIdiom == .pad {
-                                    readerButton
-                                        .popover(isPresented: $reader) {
-                                            Reader(session: session)
-                                        }
-                                } else {
-                                    readerButton
-                                        .sheet(isPresented: $reader, onDismiss: {
-                                            dismiss()
-                                        }) {
-                                            Reader(session: session)
-                                        }
-                                }
-                                
-                                Spacer()
-                                
-                                Button {
-                                    webview.findInteraction?.presentFindNavigator(showingReplace: false)
-                                } label: {
-                                    Label("Find on page", systemImage: "magnifyingglass")
-                                        .symbolRenderingMode(.hierarchical)
-                                        .font(.system(size: 15, weight: .bold))
-                                        .contentShape(Rectangle())
-                                        .frame(minWidth: 50, minHeight: 40)
-                                }
-                            }
+                   let webview = session.tabs[id]?.webview {
+                    List {
+                        Section("Trackers Prevented") {
+                            trackers
                         }
+                        .headerProminence(.increased)
+                    }
+                    .safeAreaInset(edge: .top, spacing: 0) {
+                        header
+                    }
+                    .onReceive(webview.publisher(for: \.title)) {
+                        title = $0 ?? ""
+                    }
+                    .onReceive(webview.publisher(for: \.url)) {
+                        url = $0?.absoluteString ?? ""
+                        domain = url.domain
+                    }
                 }
             }
             .presentationDetents([.medium])
+            .onReceive(session.cloud) {
+                trackersPrevented = $0.tracking.count(domain: domain)
+            }
         }
         
-        private var readerButton: some View {
-            Button {
-                reader = true
-            } label: {
-                Label("Reader", systemImage: "textformat.size")
-                    .symbolRenderingMode(.hierarchical)
-                    .font(.system(size: 17, weight: .bold))
-                    .contentShape(Rectangle())
-                    .frame(minWidth: 50, minHeight: 40)
+        private var trackers: some View {
+            NavigationLink(destination: Circle()) {
+                HStack {
+                    Text(trackersPrevented == 1 ? "Tracker prevented" : "Trackers prevented")
+                        .font(.callout.weight(.regular))
+                    
+                    Spacer()
+                    
+                    Text("\(trackersPrevented.formatted())")
+                        .font(.init(UIFont.systemFont(ofSize: 20, weight: .bold, width: .condensed)).monospacedDigit())
+                        .foregroundColor(.accentColor)
+                }
             }
+            .disabled(trackersPrevented == 0)
+        }
+        
+        private var header: some View {
+            ZStack(alignment: .topTrailing) {
+                Color(.systemBackground)
+                
+                VStack(alignment: .leading, spacing: 0) {
+                    if !title.isEmpty {
+                        Text(title)
+                            .font(.title3.weight(.medium))
+                            .fixedSize(horizontal: false, vertical: true)
+                            .textSelection(.enabled)
+                            .padding(.bottom, 2)
+                    }
+                    
+                    Text(url)
+                        .font(.callout.weight(.regular))
+                        .foregroundStyle(.secondary)
+                        .fixedSize(horizontal: false, vertical: true)
+                        .textSelection(.enabled)
+                    
+                    Divider()
+                        .padding(.top, 14)
+                }
+                .padding([.leading, .trailing, .top], 24)
+                .frame(maxWidth: .greatestFiniteMagnitude, alignment: .leading)
+                
+                Button {
+                    dismiss()
+                } label: {
+                    Image(systemName: "xmark.circle.fill")
+                        .font(.system(size: 24, weight: .regular))
+                        .symbolRenderingMode(.hierarchical)
+                        .foregroundColor(.secondary)
+                        .contentShape(Rectangle())
+                        .frame(width: 55, height: 50)
+                }
+            }
+            .fixedSize(horizontal: false, vertical: true)
         }
     }
 }
