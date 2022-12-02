@@ -1,4 +1,5 @@
 import SwiftUI
+import Engine
 
 extension Detail {
     struct Top: View {
@@ -6,8 +7,10 @@ extension Detail {
         let id: UUID
         @State private var back = false
         @State private var forward = false
-        @State private var detail = false
+        @State private var reader = false
         @State private var keyboard = false
+        @State private var isBookmark = false
+        @State private var isReadingList = false
         @State private var progress = Double()
         @Environment(\.dismiss) private var dismiss
         
@@ -26,6 +29,12 @@ extension Detail {
                     if keyboard {
                         Button {
                             UIApplication.shared.hide()
+                            
+                            if let tab = session.tabs[id],
+                               let webview = tab.webview,
+                               webview.findInteraction?.isFindNavigatorVisible == true {
+                                webview.findInteraction?.dismissFindNavigator()
+                            }
                         } label: {
                             Text("Cancel")
                                 .font(.callout)
@@ -35,7 +44,8 @@ extension Detail {
                         }
                         
                     } else if let tab = session.tabs[id],
-                                let webview = tab.webview {
+                              let webview = tab.webview,
+                              let url = webview.url {
                         button(icon: "chevron.backward", disabled: !back) {
                             UIApplication.shared.hide()
                             webview.goBack()
@@ -58,12 +68,47 @@ extension Detail {
                             }
                         }
                         
-                        button(icon: "ellipsis") {
-                            UIApplication.shared.hide()
-                            detail = true
-                        }
-                        .sheet(isPresented: $detail) {
-                            More(session: session)
+                        Menu {
+                            element(title: "Bookmark",
+                                    icon: isBookmark ? "bookmark.fill" : "bookmark") {
+                                Task {
+                                    if isBookmark {
+                                        await session.cloud.delete(bookmark: url.absoluteString)
+                                    } else {
+                                        guard
+                                            let bookmark = Bookmark(url: url.absoluteString,
+                                                                    title: webview.title ?? "")
+                                        else { return }
+                                        await session.cloud.add(bookmark: bookmark)
+                                    }
+                                }
+                            }
+                            .onReceive(session.cloud) {
+                                isBookmark = $0.bookmarks.contains { $0.url == url.absoluteString }
+                            }
+                            
+                            element(title: "Reading list",
+                                    icon: isReadingList ? "checkmark.circle" : "eyeglasses") {
+                                guard !isReadingList else { return }
+                                isReadingList = true
+                                Task {
+                                    await session.cloud.add(read: .init(url: url.absoluteString,
+                                                                        title: webview.title ?? ""))
+                                }
+                            }
+                            .disabled(isReadingList)
+                            
+                            Divider()
+                            
+                            element(title: "Reader", icon: "textformat.size") {
+                                reader = true
+                            }
+                            
+                            element(title: "Find on page", icon: "magnifyingglass") {
+                                webview.findInteraction?.presentFindNavigator(showingReplace: false)
+                            }
+                        } label: {
+                            image(icon: "ellipsis")
                         }
                     }
                 }
@@ -89,6 +134,9 @@ extension Detail {
             .onReceive(NotificationCenter.default.publisher(for: UIResponder.keyboardWillHideNotification)) { _ in
                 keyboard = false
             }
+            .popover(isPresented: $reader) {
+                Reader(session: session)
+            }
         }
         
         private func button(icon: String, disabled: Bool = false, action: @escaping () -> Void) -> some View {
@@ -98,10 +146,18 @@ extension Detail {
             .disabled(disabled)
         }
         
+        private func element(title: String, icon: String, action: @escaping () -> Void) -> some View {
+            Button(action: action) {
+                Label(title, systemImage: icon)
+                    .symbolRenderingMode(.hierarchical)
+            }
+        }
+        
         private func image(icon: String, disabled: Bool = false) -> some View {
             Image(systemName: icon)
                 .foregroundStyle(disabled ? .tertiary : .primary)
                 .foregroundColor(.primary)
+                .symbolRenderingMode(.hierarchical)
                 .font(.system(size: 16, weight: .regular))
                 .contentShape(Rectangle())
                 .frame(width: 60, height: 45)

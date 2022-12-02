@@ -23,14 +23,15 @@ final class Webview: AbstractWebview {
         scrollView.clipsToBounds = true
         
         publisher(for: \.url)
-            .combineLatest(publisher(for: \.isLoading),
+            .combineLatest(publisher(for: \.estimatedProgress),
+                           publisher(for: \.isLoading),
                            UserDefaults
                 .standard
                 .publisher(for: \.font))
-            .debounce(for: .seconds(0.05), scheduler: DispatchQueue.main)
+            .debounce(for: .seconds(0.02), scheduler: DispatchQueue.main)
             .sink { [weak self] result in
                 Task { [weak self] in
-                    await self?.update(font: result.2)
+                    await self?.update(font: result.3)
                 }
             }
             .store(in: &subs)
