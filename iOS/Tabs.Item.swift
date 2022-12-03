@@ -1,7 +1,7 @@
 import SwiftUI
 
 extension Tabs {
-    struct Item: View {
+    struct Item: View, Equatable {
         @ObservedObject var session: Session
         let id: UUID
         @State private var title: String?
@@ -39,6 +39,10 @@ extension Tabs {
                     }
                 }
             }
+        }
+        
+        nonisolated static func == (lhs: Self, rhs: Self) -> Bool {
+            lhs.id == rhs.id
         }
     }
 }

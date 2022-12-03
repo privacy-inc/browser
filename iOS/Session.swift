@@ -56,7 +56,7 @@ import Engine
     }
     
     private func open(tab: Tab) {
-        tabs.append(tab)
+        tabs.insert(tab, at: 0)
         sidebar = .tab(tab.id)
     }
 }

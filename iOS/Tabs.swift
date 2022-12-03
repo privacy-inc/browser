@@ -6,6 +6,7 @@ struct Tabs: View {
     var body: some View {
         ForEach(session.tabs) { tab in
             Item(session: session, id: tab.id)
+                .equatable()
                 .swipeActions {
                     Button {
                         withAnimation {
