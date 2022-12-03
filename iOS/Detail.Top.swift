@@ -189,7 +189,7 @@ extension Detail {
             Divider()
             
             element(title: "Full screen", icon: "arrow.up.left.and.arrow.down.right") {
-                more = true
+                webview.evaluateJavaScript("canvas.webkitRequestFullscreen()", completionHandler: nil)
             }
             
             element(title: "Pause all media", icon: "pause") {

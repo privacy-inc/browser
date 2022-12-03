@@ -76,7 +76,8 @@ extension Detail {
                     Divider()
                         .padding(.top, 14)
                 }
-                .padding([.leading, .trailing, .top], 24)
+                .padding(.horizontal)
+                .padding(.top, 32)
                 .frame(maxWidth: .greatestFiniteMagnitude, alignment: .leading)
                 
                 Button {
