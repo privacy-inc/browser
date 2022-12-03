@@ -50,7 +50,7 @@ struct Sidebar: View {
                         Button {
                             alert = true
                         } label: {
-                            Image(systemName: "trash.circle.fill")
+                            Image(systemName: "trash.circle")
                                 .foregroundStyle(session.tabs.isEmpty ? .tertiary : .secondary)
                                 .foregroundColor(session.tabs.isEmpty ? .secondary : .pink)
                                 .symbolRenderingMode(.hierarchical)
