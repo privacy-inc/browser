@@ -22,17 +22,12 @@ final class Webview: AbstractWebview {
         scrollView.contentInsetAdjustmentBehavior = .never
         scrollView.clipsToBounds = true
         
-        publisher(for: \.url)
-            .combineLatest(publisher(for: \.estimatedProgress),
-                           publisher(for: \.isLoading),
-                           UserDefaults
-                .standard
-                .publisher(for: \.font))
-            .debounce(for: .seconds(0.02), scheduler: DispatchQueue.main)
+        UserDefaults
+            .standard
+            .publisher(for: \.font)
+            .dropFirst()
             .sink { [weak self] result in
-                Task { [weak self] in
-                    await self?.update(font: result.3)
-                }
+                self?.update(font: result)
             }
             .store(in: &subs)
     }
@@ -106,6 +101,10 @@ final class Webview: AbstractWebview {
         super.buildMenu(with: with)
     }
     
+    func webView(_: WKWebView, didCommit: WKNavigation!) {
+        update(font: UserDefaults.standard.font)
+    }
+    
     func webView(_: WKWebView, didStartProvisionalNavigation: WKNavigation!) {
         UIApplication.shared.hide()
     }
@@ -167,16 +166,7 @@ final class Webview: AbstractWebview {
         }
     }
     
-    private func update(font: Int) async {
-        var current = 100
-        
-        if let string = try? await evaluateJavaScript("document.body.style.webkitTextSizeAdjust") as? String,
-           let read = Int(string.replacingOccurrences(of: "%", with: "")) {
-            current = read
-        }
-        
-        guard current != font else { return }
-        
+    private func update(font: Int) {
         evaluateJavaScript("document.body.style.webkitTextSizeAdjust='\(font)%'",
                            completionHandler: nil)
     }
