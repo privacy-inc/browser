@@ -19,7 +19,7 @@ extension Detail {
             VStack(spacing: 0) {
                 HStack(spacing: 0) {
                     if UIDevice.current.userInterfaceIdiom == .phone {
-                        button(icon: "sidebar.left") {
+                        button(icon: "sidebar.left", size: 19) {
                             UIApplication.shared.hide()
                             dismiss()
                         }
@@ -203,9 +203,9 @@ extension Detail {
             Divider()
         }
         
-        private func button(icon: String, disabled: Bool = false, action: @escaping () -> Void) -> some View {
+        private func button(icon: String, size: Double = 17, disabled: Bool = false, action: @escaping () -> Void) -> some View {
             Button(action: action) {
-                image(icon: icon, disabled: disabled)
+                image(icon: icon, size: size, disabled: disabled)
             }
             .disabled(disabled)
         }
@@ -216,12 +216,12 @@ extension Detail {
             }
         }
         
-        private func image(icon: String, disabled: Bool = false) -> some View {
+        private func image(icon: String, size: Double = 17, disabled: Bool = false) -> some View {
             Image(systemName: icon)
                 .foregroundStyle(disabled ? .tertiary : .primary)
                 .foregroundColor(.primary)
                 .symbolRenderingMode(.hierarchical)
-                .font(.system(size: 17, weight: .regular))
+                .font(.system(size: size, weight: .regular))
                 .contentShape(Rectangle())
                 .frame(width: 60, height: 45)
         }

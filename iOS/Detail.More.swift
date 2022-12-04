@@ -15,11 +15,12 @@ extension Detail {
                 if case let .tab(id) = session.sidebar,
                    let webview = session.tabs[id]?.webview {
                     List {
-                        Section("Trackers Prevented") {
+                        Section("Trackers prevented") {
                             trackers
                         }
                         .headerProminence(.increased)
                     }
+                    .listStyle(.grouped)
                     .safeAreaInset(edge: .top, spacing: 0) {
                         header
                     }
@@ -63,21 +64,27 @@ extension Detail {
                         Text(title)
                             .font(.title3.weight(.medium))
                             .fixedSize(horizontal: false, vertical: true)
+                            .lineLimit(4)
                             .textSelection(.enabled)
-                            .padding(.bottom, 2)
+                            .padding(.bottom, 5)
+                            .padding(.horizontal)
                     }
                     
                     Text(url)
-                        .font(.callout.weight(.regular))
-                        .foregroundStyle(.secondary)
+                        .font(.init(UIFont.systemFont(
+                            ofSize: UIFont.preferredFont(forTextStyle: .body).pointSize,
+                            weight: .regular,
+                            width: .compressed)))
                         .fixedSize(horizontal: false, vertical: true)
+                        .lineLimit(3)
+                        .foregroundStyle(.secondary)
                         .textSelection(.enabled)
+                        .padding(.horizontal)
                     
                     Divider()
-                        .padding(.top, 14)
+                        .padding(.top, 20)
                 }
-                .padding(.horizontal)
-                .padding(.top, 32)
+                .padding(.top, 34)
                 .frame(maxWidth: .greatestFiniteMagnitude, alignment: .leading)
                 
                 Button {
@@ -88,7 +95,7 @@ extension Detail {
                         .symbolRenderingMode(.hierarchical)
                         .foregroundColor(.secondary)
                         .contentShape(Rectangle())
-                        .frame(width: 55, height: 50)
+                        .frame(width: 45, height: 45)
                 }
             }
             .fixedSize(horizontal: false, vertical: true)
