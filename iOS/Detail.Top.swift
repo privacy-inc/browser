@@ -148,13 +148,23 @@ extension Detail {
                 webview.findInteraction?.presentFindNavigator(showingReplace: false)
             }
             
-            extra(webview: webview, url: url)
+            Divider()
             
-            element(title: "Website details", icon: "ellipsis") {
-                more = true
+            Menu("Media") {
+                element(title: "Full screen", icon: "arrow.up.left.and.arrow.down.right") {
+                    webview.evaluateJavaScript("canvas.webkitRequestFullscreen()", completionHandler: nil)
+                }
+                
+                element(title: "Pause all media", icon: "pause") {
+                    more = true
+                }
+                
+                element(title: "Allow text selection", icon: "selection.pin.in.out") {
+                    more = true
+                }
             }
             
-            Menu("Export as...") {
+            Menu("Export") {
                 element(title: "Download", icon: "square.and.arrow.down") {
                     more = true
                 }
@@ -183,24 +193,12 @@ extension Detail {
                     }
                 }
             }
-        }
-        
-        @ViewBuilder @MainActor private func extra(webview: Webview, url: URL) -> some View {
-            Divider()
-            
-            element(title: "Full screen", icon: "arrow.up.left.and.arrow.down.right") {
-                webview.evaluateJavaScript("canvas.webkitRequestFullscreen()", completionHandler: nil)
-            }
-            
-            element(title: "Pause all media", icon: "pause") {
-                more = true
-            }
-            
-            element(title: "Allow text selection", icon: "selection.pin.in.out") {
-                more = true
-            }
             
             Divider()
+            
+            element(title: "Website details", icon: "ellipsis") {
+                more = true
+            }
         }
         
         private func button(icon: String, size: Double = 17, disabled: Bool = false, action: @escaping () -> Void) -> some View {
