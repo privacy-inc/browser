@@ -5,33 +5,35 @@ struct Website: View {
     let session: Session
     private let url: String
     private let title: String
+    private let domain: String
     private let error: Bool
     private let badge: Bool
     @StateObject private var icon = Icon()
     
-    init(session: Session, url: String, title: String, error: Bool = false, badge: Bool = false) {
+    init(session: Session,
+         url: String,
+         title: String,
+         error: Bool = false,
+         badge: Bool = false) {
+        
         self.session = session
         self.url = url
+        self.domain = url.domain
+        self.title = (title.isEmpty ? (url.components(separatedBy: "://").last ?? url) : title) + " "
         self.error = error
         self.badge = badge
-        
-        if title.isEmpty {
-            self.title = url.domain
-        } else {
-            self.title = title
-        }
     }
     
     var body: some View {
-        HStack(alignment: .top, spacing: 5) {
+        HStack(spacing: 5) {
             if error {
                 Image(systemName: "exclamationmark.triangle.fill")
                     .font(.system(size: 22, weight: .medium))
                     .symbolRenderingMode(.hierarchical)
                     .foregroundColor(.orange)
-                    .frame(width: 28, height: 28)
+                    .frame(width: 22, height: 22)
                     .allowsHitTesting(false)
-                    .offset(x: -4)
+                    .offset(x: -5)
             } else if let image = icon.image {
                 Image(uiImage: image)
                     .resizable()
@@ -41,7 +43,8 @@ struct Website: View {
                     .allowsHitTesting(false)
                     .offset(x: -5)
             }
-            Text(title)
+            
+            Text("\(title)\(Text(domain).foregroundColor(.secondary).font(.footnote.weight(.regular)))")
                 .font(.callout.weight(.regular))
                 .foregroundColor(.primary)
                 .lineLimit(3)
