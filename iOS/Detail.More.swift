@@ -7,20 +7,20 @@ extension Detail {
         @State private var url = ""
         @State private var title = ""
         @State private var domain = ""
+        @State private var tracking = Tracking()
         @State private var trackersPrevented = 0
+        @State private var trackerItems = [Tracking.Item]()
         @Environment(\.dismiss) private var dismiss
         
         var body: some View {
             NavigationStack {
                 if case let .tab(id) = session.sidebar,
                    let webview = session.tabs[id]?.webview {
-                    List {
-                        Section("Trackers prevented") {
-                            trackers
-                        }
-                        .headerProminence(.increased)
+                    ScrollView {
+                        trackers
+                            .padding(.horizontal)
+                            .padding(.vertical, 20)
                     }
-                    .listStyle(.grouped)
                     .safeAreaInset(edge: .top, spacing: 0) {
                         header
                     }
@@ -30,34 +30,61 @@ extension Detail {
                     .onReceive(webview.publisher(for: \.url)) {
                         url = $0?.absoluteString ?? ""
                         domain = url.domain
+                        update()
                     }
                 }
             }
             .presentationDetents([.medium])
             .onReceive(session.cloud) {
-                trackersPrevented = $0.tracking.count(domain: domain)
+                tracking = $0.tracking
+                update()
             }
         }
         
         private var trackers: some View {
-            NavigationLink(destination: Circle()) {
-                HStack {
-                    Text(trackersPrevented == 1 ? "Tracker prevented" : "Trackers prevented")
-                        .font(.callout.weight(.regular))
+            Grid(verticalSpacing: 0) {
+                GridRow {
+                    Text("Trackers prevented")
+                        .font(.title3.weight(.medium))
+                        .padding(.vertical, 10)
+                        .frame(maxWidth: .greatestFiniteMagnitude, alignment: .leading)
+                        .gridColumnAlignment(.leading)
+                    HStack {
+                        Divider()
+                    }
+                    Text(trackersPrevented, format: .number)
+                        .font(.init(UIFont.systemFont(
+                            ofSize: UIFont.preferredFont(forTextStyle: .title3).pointSize,
+                            weight: .medium,
+                            width: .condensed)).monospacedDigit())
+                        .gridColumnAlignment(.trailing)
+                }
+                
+                ForEach(trackerItems, id: \.tracker) { item in
+                    Divider()
                     
-                    Spacer()
-                    
-                    Text("\(trackersPrevented.formatted())")
-                        .font(.init(UIFont.systemFont(ofSize: 20, weight: .bold, width: .condensed)).monospacedDigit())
-                        .foregroundColor(.accentColor)
+                    GridRow {
+                        Text(item.tracker)
+                            .font(.callout)
+                            .lineLimit(1)
+                            .padding(.vertical, 10)
+                        HStack {
+                            Divider()
+                        }
+                        Text(item.count, format: .number)
+                            .font(.init(UIFont.systemFont(
+                                ofSize: UIFont.preferredFont(forTextStyle: .callout).pointSize,
+                                weight: .regular,
+                                width: .condensed)).monospacedDigit())
+                            .padding(.leading, 20)
+                    }
                 }
             }
-            .disabled(trackersPrevented == 0)
         }
         
         private var header: some View {
             ZStack(alignment: .topTrailing) {
-                Color(.systemBackground)
+                Color(.secondarySystemBackground)
                 
                 VStack(alignment: .leading, spacing: 0) {
                     if !title.isEmpty {
@@ -66,7 +93,7 @@ extension Detail {
                             .fixedSize(horizontal: false, vertical: true)
                             .lineLimit(4)
                             .textSelection(.enabled)
-                            .padding(.bottom, 5)
+                            .padding(.bottom, 1)
                             .padding(.horizontal)
                     }
                     
@@ -99,6 +126,11 @@ extension Detail {
                 }
             }
             .fixedSize(horizontal: false, vertical: true)
+        }
+        
+        private func update() {
+            trackersPrevented = tracking.count(domain: domain)
+            trackerItems = tracking.items(for: domain)
         }
     }
 }

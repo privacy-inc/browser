@@ -46,7 +46,7 @@ public struct Tracking: Storable {
     private let domains: [String : [UInt16 : UInt16]]
     private let trackers: [String]
     
-    init() {
+    public init() {
         self.init(domains: [:], trackers: [])
     }
     
