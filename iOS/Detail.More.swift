@@ -57,6 +57,7 @@ extension Detail {
                             ofSize: UIFont.preferredFont(forTextStyle: .title3).pointSize,
                             weight: .medium,
                             width: .condensed)).monospacedDigit())
+                        .padding(.leading, 20)
                         .gridColumnAlignment(.trailing)
                 }
                 
@@ -76,7 +77,6 @@ extension Detail {
                                 ofSize: UIFont.preferredFont(forTextStyle: .callout).pointSize,
                                 weight: .regular,
                                 width: .condensed)).monospacedDigit())
-                            .padding(.leading, 20)
                     }
                 }
             }

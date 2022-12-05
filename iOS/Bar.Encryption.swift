@@ -27,9 +27,10 @@ extension Bar {
                             .font(.callout.weight(.medium))
                     }
                     .buttonStyle(.borderedProminent)
+                    .padding(.bottom, 30)
                 }
             }
-            .presentationDetents([.height(150)])
+            .presentationDetents([.height(160)])
         }
     }
 }
