@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		3818EC38293E412300D93D06 /* URLExporter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3818EC37293E412300D93D06 /* URLExporter.swift */; };
 		CE0E06EB292CFC4300C1C034 /* Download.Fail.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE0E06EA292CFC4300C1C034 /* Download.Fail.swift */; };
 		CE0E06ED292CFEF100C1C034 /* Downloads.Item.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE0E06EC292CFEF100C1C034 /* Downloads.Item.swift */; };
 		CE1324412912B00200418B13 /* Browser.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE1324402912B00200418B13 /* Browser.swift */; };
@@ -51,6 +52,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		3818EC37293E412300D93D06 /* URLExporter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = URLExporter.swift; sourceTree = "<group>"; };
 		CE0E06EA292CFC4300C1C034 /* Download.Fail.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Download.Fail.swift; sourceTree = "<group>"; };
 		CE0E06EC292CFEF100C1C034 /* Downloads.Item.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Downloads.Item.swift; sourceTree = "<group>"; };
 		CE1324402912B00200418B13 /* Browser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Browser.swift; sourceTree = "<group>"; };
@@ -185,6 +187,7 @@
 			children = (
 				CECB8D8329116030002600F1 /* AbstractWebview.swift */,
 				CECF48B5292A5F6600251A2D /* AttributedString.swift */,
+				3818EC37293E412300D93D06 /* URLExporter.swift */,
 				CEAFD8F4292A922100B55BB5 /* UserDefaults.swift */,
 				CE67A58F292673120005FCB9 /* Weberror.swift */,
 			);
@@ -287,6 +290,7 @@
 				CEACBD202917F14600A7104A /* History.swift in Sources */,
 				CEDE8B5B292E491400FEF02E /* Array.Tab.swift in Sources */,
 				CE0E06EB292CFC4300C1C034 /* Download.Fail.swift in Sources */,
+				3818EC38293E412300D93D06 /* URLExporter.swift in Sources */,
 				CEE1F16C292790160084A331 /* Detail.Error.swift in Sources */,
 				CEE1F16A29278FC00084A331 /* Detail.Tab.swift in Sources */,
 				CECB8D7B29114390002600F1 /* Detail.swift in Sources */,

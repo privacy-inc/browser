@@ -1,4 +1,5 @@
 import SwiftUI
+import UniformTypeIdentifiers
 import Engine
 
 extension Detail {
@@ -48,6 +49,12 @@ extension Detail {
                               let webview = tab.webview,
                               let url = webview.url {
                         options(webview: webview, url: url)
+                            .onReceive(webview.publisher(for: \.canGoBack)) {
+                                back = $0
+                            }
+                            .onReceive(webview.publisher(for: \.canGoForward)) {
+                                forward = $0
+                            }
                     }
                 }
                 
@@ -85,16 +92,10 @@ extension Detail {
                 UIApplication.shared.hide()
                 webview.goBack()
             }
-            .onReceive(webview.publisher(for: \.canGoBack)) {
-                back = $0
-            }
             
             button(icon: "chevron.forward", disabled: !forward) {
                 UIApplication.shared.hide()
                 webview.goForward()
-            }
-            .onReceive(webview.publisher(for: \.canGoForward)) {
-                forward = $0
             }
             
             ShareLink(item: url) {
@@ -156,11 +157,7 @@ extension Detail {
                 }
                 
                 element(title: "Pause all media", icon: "pause") {
-                    more = true
-                }
-                
-                element(title: "Allow text selection", icon: "selection.pin.in.out") {
-                    more = true
+                    webview.pauseAllMediaPlayback()
                 }
             }
             
@@ -181,15 +178,24 @@ extension Detail {
                     more = true
                 }
                 
-                element(title: "Web archive", icon: "doc.zipper") {
-                    more = true
+                
+                ShareLink(item: URLExporter(webview: webview, url: url, type: .webArchive), preview: .init("webarchive")) {
+                    Label("Web archive", systemImage: "doc.zipper")
                 }
                 
-                if true {
+                if let type = UTType(filenameExtension: url.absoluteString.components(separatedBy: ".").last!.lowercased()),
+                   type.conforms(to: .movie) || type.conforms(to: .image) {
+                    
                     Divider()
                     
                     element(title: "Add to photos", icon: "photo") {
-                        more = true
+                        Task.detached(priority: .utility) {
+                            guard
+                                let (data, _) = try? await URLSession(configuration: .ephemeral).data(from: url),
+                                let image = UIImage(data: data)
+                            else { return }
+                            UIImageWriteToSavedPhotosAlbum(image, nil, nil, nil)
+                        }
                     }
                 }
             }
