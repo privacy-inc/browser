@@ -14,6 +14,7 @@ extension Detail {
         @State private var more = false
         @State private var reader = false
         @State private var progress = Double()
+        @State private var sharing: URL?
         @Environment(\.dismiss) private var dismiss
         
         var body: some View {
@@ -84,6 +85,11 @@ extension Detail {
             }
             .popover(isPresented: $reader) {
                 Reader(session: session)
+            }
+            .popover(isPresented: .init(
+                get: { sharing != nil },
+                set: { if !$0 { sharing = nil } })) {
+                Sharing(item: sharing ?? .init(filePath: ""))
             }
         }
         
@@ -163,24 +169,37 @@ extension Detail {
             
             Menu("Export") {
                 element(title: "Download", icon: "square.and.arrow.down") {
-                    more = true
+                    sharing = url.download
                 }
                 
                 element(title: "Print", icon: "printer") {
-                    more = true
+                    UIPrintInteractionController.shared.printFormatter = webview.viewPrintFormatter()
+                    UIPrintInteractionController.shared.present(animated: true)
                 }
                 
                 element(title: "Snapshot", icon: "text.below.photo.fill") {
-                    more = true
+                    Task {
+                        guard
+                            let image = try? await webview.takeSnapshot(configuration: nil),
+                            let data = image.pngData()
+                        else { return }
+                        sharing = data.temporal(url.file("png"))
+                    }
                 }
                 
                 element(title: "PDF", icon: "doc.richtext") {
-                    more = true
+                    Task {
+                        guard let data = try? await webview.pdf() else { return }
+                        sharing = data.temporal(url.file("pdf"))
+                    }
                 }
                 
-                
-                ShareLink(item: URLExporter(webview: webview, url: url, type: .webArchive), preview: .init("webarchive")) {
-                    Label("Web archive", systemImage: "doc.zipper")
+                element(title: "Web archive", icon: "doc.zipper") {
+                    webview
+                        .createWebArchiveData {
+                            guard case let .success(data) = $0 else { return }
+                            sharing = data.temporal(url.file("webarchive"))
+                        }
                 }
                 
                 if let type = UTType(filenameExtension: url.absoluteString.components(separatedBy: ".").last!.lowercased()),
