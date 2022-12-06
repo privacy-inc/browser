@@ -26,7 +26,9 @@ final class Webview: AbstractWebview {
             .standard
             .publisher(for: \.font)
             .dropFirst()
-            .sink { [weak self] result in
+            .combineLatest(publisher(for: \.url))
+            .debounce(for: .seconds(0.2), scheduler: DispatchQueue.main)
+            .sink { [weak self] result, _ in
                 self?.update(font: result)
             }
             .store(in: &subs)
