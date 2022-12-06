@@ -26,10 +26,8 @@ final class Webview: AbstractWebview {
             .standard
             .publisher(for: \.font)
             .dropFirst()
-            .combineLatest(publisher(for: \.url))
-            .debounce(for: .seconds(0.2), scheduler: DispatchQueue.main)
-            .sink { [weak self] result, _ in
-                self?.update(font: result)
+            .sink { [weak self] font in
+                self?.update(font: font)
             }
             .store(in: &subs)
     }
@@ -104,6 +102,10 @@ final class Webview: AbstractWebview {
     }
     
     func webView(_: WKWebView, didCommit: WKNavigation!) {
+        update(font: UserDefaults.standard.font)
+    }
+    
+    func webView(_: WKWebView, didFinish: WKNavigation!) {
         update(font: UserDefaults.standard.font)
     }
     
