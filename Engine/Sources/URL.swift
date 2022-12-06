@@ -7,12 +7,16 @@ extension URL {
     }
     
     public var download: URL? {
-        (try? Data(contentsOf: self))
-            .map {
-                $0.temporal({
+        get async {
+            guard
+                let (data, _) = try? await URLSession.shared.data(from: self)
+            else { return nil }
+            
+            return data
+                .temporal({
                     $0.isEmpty ? "Website.html" : $0.contains(".") && $0.last != "." ? $0 : $0 + ".html"
                 } (lastPathComponent.replacingOccurrences(of: "/", with: "")))
-            }
+        }
     }
     
     public func file(_ type: String) -> String {

@@ -15,37 +15,53 @@ extension Detail {
             NavigationStack {
                 List {
                     Section {
+                        if let download {
+                            ShareLink(item: download) {
+                                element(title: "Download", icon: "square.and.arrow.down")
+                            }
+                        } else {
+                            element(title: "Download", icon: "square.and.arrow.down")
+                                .listRowBackground(Color.clear)
+                                .listRowSeparator(.hidden)
+                        }
+                    }
+                    
+                    Section {
                         Button {
                             UIPrintInteractionController.shared.printFormatter = webview.viewPrintFormatter()
                             UIPrintInteractionController.shared.present(animated: true)
                         } label: {
                             element(title: "Print", icon: "printer")
                         }
-                    }
-                    
-                    Section {
-                        if let download {
-                            ShareLink(item: download) {
-                                element(title: "Download", icon: "square.and.arrow.down")
-                            }
-                        }
                         
                         if let snapshot {
                             ShareLink(item: snapshot) {
                                 element(title: "Snapshot", icon: "text.below.photo.fill")
                             }
+                        } else {
+                            element(title: "Snapshot", icon: "text.below.photo.fill")
+                                .listRowBackground(Color.clear)
+                                .listRowSeparator(.hidden)
                         }
                         
                         if let pdf {
                             ShareLink(item: pdf) {
                                 element(title: "PDF", icon: "doc.richtext")
                             }
+                        } else {
+                            element(title: "PDF", icon: "doc.richtext")
+                                .listRowBackground(Color.clear)
+                                .listRowSeparator(.hidden)
                         }
                         
                         if let webarchive {
                             ShareLink(item: webarchive) {
                                 element(title: "Web archive", icon: "doc.zipper")
                             }
+                        } else {
+                            element(title: "Web archive", icon: "doc.zipper")
+                                .listRowBackground(Color.clear)
+                                .listRowSeparator(.hidden)
                         }
                     }
                     
@@ -58,13 +74,14 @@ extension Detail {
                         
                         Section {
                             Button {
-                                Task.detached(priority: .utility) {
-                                    guard
-                                        let (data, _) = try? await URLSession.shared.data(from: url),
-                                        let image = UIImage(data: data)
-                                    else { return }
-                                    UIImageWriteToSavedPhotosAlbum(image, nil, nil, nil)
-                                }
+                                guard
+                                    let url = download,
+                                    let data = try? Data(contentsOf: url),
+                                    let image = UIImage(data: data)
+                                else { return }
+                                UIImageWriteToSavedPhotosAlbum(image, nil, nil, nil)
+                                
+                                dismiss()
                             } label: {
                                 element(title: "Add to photos", icon: "photo")
                             }
@@ -83,7 +100,7 @@ extension Detail {
             }
             .presentationDetents([.medium])
             .task {
-                download = url.download
+                download = await url.download
                 
                 if let image = try? await webview.takeSnapshot(configuration: nil),
                    let data = image.pngData() {
