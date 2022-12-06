@@ -1,5 +1,4 @@
 import SwiftUI
-import UniformTypeIdentifiers
 import Engine
 
 extension Detail {
@@ -13,8 +12,8 @@ extension Detail {
         @State private var isReadingList = false
         @State private var more = false
         @State private var reader = false
+        @State private var export = false
         @State private var progress = Double()
-        @State private var sharing: URL?
         @Environment(\.dismiss) private var dismiss
         
         var body: some View {
@@ -56,6 +55,9 @@ extension Detail {
                             .onReceive(webview.publisher(for: \.canGoForward)) {
                                 forward = $0
                             }
+                            .sheet(isPresented: $export) {
+                                Export(webview: webview, url: url)
+                            }
                     }
                 }
                 
@@ -85,11 +87,6 @@ extension Detail {
             }
             .popover(isPresented: $reader) {
                 Reader(session: session)
-            }
-            .popover(isPresented: .init(
-                get: { sharing != nil },
-                set: { if !$0 { sharing = nil } })) {
-                Sharing(item: sharing ?? .init(filePath: ""))
             }
         }
         
@@ -155,68 +152,8 @@ extension Detail {
                 webview.findInteraction?.presentFindNavigator(showingReplace: false)
             }
             
-            Divider()
-            
-            Menu("Media") {
-                element(title: "Full screen", icon: "arrow.up.left.and.arrow.down.right") {
-                    webview.evaluateJavaScript("document.body.webkitRequestFullscreen()", completionHandler: nil)
-                }
-                
-                element(title: "Pause all media", icon: "pause") {
-                    webview.pauseAllMediaPlayback()
-                }
-            }
-            
-            Menu("Export") {
-                element(title: "Download", icon: "square.and.arrow.down") {
-                    sharing = url.download
-                }
-                
-                element(title: "Print", icon: "printer") {
-                    UIPrintInteractionController.shared.printFormatter = webview.viewPrintFormatter()
-                    UIPrintInteractionController.shared.present(animated: true)
-                }
-                
-                element(title: "Snapshot", icon: "text.below.photo.fill") {
-                    Task {
-                        guard
-                            let image = try? await webview.takeSnapshot(configuration: nil),
-                            let data = image.pngData()
-                        else { return }
-                        sharing = data.temporal(url.file("png"))
-                    }
-                }
-                
-                element(title: "PDF", icon: "doc.richtext") {
-                    Task {
-                        guard let data = try? await webview.pdf() else { return }
-                        sharing = data.temporal(url.file("pdf"))
-                    }
-                }
-                
-                element(title: "Web archive", icon: "doc.zipper") {
-                    webview
-                        .createWebArchiveData {
-                            guard case let .success(data) = $0 else { return }
-                            sharing = data.temporal(url.file("webarchive"))
-                        }
-                }
-                
-                if let type = UTType(filenameExtension: url.absoluteString.components(separatedBy: ".").last!.lowercased()),
-                   type.conforms(to: .movie) || type.conforms(to: .image) {
-                    
-                    Divider()
-                    
-                    element(title: "Add to photos", icon: "photo") {
-                        Task.detached(priority: .utility) {
-                            guard
-                                let (data, _) = try? await URLSession(configuration: .ephemeral).data(from: url),
-                                let image = UIImage(data: data)
-                            else { return }
-                            UIImageWriteToSavedPhotosAlbum(image, nil, nil, nil)
-                        }
-                    }
-                }
+            element(title: "Export", icon: "square.and.arrow.up") {
+                export = true
             }
             
             Divider()

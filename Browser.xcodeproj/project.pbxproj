@@ -7,7 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		3818EC3A293E4B2700D93D06 /* Detail.Sharing.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3818EC39293E4B2700D93D06 /* Detail.Sharing.swift */; };
+		3818EC3A293E4B2700D93D06 /* Detail.Export.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3818EC39293E4B2700D93D06 /* Detail.Export.swift */; };
 		CE0E06EB292CFC4300C1C034 /* Download.Fail.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE0E06EA292CFC4300C1C034 /* Download.Fail.swift */; };
 		CE0E06ED292CFEF100C1C034 /* Downloads.Item.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE0E06EC292CFEF100C1C034 /* Downloads.Item.swift */; };
 		CE1324412912B00200418B13 /* Browser.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE1324402912B00200418B13 /* Browser.swift */; };
@@ -52,7 +52,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		3818EC39293E4B2700D93D06 /* Detail.Sharing.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Detail.Sharing.swift; sourceTree = "<group>"; };
+		3818EC39293E4B2700D93D06 /* Detail.Export.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Detail.Export.swift; sourceTree = "<group>"; };
 		CE0E06EA292CFC4300C1C034 /* Download.Fail.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Download.Fail.swift; sourceTree = "<group>"; };
 		CE0E06EC292CFEF100C1C034 /* Downloads.Item.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Downloads.Item.swift; sourceTree = "<group>"; };
 		CE1324402912B00200418B13 /* Browser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Browser.swift; sourceTree = "<group>"; };
@@ -134,10 +134,10 @@
 				CE36C0952915381B0038B79F /* Category.swift */,
 				CE2E09092930E5C2001E8FCC /* Delegate.swift */,
 				CEE1F16B292790160084A331 /* Detail.Error.swift */,
+				3818EC39293E4B2700D93D06 /* Detail.Export.swift */,
 				CEE1F16D29279CA80084A331 /* Detail.More.swift */,
 				CEB3172D291A75AC0099992E /* Detail.Progress.swift */,
 				CECF48B3292A5C9B00251A2D /* Detail.Reader.swift */,
-				3818EC39293E4B2700D93D06 /* Detail.Sharing.swift */,
 				CECB8D7A29114390002600F1 /* Detail.swift */,
 				CEE1F16929278FC00084A331 /* Detail.Tab.swift */,
 				CEE2800C2932409400315803 /* Detail.Top.swift */,
@@ -286,7 +286,7 @@
 				CE6391E229197466000FCEF0 /* Icon.swift in Sources */,
 				CECF48B4292A5C9B00251A2D /* Detail.Reader.swift in Sources */,
 				CE36C0962915381B0038B79F /* Category.swift in Sources */,
-				3818EC3A293E4B2700D93D06 /* Detail.Sharing.swift in Sources */,
+				3818EC3A293E4B2700D93D06 /* Detail.Export.swift in Sources */,
 				CECB8D7729113A86002600F1 /* Sidebar.swift in Sources */,
 				CEACBD202917F14600A7104A /* History.swift in Sources */,
 				CEDE8B5B292E491400FEF02E /* Array.Tab.swift in Sources */,
