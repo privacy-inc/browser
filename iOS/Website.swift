@@ -3,12 +3,12 @@ import Domains
 
 struct Website: View {
     let session: Session
+    @State private var image: UIImage?
     private let url: String
     private let title: String
     private let domain: String
     private let error: Bool
     private let badge: Bool
-    @StateObject private var icon = Icon()
     
     init(session: Session,
          url: String,
@@ -26,25 +26,29 @@ struct Website: View {
     
     var body: some View {
         HStack(spacing: 5) {
-            if error {
-                Image(systemName: "exclamationmark.triangle.fill")
-                    .font(.system(size: 22, weight: .medium))
-                    .symbolRenderingMode(.hierarchical)
-                    .foregroundColor(.orange)
-                    .frame(width: 22, height: 22)
-                    .allowsHitTesting(false)
-                    .offset(x: -5)
-                    .padding(.vertical, 7)
-            } else if let image = icon.image {
-                Image(uiImage: image)
-                    .resizable()
-                    .scaledToFit()
-                    .clipShape(RoundedRectangle(cornerRadius: 6, style: .continuous))
-                    .frame(width: 22, height: 22)
-                    .allowsHitTesting(false)
-                    .offset(x: -5)
-                    .padding(.vertical, 7)
+            ZStack {
+                if error {
+                    Image(systemName: "exclamationmark.triangle.fill")
+                        .font(.system(size: 22, weight: .medium))
+                        .symbolRenderingMode(.hierarchical)
+                        .foregroundColor(.orange)
+                } else if let image = image {
+                    Image(uiImage: image)
+                        .resizable()
+                        .scaledToFit()
+                        .clipShape(RoundedRectangle(cornerRadius: 6, style: .continuous))
+                } else {
+                    Rectangle()
+                        .fill(.clear)
+                        .task {
+                            guard let url = URL(string: url) else { return }
+                            image = await session.favicon.icon(for: url)
+                        }
+                }
             }
+            .frame(width: 22, height: 22)
+            .offset(x: -5)
+            .padding(.vertical, 7)
             
             Text("\(title)\(Text(domain).foregroundColor(.secondary).font(.footnote.weight(.regular)))")
                 .font(.callout.weight(.regular))
@@ -53,24 +57,12 @@ struct Website: View {
                 .multilineTextAlignment(.leading)
                 .fixedSize(horizontal: false, vertical: true)
                 .frame(maxWidth: .greatestFiniteMagnitude, alignment: .leading)
-            
+
             if badge {
                 Circle()
                     .fill(Color.accentColor)
                     .frame(width: 10, height: 10)
             }
         }
-        .onChange(of: url) { url in
-            Task {
-                await update(url: url)
-            }
-        }
-        .task {
-            await update(url: url)
-        }
-    }
-    
-    @MainActor private func update(url: String) async {
-        await icon.load(favicon: session.favicon, website: .init(string: url))
     }
 }

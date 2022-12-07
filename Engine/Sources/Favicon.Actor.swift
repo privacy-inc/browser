@@ -1,5 +1,4 @@
 import Foundation
-import Combine
 
 #if os(macOS) || os(iOS)
 
@@ -11,13 +10,27 @@ import UIKit
 
 extension Favicon {
     final actor Actor {
+        let path: URL
         private var received = Set<String>()
-        private var publishers = [String : CurrentValueSubject<Output?, Never>]()
+        private var icons = [String : Icon]()
         
-        func publisher(for website: URL, with path: URL) -> CurrentValueSubject<Output?, Never>? {
+        init() {
+            var url = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)[0].appendingPathComponent("favicons")
+            
+            if !FileManager.default.fileExists(atPath: url.path) {
+                var resources = URLResourceValues()
+                resources.isExcludedFromBackup = true
+                try? url.setResourceValues(resources)
+                try? FileManager.default.createDirectory(at: url, withIntermediateDirectories: true)
+            }
+            
+            self.path = url
+        }
+        
+        func icon(for website: URL) -> Icon? {
             guard let icon = website.icon else { return nil }
-            update(icon: icon, with: path)
-            return publishers[icon]
+            update(icon: icon)
+            return icons[icon]
         }
         
         func request(icon: String) -> Bool {
@@ -28,25 +41,18 @@ extension Favicon {
             received.insert(icon)
         }
         
-        func update(icon: String, with path: URL) {
-            if publishers[icon] == nil {
-                publishers[icon] = .init(nil)
-            }
+        func update(icon: String) {
+            guard icons[icon] == nil else { return }
             
-            if publishers[icon]!.value == nil {
-                publishers[icon]!.value = image(for: icon, with: path)
-            }
-        }
-        
-        private func image(for icon: String, with path: URL) -> Output? {
             let url = path.appendingPathComponent(icon)
             
             guard
                 FileManager.default.fileExists(atPath: url.path),
-                let data = try? Data(contentsOf: url)
-            else { return nil }
+                let data = try? Data(contentsOf: url),
+                let image = Icon(data: data)
+            else { return }
             
-            return .init(data: data)
+            icons[icon] = image
         }
     }
 }

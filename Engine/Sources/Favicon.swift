@@ -1,5 +1,4 @@
 import Foundation
-import Combine
 import Domains
 
 #if os(macOS) || os(iOS)
@@ -12,28 +11,25 @@ import UIKit
 
 public final class Favicon {
 #if os(macOS)
-    public typealias Output = NSImage
+    public typealias Icon = NSImage
 #elseif os(iOS)
-    public typealias Output = UIImage
+    public typealias Icon = UIImage
 #endif
     
     private var actor = Actor()
-    private var path: URL
     private let session: URLSession
     
     public init() {
         let configuration = URLSessionConfiguration.ephemeral
-        configuration.timeoutIntervalForRequest = 9
-        configuration.timeoutIntervalForResource = 9
+        configuration.timeoutIntervalForRequest = 10
+        configuration.timeoutIntervalForResource = 10
         configuration.waitsForConnectivity = true
         configuration.allowsCellularAccess = true
         session = .init(configuration: configuration)
-        
-        path = Self.regenerate()
     }
     
-    @MainActor public func publisher(for website: URL) async -> CurrentValueSubject<Output?, Never>? {
-        await actor.publisher(for: website, with: path)
+    public func icon(for website: URL) async -> Icon? {
+        await actor.icon(for: website)
     }
     
     public func request(for website: URL) async -> Bool {
@@ -53,23 +49,9 @@ public final class Favicon {
             let url = URL(string: url)
         else { return }
         
-        Task
-            .detached(priority: .utility) { [weak self] in
-                try? await self?.fetch(url: url, for: icon)
-            }
+        try? await fetch(url: url, for: icon)
     }
-    
-    public func clear() {
-        actor = .init()
-        
-        Task
-            .detached(priority: .utility) { [weak self] in
-                guard let self = self else { return }
-                try? FileManager.default.removeItem(at: self.path)
-                self.path = Self.regenerate()
-            }
-    }
-    
+
     private func fetch(url: URL, for icon: String) async throws {
         let (location, response) = try await session.download(from: url)
         
@@ -78,7 +60,7 @@ public final class Favicon {
             return
         }
         
-        let file = path.appendingPathComponent(icon)
+        let file = actor.path.appendingPathComponent(icon)
         
         if FileManager.default.fileExists(atPath: file.path) {
             try? FileManager.default.removeItem(at: file)
@@ -86,20 +68,7 @@ public final class Favicon {
         
         try? FileManager.default.moveItem(at: location, to: file)
         
-        await actor.update(icon: icon, with: path)
-    }
-    
-    private static func regenerate() -> URL {
-        var url = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)[0].appendingPathComponent("favicons")
-        
-        if !FileManager.default.fileExists(atPath: url.path) {
-            var resources = URLResourceValues()
-            resources.isExcludedFromBackup = true
-            try? url.setResourceValues(resources)
-            try? FileManager.default.createDirectory(at: url, withIntermediateDirectories: true)
-        }
-        
-        return url
+        await actor.update(icon: icon)
     }
 }
 
