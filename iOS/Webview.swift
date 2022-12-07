@@ -25,8 +25,8 @@ final class Webview: AbstractWebview {
         UserDefaults
             .standard
             .publisher(for: \.font)
-            .dropFirst()
             .sink { [weak self] font in
+                configuration.userContentController.addUserScript(.init(source: "document.body.style.webkitTextSizeAdjust='\(font)%'", injectionTime: .atDocumentEnd, forMainFrameOnly: false))
                 self?.update(font: font)
             }
             .store(in: &subs)
@@ -102,10 +102,6 @@ final class Webview: AbstractWebview {
     }
     
     func webView(_: WKWebView, didCommit: WKNavigation!) {
-        update(font: UserDefaults.standard.font)
-    }
-    
-    func webView(_: WKWebView, didFinish: WKNavigation!) {
         update(font: UserDefaults.standard.font)
     }
     
