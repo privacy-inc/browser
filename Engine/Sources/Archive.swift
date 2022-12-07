@@ -7,12 +7,10 @@ public struct Archive: Arch {
     public internal(set) var bookmarks: [Bookmark]
     public internal(set) var history: [History]
     public internal(set) var reads: [Read]
-    public internal(set) var log: [Log]
     public internal(set) var tracking: Tracking
     
     public var data: Data {
         .init()
-        .adding(size: UInt32.self, collection: log)
         .adding(size: UInt16.self, collection: bookmarks)
         .adding(size: UInt16.self, collection: history)
         .adding(size: UInt16.self, collection: reads)
@@ -21,7 +19,6 @@ public struct Archive: Arch {
     
     public init() {
         timestamp = 0
-        log = []
         bookmarks = []
         history = []
         reads = []
@@ -34,7 +31,6 @@ public struct Archive: Arch {
         
         switch version {
         case Self.version:
-            log = data.collection(size: UInt32.self)
             bookmarks = data.collection(size: UInt16.self)
             history = data.collection(size: UInt16.self)
             reads = data.collection(size: UInt16.self)
@@ -45,12 +41,10 @@ public struct Archive: Arch {
                 .map {
                     .init($0.id, $0.title)
                 }
-            log = []
             history = []
             reads = []
             tracking = .init()
         default:
-            log = []
             bookmarks = []
             history = []
             reads = []
