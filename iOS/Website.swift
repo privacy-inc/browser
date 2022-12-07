@@ -34,7 +34,7 @@ struct Website: View {
                     .frame(width: 22, height: 22)
                     .allowsHitTesting(false)
                     .offset(x: -5)
-                    .padding(.vertical, 5)
+                    .padding(.vertical, 7)
             } else if let image = icon.image {
                 Image(uiImage: image)
                     .resizable()
@@ -43,7 +43,7 @@ struct Website: View {
                     .frame(width: 22, height: 22)
                     .allowsHitTesting(false)
                     .offset(x: -5)
-                    .padding(.vertical, 5)
+                    .padding(.vertical, 7)
             }
             
             Text("\(title)\(Text(domain).foregroundColor(.secondary).font(.footnote.weight(.regular)))")
@@ -67,11 +67,6 @@ struct Website: View {
         }
         .task {
             await update(url: url)
-        }
-        .onAppear {
-            Task {
-                await update(url: url)
-            }
         }
     }
     
