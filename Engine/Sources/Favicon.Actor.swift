@@ -11,7 +11,7 @@ import UIKit
 extension Favicon {
     final actor Actor {
         let path: URL
-        private var received = Set<String>()
+        private(set) var received = Set<String>()
         private var icons = [String : Icon]()
         
         init() {
@@ -31,10 +31,6 @@ extension Favicon {
             guard let icon = website.icon else { return nil }
             update(icon: icon)
             return icons[icon]
-        }
-        
-        func request(icon: String) -> Bool {
-            !received.contains(icon)
         }
         
         func received(icon: String) {

@@ -31,7 +31,7 @@ extension Tabs {
                                 .font(.system(size: 16, weight: .medium))
                                 .symbolRenderingMode(.hierarchical)
                                 .frame(width: 22, height: 22)
-                                .offset(x: -7)
+                                .offset(x: -5)
                                 .padding(.vertical, 7)
                             Text("New tab")
                                 .font(.callout.weight(.regular))

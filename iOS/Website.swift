@@ -37,13 +37,6 @@ struct Website: View {
                         .resizable()
                         .scaledToFit()
                         .clipShape(RoundedRectangle(cornerRadius: 6, style: .continuous))
-                } else {
-                    Rectangle()
-                        .fill(.clear)
-                        .task {
-                            guard let url = URL(string: url) else { return }
-                            image = await session.favicon.icon(for: url)
-                        }
                 }
             }
             .frame(width: 22, height: 22)
@@ -63,6 +56,10 @@ struct Website: View {
                     .fill(Color.accentColor)
                     .frame(width: 10, height: 10)
             }
+        }
+        .task {
+            guard let url = URL(string: url) else { return }
+            image = await session.favicon.icon(for: url)
         }
     }
 }
