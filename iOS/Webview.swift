@@ -54,7 +54,7 @@ final class Webview: AbstractWebview {
     }
     
     override func download(_ download: WKDownload, decideDestinationUsing: URLResponse, suggestedFilename: String) async -> URL? {
-        let url = URL.temporal(suggestedFilename)
+        let url = URL.saveTemporal(as: suggestedFilename)
         
         if FileManager.default.fileExists(atPath: url.path) {
             try? FileManager.default.removeItem(at: url)
@@ -126,8 +126,14 @@ final class Webview: AbstractWebview {
     }
     
     func webView(_: WKWebView, contextMenuConfigurationFor: WKContextMenuElementInfo) async -> UIContextMenuConfiguration? {
-        .init(actionProvider: { elements in
-            var elements = elements
+        .init(previewProvider: {
+            guard
+                let url = contextMenuConfigurationFor.linkURL,
+                !url.isImage
+            else { return nil }
+            return Preview(url: url)
+        }, actionProvider: { elements in
+            var elements: [UIMenuElement] = elements
                 .filter {
                     guard let name = ($0 as? UIAction)?.identifier.rawValue else { return true }
                     switch name {
@@ -137,11 +143,11 @@ final class Webview: AbstractWebview {
                         return true
                     }
                 }
-            
+    
             if let url = contextMenuConfigurationFor.linkURL {
                 elements.insert(contentsOf: [
-                    .init(title: "Open",
-                             image: .init(systemName: "link"))
+                    UIAction(title: "Open",
+                          image: .init(systemName: "link"))
                     { [weak self] _ in
                         self?.load(.init(url: url))
                     },
@@ -167,7 +173,7 @@ final class Webview: AbstractWebview {
         if let url = contextMenuForElement.linkURL {
             load(.init(url: url))
         } else if let data = (willCommitWithAnimator.previewViewController?.view.subviews.first as? UIImageView)?.image?.pngData() {
-            load(.init(url: data.temporal("image.png")))
+            load(.init(url: data.saveTemporal(as: "image.png")))
         }
     }
     

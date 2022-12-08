@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		3818EC3A293E4B2700D93D06 /* Detail.Export.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3818EC39293E4B2700D93D06 /* Detail.Export.swift */; };
+		3830DFDE29424672000E1E78 /* Webview.Preview.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3830DFDD29424672000E1E78 /* Webview.Preview.swift */; };
 		CE0E06EB292CFC4300C1C034 /* Download.Fail.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE0E06EA292CFC4300C1C034 /* Download.Fail.swift */; };
 		CE0E06ED292CFEF100C1C034 /* Downloads.Item.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE0E06EC292CFEF100C1C034 /* Downloads.Item.swift */; };
 		CE1324412912B00200418B13 /* Browser.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE1324402912B00200418B13 /* Browser.swift */; };
@@ -52,6 +53,7 @@
 
 /* Begin PBXFileReference section */
 		3818EC39293E4B2700D93D06 /* Detail.Export.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Detail.Export.swift; sourceTree = "<group>"; };
+		3830DFDD29424672000E1E78 /* Webview.Preview.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Webview.Preview.swift; sourceTree = "<group>"; };
 		CE0E06EA292CFC4300C1C034 /* Download.Fail.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Download.Fail.swift; sourceTree = "<group>"; };
 		CE0E06EC292CFEF100C1C034 /* Downloads.Item.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Downloads.Item.swift; sourceTree = "<group>"; };
 		CE1324402912B00200418B13 /* Browser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Browser.swift; sourceTree = "<group>"; };
@@ -156,6 +158,7 @@
 				CE36C091291534690038B79F /* Tabs.swift */,
 				CEEB873029225255004968FC /* UIApplication.swift */,
 				CEBCB1F72919232200A35A0C /* Website.swift */,
+				3830DFDD29424672000E1E78 /* Webview.Preview.swift */,
 				CECB8D852911620F002600F1 /* Webview.swift */,
 				CEAA603929112F5E00431596 /* Assets.xcassets */,
 			);
@@ -296,6 +299,7 @@
 				CEAA603629112F5D00431596 /* App.swift in Sources */,
 				CE2E090A2930E5C2001E8FCC /* Delegate.swift in Sources */,
 				CE1324472912D26700418B13 /* Search.swift in Sources */,
+				3830DFDE29424672000E1E78 /* Webview.Preview.swift in Sources */,
 				CEB3172E291A75AC0099992E /* Detail.Progress.swift in Sources */,
 				CEB9430D291E7F1C00DF793C /* Bookmarks.Edit.swift in Sources */,
 				CEA53E3F292CE1FC00676FB4 /* Downloads.swift in Sources */,
