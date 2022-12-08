@@ -11,7 +11,7 @@ extension Cloud where Output == Archive {
     }
     
     public func history(url: URL, title: String) async {
-        guard let remote = url.remoteString else { return }
+        guard let remote = url.asRemoteString else { return }
         let comparable = remote.comparable
         var model = await model
         

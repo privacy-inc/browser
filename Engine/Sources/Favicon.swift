@@ -34,25 +34,25 @@ public final class Favicon {
     
     public func request(for website: URL) async -> Bool {
         guard
-            let icon = website.icon,
-            await !actor.received.contains(icon)
+            let asFavicon = website.asFavicon,
+            await !actor.received.contains(asFavicon)
         else { return false }
         return true
     }
     
     public func received(url: String, for website: URL) async {
-        guard let icon = website.icon else { return }
-        await actor.received(icon: icon)
+        guard let asFavicon = website.asFavicon else { return }
+        await actor.received(asFavicon: asFavicon)
         
         guard
             !url.isEmpty,
             let url = URL(string: url)
         else { return }
         
-        try? await fetch(url: url, for: icon)
+        try? await fetch(url: url, for: asFavicon)
     }
 
-    private func fetch(url: URL, for icon: String) async throws {
+    private func fetch(url: URL, for asFavicon: String) async throws {
         let (location, response) = try await session.download(from: url)
         
         guard (response as? HTTPURLResponse)?.statusCode == 200 else {
@@ -60,15 +60,15 @@ public final class Favicon {
             return
         }
         
-        let file = actor.path.appendingPathComponent(icon)
+        let fileName = actor.path.appendingPathComponent(asFavicon)
         
-        if FileManager.default.fileExists(atPath: file.path) {
-            try? FileManager.default.removeItem(at: file)
+        if FileManager.default.fileExists(atPath: fileName.path) {
+            try? FileManager.default.removeItem(at: fileName)
         }
         
-        try? FileManager.default.moveItem(at: location, to: file)
+        try? FileManager.default.moveItem(at: location, to: fileName)
         
-        await actor.update(icon: icon)
+        await actor.update(asFavicon: asFavicon)
     }
 }
 

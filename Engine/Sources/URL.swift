@@ -1,25 +1,35 @@
 import Foundation
 import Domains
+import UniformTypeIdentifiers
 
 extension URL {
-    public static func temporal(_ name: String) -> Self {
+    public static func saveTemporal(as name: String) -> Self {
         .init(fileURLWithPath: NSTemporaryDirectory()).appendingPathComponent(name)
     }
     
-    public var download: URL? {
-        get async {
-            guard
-                let (data, _) = try? await URLSession.shared.data(from: self)
-            else { return nil }
-            
-            return data
-                .temporal({
-                    $0.isEmpty ? "Website.html" : $0.contains(".") && $0.last != "." ? $0 : $0 + ".html"
-                } (lastPathComponent.replacingOccurrences(of: "/", with: "")))
-        }
+    public var isImage: Bool {
+        guard
+            let type = UTType(filenameExtension: absoluteString
+                .components(separatedBy: ".")
+                .last!
+                .lowercased()),
+            type.conforms(to: .movie) || type.conforms(to: .image)
+        else { return false }
+        return true
     }
     
-    public func file(_ type: String) -> String {
+    public func temporalDownload() async -> Self? {
+        guard
+            let (data, _) = try? await URLSession.shared.data(from: self)
+        else { return nil }
+        
+        return data
+            .saveTemporal(as: {
+                $0.isEmpty ? "Website.html" : $0.contains(".") && $0.last != "." ? $0 : $0 + ".html"
+            } (lastPathComponent.replacingOccurrences(of: "/", with: "")))
+    }
+    
+    public func fileName(with type: String) -> String {
         absoluteString
             .components(separatedBy: ".")
             .dropLast()
@@ -34,7 +44,7 @@ extension URL {
         ?? "_." + type
     }
     
-    var remoteString: String? {
+    var asRemoteString: String? {
         switch scheme {
         case "https", "http", "ftp":
             return absoluteString
@@ -43,7 +53,7 @@ extension URL {
         }
     }
     
-    var icon: String? {
+    var asFavicon: String? {
         guard let host = self.host else { return nil }
         
         var string = Tld.domain(host: host).minimal

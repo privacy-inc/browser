@@ -28,19 +28,19 @@ extension Favicon {
         }
         
         func icon(for website: URL) -> Icon? {
-            guard let icon = website.icon else { return nil }
-            update(icon: icon)
-            return icons[icon]
+            guard let asFavicon = website.asFavicon else { return nil }
+            update(asFavicon: asFavicon)
+            return icons[asFavicon]
         }
         
-        func received(icon: String) {
-            received.insert(icon)
+        func received(asFavicon: String) {
+            received.insert(asFavicon)
         }
         
-        func update(icon: String) {
-            guard icons[icon] == nil else { return }
+        func update(asFavicon: String) {
+            guard icons[asFavicon] == nil else { return }
             
-            let url = path.appendingPathComponent(icon)
+            let url = path.appendingPathComponent(asFavicon)
             
             guard
                 FileManager.default.fileExists(atPath: url.path),
@@ -48,7 +48,7 @@ extension Favicon {
                 let image = Icon(data: data)
             else { return }
             
-            icons[icon] = image
+            icons[asFavicon] = image
         }
     }
 }

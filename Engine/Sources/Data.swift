@@ -1,11 +1,11 @@
 import Foundation
 
 extension Data {
-    public func temporal(_ name: String) -> URL {
+    public func saveTemporal(as name: String) -> URL {
         {
             try? write(to: $0, options: .atomic)
             return $0
-        } (URL.temporal(name))
+        } (URL.saveTemporal(as: name))
     }
     
     #if os(macOS)
