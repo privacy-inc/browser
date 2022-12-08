@@ -95,7 +95,12 @@ final class Webview: AbstractWebview {
     override func buildMenu(with: UIMenuBuilder) {
         with.replaceChildren(ofMenu: .lookup) { elements in
             elements.filter {
-                ($0 as? UICommand)?.action.description != "_define:"
+                switch ($0 as? UICommand)?.action.description {
+                case "_define:", "_findSelected:":
+                    return false
+                default:
+                    return true
+                }
             }
         }
         super.buildMenu(with: with)
