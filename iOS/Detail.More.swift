@@ -21,6 +21,7 @@ extension Detail {
                             .padding(.horizontal)
                             .padding(.vertical, 20)
                     }
+                    .background(.blue)
                     .safeAreaInset(edge: .top, spacing: 0) {
                         header
                     }
@@ -34,6 +35,7 @@ extension Detail {
                     }
                 }
             }
+            .foregroundColor(.white)
             .presentationDetents([.medium])
             .onReceive(session.cloud) {
                 tracking = $0.tracking
@@ -45,37 +47,39 @@ extension Detail {
             Grid(verticalSpacing: 0) {
                 GridRow {
                     Text("Trackers prevented")
-                        .font(.title3.weight(.medium))
+                        .font(.title3.weight(.semibold))
                         .padding(.vertical, 10)
                         .frame(maxWidth: .greatestFiniteMagnitude, alignment: .leading)
                         .gridColumnAlignment(.leading)
-                    HStack {
-                        Divider()
-                    }
+                    Rectangle()
+                        .fill(Color.clear)
+                        .frame(width: 1)
                     Text(trackersPrevented, format: .number)
                         .font(.init(UIFont.systemFont(
                             ofSize: UIFont.preferredFont(forTextStyle: .title3).pointSize,
-                            weight: .medium,
+                            weight: .semibold,
                             width: .condensed)).monospacedDigit())
                         .padding(.leading, 20)
                         .gridColumnAlignment(.trailing)
                 }
                 
                 ForEach(trackerItems, id: \.tracker) { item in
-                    Divider()
+                    Rectangle()
+                        .fill(Color(white: 1, opacity: 0.5))
+                        .frame(height: 1)
                     
                     GridRow {
                         Text(item.tracker)
-                            .font(.callout)
+                            .font(.callout.weight(.medium))
                             .lineLimit(1)
                             .padding(.vertical, 10)
-                        HStack {
-                            Divider()
-                        }
+                        Rectangle()
+                            .fill(Color(white: 1, opacity: 0.5))
+                            .frame(width: 1)
                         Text(item.count, format: .number)
                             .font(.init(UIFont.systemFont(
                                 ofSize: UIFont.preferredFont(forTextStyle: .callout).pointSize,
-                                weight: .regular,
+                                weight: .medium,
                                 width: .condensed)).monospacedDigit())
                     }
                 }
@@ -84,7 +88,7 @@ extension Detail {
         
         private var header: some View {
             ZStack(alignment: .topTrailing) {
-                Color.accentColor
+                Color.blue
                 
                 VStack(alignment: .leading, spacing: 0) {
                     if !title.isEmpty {
@@ -108,7 +112,10 @@ extension Detail {
                         .textSelection(.enabled)
                         .padding(.horizontal)
                     
-                    Divider()
+                    Rectangle()
+                        .fill(Color(white: 1, opacity: 0.5))
+                        .frame(height: 1)
+                        .edgesIgnoringSafeArea(.horizontal)
                         .padding(.top, 20)
                 }
                 .padding(.top)
@@ -124,7 +131,6 @@ extension Detail {
                         .frame(width: 45, height: 45)
                 }
             }
-            .foregroundColor(.white)
             .fixedSize(horizontal: false, vertical: true)
         }
         
