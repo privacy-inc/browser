@@ -84,17 +84,18 @@ extension Detail {
         
         private var header: some View {
             ZStack(alignment: .topTrailing) {
-                Color(.secondarySystemBackground)
+                Color.accentColor
                 
                 VStack(alignment: .leading, spacing: 0) {
                     if !title.isEmpty {
                         Text(title)
-                            .font(.title3.weight(.medium))
+                            .font(.title2.weight(.semibold))
                             .fixedSize(horizontal: false, vertical: true)
                             .lineLimit(4)
                             .textSelection(.enabled)
-                            .padding(.bottom, 1)
-                            .padding(.horizontal)
+                            .padding(.bottom, 2)
+                            .padding(.leading)
+                            .padding(.trailing, 45)
                     }
                     
                     Text(url)
@@ -104,14 +105,13 @@ extension Detail {
                             width: .compressed)))
                         .fixedSize(horizontal: false, vertical: true)
                         .lineLimit(3)
-                        .foregroundStyle(.secondary)
                         .textSelection(.enabled)
                         .padding(.horizontal)
                     
                     Divider()
                         .padding(.top, 20)
                 }
-                .padding(.top, 34)
+                .padding(.top)
                 .frame(maxWidth: .greatestFiniteMagnitude, alignment: .leading)
                 
                 Button {
@@ -120,11 +120,11 @@ extension Detail {
                     Image(systemName: "xmark.circle.fill")
                         .font(.system(size: 24, weight: .regular))
                         .symbolRenderingMode(.hierarchical)
-                        .foregroundColor(.secondary)
                         .contentShape(Rectangle())
                         .frame(width: 45, height: 45)
                 }
             }
+            .foregroundColor(.white)
             .fixedSize(horizontal: false, vertical: true)
         }
         

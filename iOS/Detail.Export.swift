@@ -1,5 +1,4 @@
 import SwiftUI
-import UniformTypeIdentifiers
 
 extension Detail {
     struct Export: View {
@@ -65,13 +64,7 @@ extension Detail {
                         }
                     }
                     
-                    if let type = UTType(filenameExtension: url
-                        .absoluteString
-                        .components(separatedBy: ".")
-                        .last!
-                        .lowercased()),
-                       type.conforms(to: .movie) || type.conforms(to: .image) {
-                        
+                    if url.isImage {
                         Section {
                             Button {
                                 guard
@@ -100,21 +93,21 @@ extension Detail {
             }
             .presentationDetents([.medium])
             .task {
-                download = await url.download
+                download = await url.temporalDownload()
                 
                 if let image = try? await webview.takeSnapshot(configuration: nil),
                    let data = image.pngData() {
-                    snapshot = data.temporal(url.file("png"))
+                    snapshot = data.saveTemporal(as: url.fileName(with: "png"))
                 }
                 
                 if let data = try? await webview.pdf() {
-                    pdf = data.temporal(url.file("pdf"))
+                    pdf = data.saveTemporal(as: url.fileName(with: "pdf"))
                 }
                 
                 webview
                     .createWebArchiveData {
                         if case let .success(data) = $0 {
-                            webarchive = data.temporal(url.file("webarchive"))
+                            webarchive = data.saveTemporal(as: url.fileName(with: "webarchive"))
                         }
                     }
             }
