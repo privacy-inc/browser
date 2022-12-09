@@ -2,37 +2,17 @@ import SwiftUI
 import Domains
 
 struct Website: View {
-    let session: Session
-    @State private var image: UIImage?
-    private let url: String
-    private let title: String
-    private let domain: String
-    private let error: Bool
-    private let badge: Bool
-    
-    init(session: Session,
-         url: String,
-         title: String,
-         error: Bool = false,
-         badge: Bool = false) {
-        
-        self.session = session
-        self.url = url
-        self.domain = url.domain
-        self.title = (title.isEmpty ? (url.components(separatedBy: "://").last ?? url) : title) + " "
-        self.error = error
-        self.badge = badge
-    }
+    @StateObject var info: Info
     
     var body: some View {
         HStack(spacing: 5) {
             ZStack {
-                if error {
+                if info.error {
                     Image(systemName: "exclamationmark.triangle.fill")
                         .font(.system(size: 22, weight: .medium))
                         .symbolRenderingMode(.hierarchical)
                         .foregroundColor(.orange)
-                } else if let image = image {
+                } else if let image = info.image {
                     Image(uiImage: image)
                         .resizable()
                         .scaledToFit()
@@ -43,7 +23,7 @@ struct Website: View {
             .offset(x: -5)
             .padding(.vertical, 7)
             
-            Text("\(title)\(Text(domain).foregroundColor(.secondary).font(.footnote.weight(.regular)))")
+            Text("\(info.title)\(Text(info.domain).foregroundColor(.secondary).font(.footnote.weight(.regular)))")
                 .font(.callout.weight(.regular))
                 .foregroundColor(.primary)
                 .lineLimit(3)
@@ -51,15 +31,11 @@ struct Website: View {
                 .fixedSize(horizontal: false, vertical: true)
                 .frame(maxWidth: .greatestFiniteMagnitude, alignment: .leading)
 
-            if badge {
+            if info.badge {
                 Circle()
                     .fill(Color.accentColor)
                     .frame(width: 10, height: 10)
             }
-        }
-        .task {
-            guard let url = URL(string: url) else { return }
-            image = await session.favicon.icon(for: url)
         }
     }
 }

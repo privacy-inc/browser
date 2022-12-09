@@ -18,6 +18,22 @@ extension URL {
         return true
     }
     
+    public var iconIdentifier: String? {
+        guard let host = self.host else { return nil }
+        
+        var string = Tld.domain(host: host).minimal
+        if let component = pathComponents.dropFirst().first {
+            string = "\(string)/\(component)"
+        }
+        
+        guard
+            let encoded = string
+                .addingPercentEncoding(withAllowedCharacters: .urlHostAllowed)
+        else { return nil }
+        
+        return encoded
+    }
+    
     public func temporalDownload() async -> Self? {
         guard
             let (data, _) = try? await URLSession.shared.data(from: self)
@@ -51,22 +67,6 @@ extension URL {
         default:
             return nil
         }
-    }
-    
-    var iconIdentifier: String? {
-        guard let host = self.host else { return nil }
-        
-        var string = Tld.domain(host: host).minimal
-        if let component = pathComponents.dropFirst().first {
-            string = "\(string)/\(component)"
-        }
-        
-        guard
-            let encoded = string
-                .addingPercentEncoding(withAllowedCharacters: .urlHostAllowed)
-        else { return nil }
-        
-        return encoded
     }
     
 #if os(macOS)

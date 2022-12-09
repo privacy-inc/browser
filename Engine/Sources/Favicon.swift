@@ -10,7 +10,7 @@ import AppKit
 import UIKit
 #endif
 
-public final class Favicon {
+public final class Favicon: @unchecked Sendable {
 #if os(macOS)
     public typealias Icon = NSImage
 #elseif os(iOS)
@@ -41,8 +41,21 @@ public final class Favicon {
         path = url
     }
     
-    public func received(url: String, for website: URL) {
-        guard let iconIdentifier = website.iconIdentifier else { return }
+    @MainActor public func load(iconIdentifier: String) {
+        guard icons.value[iconIdentifier] == nil else { return }
+        
+        let url = path.appendingPathComponent(iconIdentifier)
+        
+        guard
+            FileManager.default.fileExists(atPath: url.path),
+            let data = try? Data(contentsOf: url),
+            let image = Icon(data: data)
+        else { return }
+        
+        icons.value[iconIdentifier] = image
+    }
+    
+    public func received(url: String, for iconIdentifier: String) {
         Task {
             guard
                 await needs(iconIdentifier: iconIdentifier),
@@ -73,20 +86,6 @@ public final class Favicon {
         }
 
         try? FileManager.default.moveItem(at: location, to: fileName)
-    }
-    
-    @MainActor private func load(iconIdentifier: String) {
-        guard icons.value[iconIdentifier] == nil else { return }
-        
-        let url = path.appendingPathComponent(iconIdentifier)
-        
-        guard
-            FileManager.default.fileExists(atPath: url.path),
-            let data = try? Data(contentsOf: url),
-            let image = Icon(data: data)
-        else { return }
-        
-        icons.value[iconIdentifier] = image
     }
 }
 

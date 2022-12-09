@@ -25,7 +25,9 @@ struct Bookmarks: View {
                     Button {
                         session.open(url: item.url)
                     } label: {
-                        Website(session: session, url: item.url, title: item.title)
+                        Website(info: .init(favicon: session.favicon,
+                                            url: item.url,
+                                            title: item.title))
                     }
                     .swipeActions {
                         Button {

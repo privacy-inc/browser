@@ -27,7 +27,10 @@ struct Reads: View {
                         
                         session.open(url: item.url)
                     } label: {
-                        Website(session: session, url: item.url, title: item.title, badge: !item.read)
+                        Website(info: .init(favicon: session.favicon,
+                                            url: item.url,
+                                            title: item.title,
+                                            badge: !item.read))
                     }
                     .swipeActions {
                         Button {

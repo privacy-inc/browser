@@ -4,27 +4,14 @@ extension Tabs {
     struct Item: View, Equatable {
         @ObservedObject var session: Session
         let id: UUID
-        @State private var title: String?
-        @State private var url: String?
         
         var body: some View {
             NavigationLink(value: Category.tab(id)) {
                 if let tab = session.tabs[id] {
                     if let error = tab.error {
-                        Website(session: session,
-                                url: error.url?.absoluteString ?? "",
-                                title: error.message,
-                                error: true)
-                    } else if let web = tab.webview {
-                        Website(session: session,
-                                url: url ?? "",
-                                title: title ?? "")
-                            .onReceive(web.publisher(for: \.title)) {
-                                title = $0
-                            }
-                            .onReceive(web.publisher(for: \.url)) {
-                                url = $0?.absoluteString
-                            }
+                        Website(info: .init(error: error))
+                    } else if let webview = tab.webview {
+                        Website(info: .init(webview: webview, favicon: session.favicon))
                     } else {
                         HStack(spacing: 5) {
                             Image(systemName: "plus.viewfinder")
