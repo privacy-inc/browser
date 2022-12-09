@@ -53,7 +53,7 @@ extension URL {
         }
     }
     
-    var asFavicon: String? {
+    var iconIdentifier: String? {
         guard let host = self.host else { return nil }
         
         var string = Tld.domain(host: host).minimal

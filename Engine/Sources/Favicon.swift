@@ -1,4 +1,5 @@
 import Foundation
+import Combine
 import Domains
 
 #if os(macOS) || os(iOS)
@@ -16,8 +17,9 @@ public final class Favicon {
     public typealias Icon = UIImage
 #endif
     
-    private var actor = Actor()
+    public let icons = CurrentValueSubject<_, Never>([String : Icon]())
     private let session: URLSession
+    private let path: URL
     
     public init() {
         let configuration = URLSessionConfiguration.ephemeral
@@ -26,49 +28,65 @@ public final class Favicon {
         configuration.waitsForConnectivity = true
         configuration.allowsCellularAccess = true
         session = .init(configuration: configuration)
-    }
-    
-    public func icon(for website: URL) async -> Icon? {
-        await actor.icon(for: website)
-    }
-    
-    public func request(for website: URL) async -> Bool {
-        guard
-            let asFavicon = website.asFavicon,
-            await !actor.received.contains(asFavicon)
-        else { return false }
-        return true
-    }
-    
-    public func received(url: String, for website: URL) async {
-        guard let asFavicon = website.asFavicon else { return }
-        await actor.received(asFavicon: asFavicon)
         
-        guard
-            !url.isEmpty,
-            let url = URL(string: url)
-        else { return }
+        var url = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)[0].appendingPathComponent("favicons")
         
-        try? await fetch(url: url, for: asFavicon)
+        if !FileManager.default.fileExists(atPath: url.path) {
+            var resources = URLResourceValues()
+            resources.isExcludedFromBackup = true
+            try? url.setResourceValues(resources)
+            try? FileManager.default.createDirectory(at: url, withIntermediateDirectories: true)
+        }
+        
+        path = url
+    }
+    
+    public func received(url: String, for website: URL) {
+        guard let iconIdentifier = website.iconIdentifier else { return }
+        Task {
+            guard
+                await needs(iconIdentifier: iconIdentifier),
+                !url.isEmpty,
+                let url = URL(string: url)
+            else { return }
+            try? await fetch(url: url, for: iconIdentifier)
+            await load(iconIdentifier: iconIdentifier)
+        }
+    }
+    
+    @MainActor private func needs(iconIdentifier: String) -> Bool {
+        icons.value[iconIdentifier] == nil
     }
 
-    private func fetch(url: URL, for asFavicon: String) async throws {
+    private func fetch(url: URL, for iconIdentifier: String) async throws {
         let (location, response) = try await session.download(from: url)
-        
+
         guard (response as? HTTPURLResponse)?.statusCode == 200 else {
             try? FileManager.default.removeItem(at: location)
             return
         }
-        
-        let fileName = actor.path.appendingPathComponent(asFavicon)
-        
+
+        let fileName = path.appendingPathComponent(iconIdentifier)
+
         if FileManager.default.fileExists(atPath: fileName.path) {
             try? FileManager.default.removeItem(at: fileName)
         }
-        
+
         try? FileManager.default.moveItem(at: location, to: fileName)
+    }
+    
+    @MainActor private func load(iconIdentifier: String) {
+        guard icons.value[iconIdentifier] == nil else { return }
         
-        await actor.update(asFavicon: asFavicon)
+        let url = path.appendingPathComponent(iconIdentifier)
+        
+        guard
+            FileManager.default.fileExists(atPath: url.path),
+            let data = try? Data(contentsOf: url),
+            let image = Icon(data: data)
+        else { return }
+        
+        icons.value[iconIdentifier] = image
     }
 }
 

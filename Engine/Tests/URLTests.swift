@@ -21,13 +21,13 @@ final class URLTests: XCTestCase {
     }
     
     func testIcon() {
-        XCTAssertEqual("www.ck%2Fhello", URL(string: "http://www.avocado.www.ck/hello")?.asFavicon)
-        XCTAssertEqual("hello.com%2Fa", URL(string: "https://hello.com/a")?.asFavicon)
-        XCTAssertEqual("hello.com", URL(string: "http://hello.com")?.asFavicon)
-        XCTAssertEqual("hello.com%2Fa", URL(string: "https://a.hello.com/a?var=3231123")?.asFavicon)
-        XCTAssertEqual("hello.com%2Fa", URL(string: "https://a.hello.com/a/b/c?var=3231123")?.asFavicon)
-        XCTAssertEqual("hello.com", URL(string: "https://a.hello.com/?var=3231123")?.asFavicon)
-        XCTAssertEqual("twitter.com%2F_vaux", URL(string: "http://twitter.com/_vaux")?.asFavicon)
-        XCTAssertEqual("wikipedia.org%2Fwiki", URL(string: "https://de.m.wikipedia.org/wiki/Alan_Moore#/languages")?.asFavicon)
+        XCTAssertEqual("www.ck%2Fhello", URL(string: "http://www.avocado.www.ck/hello")?.iconIdentifier)
+        XCTAssertEqual("hello.com%2Fa", URL(string: "https://hello.com/a")?.iconIdentifier)
+        XCTAssertEqual("hello.com", URL(string: "http://hello.com")?.iconIdentifier)
+        XCTAssertEqual("hello.com%2Fa", URL(string: "https://a.hello.com/a?var=3231123")?.iconIdentifier)
+        XCTAssertEqual("hello.com%2Fa", URL(string: "https://a.hello.com/a/b/c?var=3231123")?.iconIdentifier)
+        XCTAssertEqual("hello.com", URL(string: "https://a.hello.com/?var=3231123")?.iconIdentifier)
+        XCTAssertEqual("twitter.com%2F_vaux", URL(string: "http://twitter.com/_vaux")?.iconIdentifier)
+        XCTAssertEqual("wikipedia.org%2Fwiki", URL(string: "https://de.m.wikipedia.org/wiki/Alan_Moore#/languages")?.iconIdentifier)
     }
 }
