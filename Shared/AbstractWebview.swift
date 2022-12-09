@@ -3,15 +3,18 @@ import Combine
 import Archivable
 import Engine
 
-class AbstractWebview: WKWebView, WKNavigationDelegate, WKUIDelegate, WKDownloadDelegate {
+class AbstractWebview: WKWebView, WKNavigationDelegate, WKUIDelegate, WKDownloadDelegate, WKScriptMessageHandler {
+    
     final var subs = Set<AnyCancellable>()
     private static var rules: WKContentRuleList?
     private weak var cloud: Cloud<Archive>!
+    private weak var favicon: Favicon!
     private let history = PassthroughSubject<(url: URL, title: String), Never>()
     
     required init?(coder: NSCoder) { nil }
     init(cloud: Cloud<Archive>, favicon: Favicon, configuration: WKWebViewConfiguration) {
         self.cloud = cloud
+        self.favicon = favicon
         
         if let rules = Self.rules {
             configuration.userContentController.add(rules)
@@ -70,22 +73,24 @@ class AbstractWebview: WKWebView, WKNavigationDelegate, WKUIDelegate, WKDownload
             }
             .store(in: &subs)
         
-        publisher(for: \.url)
-            .compactMap {
-                $0
-            }
-            .removeDuplicates()
-            .debounce(for: .seconds(1), scheduler: DispatchQueue.main)
-            .sink { [weak self] website in
-                Task { [weak self] in
-                    guard
-                        await favicon.request(for: website),
-                        let url = try? await self?.evaluateJavaScript("\(Script.favicon.rawValue)()") as? String
-                    else { return }
-                    await favicon.received(url: url, for: website)
-                }
-            }
-            .store(in: &subs)
+        configuration.userContentController.add(self, name: Script.favicon.rawValue)
+    }
+    
+    nonisolated func userContentController(_: WKUserContentController, didReceive: WKScriptMessage) {
+        guard
+            didReceive.name == Script.favicon.rawValue,
+            let components = (didReceive.body as? String)?.components(separatedBy: ";"),
+            components.count == 2,
+            let url = components.first,
+            let website = components.last,
+            !url.isEmpty,
+            !website.isEmpty,
+            let iconIdentifier = URL(string: website)?.iconIdentifier
+        else { return }
+        
+        Task {
+            await favicon.received(url: url, for: iconIdentifier)
+        }
     }
     
     func clean() {

@@ -63,8 +63,11 @@ function \(favicon.rawValue)() {
         }
     }
 
-    return icon;
+    window.webkit.messageHandlers.\(favicon.rawValue).postMessage(icon + ";" + window.location.href);
 }
+
+\(favicon.rawValue)();
+
 
 // location
 navigator.geolocation.getCurrentPosition = async function(success, error, options) {
