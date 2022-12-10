@@ -21,7 +21,7 @@ extension Detail {
                             .padding(.horizontal)
                             .padding(.vertical, 20)
                     }
-                    .background(.blue)
+                    .background(Color(.quaternarySystemFill))
                     .safeAreaInset(edge: .top, spacing: 0) {
                         header
                     }
@@ -35,7 +35,6 @@ extension Detail {
                     }
                 }
             }
-            .foregroundColor(.white)
             .presentationDetents([.medium])
             .onReceive(session.cloud) {
                 tracking = $0.tracking
@@ -64,22 +63,20 @@ extension Detail {
                 }
                 
                 ForEach(trackerItems, id: \.tracker) { item in
-                    Rectangle()
-                        .fill(Color(white: 1, opacity: 0.5))
+                    divider
                         .frame(height: 1)
                     
                     GridRow {
                         Text(item.tracker)
-                            .font(.callout.weight(.medium))
+                            .font(.callout.weight(.regular))
                             .lineLimit(1)
                             .padding(.vertical, 10)
-                        Rectangle()
-                            .fill(Color(white: 1, opacity: 0.5))
+                        divider
                             .frame(width: 1)
                         Text(item.count, format: .number)
                             .font(.init(UIFont.systemFont(
                                 ofSize: UIFont.preferredFont(forTextStyle: .callout).pointSize,
-                                weight: .medium,
+                                weight: .regular,
                                 width: .condensed)).monospacedDigit())
                     }
                 }
@@ -88,7 +85,7 @@ extension Detail {
         
         private var header: some View {
             ZStack(alignment: .topTrailing) {
-                Color.blue
+                Color(.systemBackground)
                 
                 VStack(alignment: .leading, spacing: 0) {
                     if !title.isEmpty {
@@ -107,15 +104,13 @@ extension Detail {
                             ofSize: UIFont.preferredFont(forTextStyle: .body).pointSize,
                             weight: .regular,
                             width: .compressed)))
+                        .foregroundStyle(.secondary)
                         .fixedSize(horizontal: false, vertical: true)
                         .lineLimit(3)
                         .textSelection(.enabled)
                         .padding(.horizontal)
                     
-                    Rectangle()
-                        .fill(Color(white: 1, opacity: 0.5))
-                        .frame(height: 1)
-                        .edgesIgnoringSafeArea(.horizontal)
+                    Divider()
                         .padding(.top, 20)
                 }
                 .padding(.top)
@@ -132,6 +127,11 @@ extension Detail {
                 }
             }
             .fixedSize(horizontal: false, vertical: true)
+        }
+        
+        private var divider: some View {
+            Rectangle()
+                .fill(Color.primary.opacity(0.05))
         }
         
         private func update() {
