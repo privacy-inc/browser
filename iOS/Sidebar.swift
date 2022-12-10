@@ -2,14 +2,11 @@ import SwiftUI
 
 struct Sidebar: View {
     @ObservedObject var session: Session
-    @State private var alert = false
+    @State private var forget = false
     
     var body: some View {
         List(selection: $session.sidebar) {
-            Section("Tabs") {
-                Tabs(session: session)
-            }
-            .headerProminence(.increased)
+            Tabs(session: session)
             
             Section("Browser") {
                 ForEach([Category.bookmarks,
@@ -21,17 +18,8 @@ struct Sidebar: View {
             }
             .headerProminence(.increased)
             
-            Section("Protection") {
-                ForEach([Category.forget,
-                         .report], id: \.self) {
-                             link(for: $0)
-                         }
-            }
-            .headerProminence(.increased)
-            
             Section("App") {
-                ForEach([Category.settings,
-                         .sponsor,
+                ForEach([Category.sponsor,
                          .policy,
                          .about], id: \.self) {
                              link(for: $0)
@@ -48,35 +36,17 @@ struct Sidebar: View {
                 ZStack {
                     HStack {
                         Button {
-                            alert = true
+                            forget = true
                         } label: {
-                            Image(systemName: "trash.circle")
-                                .foregroundStyle(session.tabs.isEmpty ? .tertiary : .secondary)
-                                .foregroundColor(session.tabs.isEmpty ? .secondary : .pink)
+                            Image(systemName: "flame.fill")
+                                .foregroundColor(.pink)
                                 .symbolRenderingMode(.hierarchical)
-                                .font(.system(size: 28, weight: .regular))
+                                .font(.system(size: 18, weight: .medium))
                                 .contentShape(Rectangle())
                                 .frame(width: 50, height: 38)
                         }
                         .padding(.bottom, 8)
                         .padding(.leading)
-                        .disabled(session.tabs.isEmpty)
-                        .confirmationDialog("Close tabs", isPresented: $alert) {
-                            Button("Close new tabs") {
-                                session.sidebar = nil
-                                session.tabs.removeAll {
-                                    $0.webview == nil
-                                }
-                            }
-                            Button("Close all", role: .destructive) {
-                                session.sidebar = nil
-                                session.tabs.forEach {
-                                    $0.webview?.clean()
-                                }
-                                session.tabs = []
-                            }
-                            Button("Cancel", role: .cancel) { }
-                        }
                         
                         Spacer()
                     }

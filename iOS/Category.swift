@@ -6,9 +6,6 @@ enum Category: Hashable {
     history,
     readingList,
     downloads,
-    forget,
-    report,
-    settings,
     sponsor,
     policy,
     about,
@@ -26,12 +23,6 @@ enum Category: Hashable {
             return "Reading list"
         case .downloads:
             return "Downloads"
-        case .forget:
-            return "Forget"
-        case .report:
-            return "Privacy report"
-        case .settings:
-            return "Settings"
         case .sponsor:
             return "Sponsor"
         case .policy:
@@ -53,12 +44,6 @@ enum Category: Hashable {
             return "eyeglasses"
         case .downloads:
             return "square.and.arrow.down"
-        case .forget:
-            return "flame"
-        case .report:
-            return "checkerboard.shield"
-        case .settings:
-            return "gear"
         case .sponsor:
             return "heart"
         case .policy:
