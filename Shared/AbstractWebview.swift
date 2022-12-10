@@ -39,7 +39,10 @@ class AbstractWebview: WKWebView, WKNavigationDelegate, WKUIDelegate, WKDownload
         configuration.defaultWebpagePreferences.allowsContentJavaScript = true
         configuration.websiteDataStore = .nonPersistent()
         configuration.mediaTypesRequiringUserActionForPlayback = .all
-        configuration.userContentController.addUserScript(.init(source: Script.js, injectionTime: .atDocumentEnd, forMainFrameOnly: false))
+        configuration.userContentController.addUserScript(.init(
+            source: Script.js,
+            injectionTime: .atDocumentEnd,
+            forMainFrameOnly: true))
         configuration.preferences.setValue(true, forKey: "developerExtrasEnabled")
 
         super.init(frame: .zero, configuration: configuration)
@@ -73,23 +76,18 @@ class AbstractWebview: WKWebView, WKNavigationDelegate, WKUIDelegate, WKDownload
             }
             .store(in: &subs)
         
-        configuration.userContentController.add(self, name: Script.favicon.rawValue)
+        configuration.userContentController.add(self, name: "GoPrivacyApp_favicon")
     }
     
     nonisolated func userContentController(_: WKUserContentController, didReceive: WKScriptMessage) {
         guard
-            didReceive.name == Script.favicon.rawValue,
-            let components = (didReceive.body as? String)?.components(separatedBy: ";"),
-            components.count == 2,
-            let url = components.first,
-            let website = components.last,
-            !url.isEmpty,
-            !website.isEmpty,
-            let iconIdentifier = URL(string: website)?.iconIdentifier
+            let icon = didReceive.body as? String,
+            !icon.isEmpty
         else { return }
         
         Task {
-            await favicon.received(url: url, for: iconIdentifier)
+            guard let iconIdentifier = await url?.iconIdentifier else { return }
+            await favicon.received(url: icon, for: iconIdentifier)
         }
     }
     
