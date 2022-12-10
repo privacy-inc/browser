@@ -50,6 +50,9 @@ struct Sidebar: View {
                         
                         Spacer()
                     }
+                    .sheet(isPresented: $forget) {
+                        Forget(session: session)
+                    }
                     
                     Button {
                         session.newTab()
